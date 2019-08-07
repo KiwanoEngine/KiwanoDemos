@@ -10,10 +10,10 @@ class MainScene
 public:
 	MainScene()
 	{
-		String imageFile = L"../logo/logo_text_h.png";	// 图片路径
+		String imageFile = L"../logo/logo_text.png";	// 图片路径
 		SpritePtr image = new Sprite(imageFile);		// 创建图片精灵
 		image->SetPosition(640 / 2, 480 / 2);			// 修改精灵位置, 使精灵在屏幕上居中
-		image->SetScale(0.4f, 0.4f);					// 图片缩小到 0.4 倍
+		image->SetScale(0.5f, 0.5f);					// 修改缩放率, 图片缩小到 0.5 倍
 		image->SetAnchor(0.5, 0.5);						// 修改精灵锚点, 使图片中心对齐屏幕中心
 		this->AddChild(image);							// 添加到场景中
 	}
