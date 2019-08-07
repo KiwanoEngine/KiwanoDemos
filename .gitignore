@@ -1,3 +1,14 @@
+# Output and build files
+build/
+output/
+
+# NuGet packages
+packages/
+
+# Visual Studio files
+.vs/
+*.aps
+
 # Prerequisites
 *.d
 
