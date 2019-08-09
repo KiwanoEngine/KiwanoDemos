@@ -43,6 +43,7 @@
     <None Include="res\index.json">
       <Filter>resources</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\logo\icon.ico">
