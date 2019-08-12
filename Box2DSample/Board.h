@@ -7,16 +7,15 @@
 // ¹Ì¶¨µÄÄ¾°å
 KGE_DECLARE_SMART_PTR(Board);
 class Board
-	: public GeometryNode
+	: public RectNode
 {
 public:
 	Board(b2World* world, const Size& size, const Point& pos)
 	{
-		GeometryPtr geo = new RectangleGeometry(Point(), size);
-		SetGeometry(geo);
 		SetStrokeColor(Color::White);
 		SetFillColor(Color(0, 0, 0, 0));
 
+		SetRect(Rect{ Point{}, size });
 		SetSize(size);
 		SetAnchor(0.5f, 0.5f);
 		SetRotation(10);

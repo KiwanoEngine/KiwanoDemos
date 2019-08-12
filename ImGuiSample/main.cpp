@@ -18,10 +18,10 @@ public:
 		Init(options);
 	}
 
-	void OnStart() override
+	void OnReady() override
 	{
 		MainScenePtr scene = new MainScene;
-		EnterScene(scene);
+		Stage::Instance()->EnterScene(scene);
 	}
 };
 

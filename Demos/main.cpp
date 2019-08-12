@@ -45,7 +45,7 @@ public:
 		Init(options);
 	}
 
-	void OnStart() override
+	void OnReady() override
 	{
 		// 从 JSON 文件中读取资源信息
 		//g_Loader.LoadFromJsonFile(L"res/index.json");
@@ -73,7 +73,7 @@ public:
 			Window::Instance()->SetTitle(L"Kiwano示例程序 - " + title);
 
 			ScenePtr scene = s_Demos[index].Create();
-			EnterScene(scene);
+			Stage::Instance()->EnterScene(scene);
 
 			// 添加按键监听
 			scene->AddListener(Event::KeyUp, MakeClosure(this, &DemoApp::KeyPressed));

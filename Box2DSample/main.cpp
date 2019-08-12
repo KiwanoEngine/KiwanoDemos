@@ -12,7 +12,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 		app.Init(options);
 
 		MainScenePtr scene = new MainScene;
-		app.EnterScene(scene);
+		Stage::Instance()->EnterScene(scene);
+
 		app.Run();
 	}
 	catch (std::exception& e)

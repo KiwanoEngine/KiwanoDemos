@@ -37,7 +37,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 
 	// 创建场景并进入
 	ScenePtr scene = new MainScene;
-	app.EnterScene(scene);
+	Stage::Instance()->EnterScene(scene);
 
 	// 运行
 	app.Run();
