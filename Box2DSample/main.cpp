@@ -1,6 +1,6 @@
 // Copyright (C) 2019 Nomango
 
-#include "MainScene.h"
+#include "MainStage.h"
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
@@ -11,8 +11,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 		Options options(L"Box2D Demo");
 		app.Init(options);
 
-		MainScenePtr scene = new MainScene;
-		Stage::Instance()->EnterScene(scene);
+		MainStagePtr scene = new MainStage;
+		Director::Instance()->EnterStage(scene);
 
 		app.Run();
 	}

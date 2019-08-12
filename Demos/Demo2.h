@@ -64,10 +64,10 @@ public:
 };
 
 class Demo2
-	: public Scene
+	: public Stage
 {
 public:
-	static ScenePtr Create()
+	static StagePtr Create()
 	{
 		return new Demo2;
 	}
@@ -89,7 +89,7 @@ public:
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);
 		text->SetAlignment(TextAlign::Center);
 
-		// 添加到场景
+		// 添加到舞台
 		this->AddChild(hero);
 		this->AddChild(text);
 	}

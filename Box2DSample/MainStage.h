@@ -6,20 +6,20 @@
 #include "Rect.h"
 #include "Board.h"
 
-KGE_DECLARE_SMART_PTR(MainScene);
-class MainScene
-	: public Scene
+KGE_DECLARE_SMART_PTR(MainStage);
+class MainStage
+	: public Stage
 {
 	b2World* world_;
 
 public:
-	MainScene()
+	MainStage()
 	{
-		// 设置可响应状态, 使场景可以接收到鼠标 Click 消息
+		// 设置可响应状态, 使舞台可以接收到鼠标 Click 消息
 		SetResponsible(true);
 
 		// 添加消息监听
-		AddListener(Event::Click, MakeClosure(this, &MainScene::Click));
+		AddListener(Event::Click, MakeClosure(this, &MainStage::Click));
 
 		// 创建物理世界
 		world_ = new b2World(b2Vec2(0, 10));
@@ -31,7 +31,7 @@ public:
 		AddChild(circle);
 	}
 
-	~MainScene()
+	~MainStage()
 	{
 		if (world_)
 			delete world_;
@@ -46,21 +46,21 @@ public:
 		b2Body* body = world_->GetBodyList();
 		while (body)
 		{
-			Node* node = (Node*)body->GetUserData();
+			Actor* actor = (Actor*)body->GetUserData();
 			b2Body* next = body->GetNext();
-			if (node)
+			if (actor)
 			{
 				const b2Vec2& pos = body->GetPosition();
-				node->SetPosition(Vec2Convert(pos));
-				node->SetRotation(body->GetAngle() * 180.f / math::constants::PI_F);
+				actor->SetPosition(Vec2Convert(pos));
+				actor->SetRotation(body->GetAngle() * 180.f / math::constants::PI_F);
 
-				// 移除掉落到场景外的物体
-				if (node->GetPosition().y > GetHeight() + 50)
+				// 移除掉落到舞台外的物体
+				if (actor->GetPosition().y > GetHeight() + 50)
 				{
 					body->SetUserData(0);
 					world_->DestroyBody(body);
 
-					node->RemoveFromParent();
+					actor->RemoveFromParent();
 				}
 			}
 

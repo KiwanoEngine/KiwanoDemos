@@ -4,10 +4,10 @@
 #include "common.h"
 
 class Demo1
-	: public Scene
+	: public Stage
 {
 public:
-	static ScenePtr Create()
+	static StagePtr Create()
 	{
 		return new Demo1;
 	}

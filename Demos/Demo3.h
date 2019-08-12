@@ -4,14 +4,14 @@
 #include "common.h"
 
 class Demo3
-	: public Scene
+	: public Stage
 {
 	SoundPtr bgmusic;		// 音乐对象
 	TextPtr volume_text;	// 音量文字
 	TextPtr state_text;		// 播放状态文字
 
 public:
-	static ScenePtr Create()
+	static StagePtr Create()
 	{
 		return new Demo3;
 	}
@@ -43,7 +43,7 @@ public:
 		state_text = new Text(L"当前状态：");
 		state_text->SetPosition(WINDOW_WIDTH / 2 - 80, WINDOW_HEIGHT / 2 + 60);
 
-		// 添加到场景
+		// 添加到舞台
 		this->AddChild(intro_text);
 		this->AddChild(volume_text);
 		this->AddChild(state_text);

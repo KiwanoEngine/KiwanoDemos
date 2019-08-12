@@ -1,6 +1,6 @@
 // Copyright (C) 2019 Nomango
 
-#include "MainScene.h"
+#include "MainStage.h"
 
 using namespace kiwano;
 
@@ -20,8 +20,8 @@ public:
 
 	void OnReady() override
 	{
-		MainScenePtr scene = new MainScene;
-		Stage::Instance()->EnterScene(scene);
+		MainStagePtr scene = new MainStage;
+		Director::Instance()->EnterStage(scene);
 	}
 };
 

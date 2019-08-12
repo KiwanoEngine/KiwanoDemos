@@ -12,7 +12,7 @@ namespace
 	struct Demo
 	{
 		String title;
-		ScenePtr(*Create)();
+		StagePtr(*Create)();
 	};
 
 	Demo s_Demos[] = {
@@ -53,8 +53,8 @@ public:
 		// 从 XML 文件中读取资源信息
 		g_Loader.LoadFromXmlFile(L"res/index.xml");
 
-		// 切换到第一个场景
-		ChangeDemoScene(0);
+		// 切换到第一个舞台
+		ChangeDemoStage(0);
 	}
 
 	void OnDestroy() override
@@ -63,7 +63,7 @@ public:
 		g_Loader.Destroy();
 	}
 
-	void ChangeDemoScene(int index)
+	void ChangeDemoStage(int index)
 	{
 		if (s_CurrIndex != index)
 		{
@@ -72,8 +72,8 @@ public:
 			String title = s_Demos[index].title;
 			Window::Instance()->SetTitle(L"Kiwano示例程序 - " + title);
 
-			ScenePtr scene = s_Demos[index].Create();
-			Stage::Instance()->EnterScene(scene);
+			StagePtr scene = s_Demos[index].Create();
+			Director::Instance()->EnterStage(scene);
 
 			// 添加按键监听
 			scene->AddListener(Event::KeyUp, MakeClosure(this, &DemoApp::KeyPressed));
@@ -95,7 +95,7 @@ public:
 			evt.key.code <= (KeyCode::Num0 + s_DemoNum))
 		{
 			int index = evt.key.code - KeyCode::Num1;
-			ChangeDemoScene(index);
+			ChangeDemoStage(index);
 		}
 	}
 };

@@ -5,10 +5,10 @@
 #include <iostream>
 
 class Demo5
-	: public Scene
+	: public Stage
 {
 public:
-	static ScenePtr Create()
+	static StagePtr Create()
 	{
 		return new Demo5;
 	}
@@ -26,19 +26,19 @@ public:
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-		// 添加到场景
+		// 添加到舞台
 		this->AddChild(text);
 	}
 
 	void OnEnter() override
 	{
-		// 进入场景时打开控制台
+		// 进入舞台时打开控制台
 		Logger::Instance()->ShowConsole(true);
 	}
 
 	void OnExit() override
 	{
-		// 退出场景时关闭控制台
+		// 退出舞台时关闭控制台
 		Logger::Instance()->ShowConsole(false);
 	}
 
