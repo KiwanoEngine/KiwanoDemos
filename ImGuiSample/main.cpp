@@ -11,7 +11,7 @@ public:
 	ImGuiApp()
 	{
 		// 添加 ImGui 组件
-		Use(ImGuiModule::Instance());
+		Use(ImGuiModule::GetInstance());
 
 		// 初始化
 		Options options(L"ImGui Demo", 1280, 800);
@@ -21,7 +21,7 @@ public:
 	void OnReady() override
 	{
 		MainStagePtr scene = new MainStage;
-		Director::Instance()->EnterStage(scene);
+		Director::GetInstance()->EnterStage(scene);
 	}
 };
 

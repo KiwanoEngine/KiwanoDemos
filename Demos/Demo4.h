@@ -3,13 +3,22 @@
 #pragma once
 #include "common.h"
 
+// 方向
+enum Direction
+{
+	Up,
+	Down,
+	Left,
+	Right
+};
+
 // 老虎
 KGE_DECLARE_SMART_PTR(Tiger);
 class Tiger
 	: public Sprite
 {
-	FramesPtr run_frames;			// 跑步序列帧
-	FramesPtr stand_frames;			// 站立序列帧
+	FrameSequencePtr run_frames;	// 跑步序列帧
+	FrameSequencePtr stand_frames;	// 站立序列帧
 	bool facing_left;				// 面朝左或面朝右
 	bool running;					// 是否正在跑步
 	Direction running_direction;	// 跑步方向
@@ -18,19 +27,17 @@ public:
 	Tiger()
 	{
 		// 加载帧动画
-		run_frames = g_Loader.GetFrames(L"tiger_running");
-		stand_frames = g_Loader.GetFrames(L"tiger_standing");
+		run_frames = ResourceCache::GetInstance()->GetFrameSequence(L"tiger_running");
+		stand_frames = ResourceCache::GetInstance()->GetFrameSequence(L"tiger_standing");
 
 		// 执行动画
 		AddAction(
-			Tween::Animation(stand_frames)
-				.SetDuration(1000)
-				.SetLoops(-1)
+			Tween::Animation(1_s, stand_frames).SetLoops(-1)
 		);
 
 		// 添加按键监听
-		AddListener(Event::KeyDown, MakeClosure(this, &Tiger::OnKeyDown));
-		AddListener(Event::KeyUp, MakeClosure(this, &Tiger::OnKeyUp));
+		AddListener(Event::KeyDown, Closure(this, &Tiger::OnKeyDown));
+		AddListener(Event::KeyUp, Closure(this, &Tiger::OnKeyUp));
 
 		// 默认方向为 Left
 		facing_left = true;
@@ -74,9 +81,7 @@ public:
 
 			// 执行跑步动画
 			AddAction(
-				Tween::Animation(run_frames)
-					.SetDuration(500)
-					.SetLoops(-1)
+				Tween::Animation(0.5_s, run_frames).SetLoops(-1)
 			);
 		}
 
@@ -104,9 +109,7 @@ public:
 
 			// 执行站立动画
 			AddAction(
-				Tween::Animation(stand_frames)
-					.SetDuration(1000)
-					.SetLoops(-1)
+				Tween::Animation(1_s, stand_frames).SetLoops(-1)
 			);
 		}
 	}
@@ -163,8 +166,6 @@ public:
 
 		// 创建说明文字
 		TextPtr text = new Text(L"按上下左右键移动");
-		// 设置节点大小为文字布局大小
-		text->SetSize(text->GetLayoutSize());
 		// 设置文字位置
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);

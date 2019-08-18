@@ -4,9 +4,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="MainStage.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainStage.h" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

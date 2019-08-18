@@ -15,9 +15,9 @@ public:
 	Demo1()
 	{
 		// 获取人物图片
-		ImagePtr man_image = g_Loader.GetImage(L"man");
+		FramePtr man_image = ResourceCache::GetInstance()->GetFrame(L"man");
 
-		// 缓动方程
+		// 创建缓动方程列表
 		auto ease_functions = {
 			Ease::Linear,		// 线性变化
 			Ease::EaseInOut,	// 变化过程中有缓冲
@@ -26,28 +26,27 @@ public:
 			Ease::BackInOut		// 开始和结束阶段均有一个短暂的反方向运动
 		};
 
+		// 为每个人物使用不同的缓动方程执行动画
 		float height = 100.f;
 		for (auto& func : ease_functions)
 		{
+			// 初始化人物
 			SpritePtr man = new Sprite(man_image);
 			man->SetPosition(100, height);
 			man->SetScale(0.5f, 0.3f);
 			this->AddChild(man);
 
-			// 重置人物位置函数
-			auto reset_pos = [ptr = man.Get()]() { ptr->Move(-350, 0); };
+			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
+			auto move = Tween::MoveBy(4_s, Point{ 350, 0 }).SetEaseFunc(func);
+			// 动画：延迟 1 秒
+			auto delay = Tween::Delay(1_s);
+			// 动画：组合前两个动画，并循环执行
+			auto group = Tween::Group({ move, delay }).SetLoops(-1);
+			// 动画结束后自动恢复人物位置
+			group.SetLoopDoneCallback([ptr = man.get()]() { ptr->Move(-350, 0); });
 
 			// 执行动画
-			man->AddAction(
-				Tween::Group({							// Tween::Group 组合动画
-					Tween::MoveBy(Point{ 350, 0 })		// Tween::MoveBy 横向位移 350 像素
-						.SetDuration(4000)				//     设置位移时间为 4 秒
-						.SetEaseFunc(func),				//     设置缓动函数
-					Tween::Delay(1000)					// Tween::Delay 延迟 1 秒
-				})
-				.SetLoops(-1)							// 无限循环执行
-				.SetLoopDoneCallback(reset_pos)			// 设置每次循环结束都重置人物位置
-			);
+			man->AddAction(group);
 
 			height += 60.f;
 		}

@@ -30,10 +30,10 @@ public:
 		}, L"DemoWindow");
 
 		// 添加一个简单窗口
-		layer->AddItem(MakeClosure(this, &MainStage::SimpleWindow), L"SimpleWindow");
+		layer->AddItem(Closure(this, &MainStage::SimpleWindow), L"SimpleWindow");
 
 		// 再添加一个窗口
-		layer->AddItem(MakeClosure(this, &MainStage::AnotherWindow), L"AnotherWindow");
+		layer->AddItem(Closure(this, &MainStage::AnotherWindow), L"AnotherWindow");
 	}
 
 	void SimpleWindow()
@@ -59,7 +59,7 @@ public:
 		ImGui::End();
 
 		// 修改窗口背景色
-		Renderer::Instance()->SetClearColor(clear_color);
+		Renderer::GetInstance()->SetClearColor(clear_color);
 	}
 
 	void AnotherWindow()

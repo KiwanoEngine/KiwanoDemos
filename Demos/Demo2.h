@@ -9,10 +9,10 @@ class Hero
 	: public GifSprite
 {
 public:
-	Hero(GifImagePtr image)
+	Hero()
 	{
 		// 加载图片
-		Load(image);
+		Load(L"res/Kusanagi.gif");
 		// 设置 GIF 动图无限循环
 		SetLoopCount(-1);
 	}
@@ -21,7 +21,7 @@ public:
 	void OnUpdate(Duration dt) override
 	{
 		// 获取输入设备
-		auto input = Input::Instance();
+		auto input = Input::GetInstance();
 
 		// 按下左右键
 		if (input->IsDown(KeyCode::Left))
@@ -75,15 +75,13 @@ public:
 	Demo2()
 	{
 		// 创建角色
-		HeroPtr hero = new Hero(g_Loader.GetGifImage(L"Kusanagi"));
+		HeroPtr hero = new Hero;
 		// 在屏幕上居中显示
 		hero->SetAnchor(0.5f, 0.5f);
 		hero->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
 		TextPtr text = new Text(L"按上下左右键移动\n按鼠标左键旋转\n点击鼠标右键隐藏");
-		// 设置节点大小为文字布局大小
-		text->SetSize(text->GetLayoutSize());
 		// 设置文字位置
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);

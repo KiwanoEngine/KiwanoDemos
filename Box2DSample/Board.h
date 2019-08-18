@@ -7,7 +7,7 @@
 // ¹Ì¶¨µÄÄ¾°å
 KGE_DECLARE_SMART_PTR(Board);
 class Board
-	: public RectNode
+	: public RectActor
 {
 public:
 	Board(b2World* world, const Size& size, const Point& pos)
@@ -15,8 +15,7 @@ public:
 		SetStrokeColor(Color::White);
 		SetFillColor(Color(0, 0, 0, 0));
 
-		SetRect(Rect{ Point{}, size });
-		SetSize(size);
+		SetRectSize(size);
 		SetAnchor(0.5f, 0.5f);
 		SetRotation(10);
 		SetPosition(pos);

@@ -63,7 +63,7 @@ public:
 		state_text->SetText(playing ? L"当前状态：正在播放" : L"当前状态：停止播放");
 
 		// 获取输入设备
-		auto input = Input::Instance();
+		auto input = Input::GetInstance();
 
 		// 按空格键暂停或继续
 		if (input->WasPressed(KeyCode::Space))

@@ -26,9 +26,6 @@ namespace
 	int s_DemoNum = sizeof(s_Demos) / sizeof(Demo);
 }
 
-// 资源加载工具
-ResLoader g_Loader;
-
 class DemoApp
 	: public Application
 {
@@ -36,10 +33,10 @@ public:
 	DemoApp()
 	{
 		// 使用 Audio 组件
-		Use(Audio::Instance());
+		Use(Audio::GetInstance());
 
 		// 使用 HttpClient 组件
-		Use(HttpClient::Instance());
+		Use(HttpClient::GetInstance());
 
 		Options options(L"Kiwano示例程序", WINDOW_WIDTH, WINDOW_HEIGHT, MAKEINTRESOURCE(IDI_ICON1));
 		Init(options);
@@ -48,19 +45,13 @@ public:
 	void OnReady() override
 	{
 		// 从 JSON 文件中读取资源信息
-		//g_Loader.LoadFromJsonFile(L"res/index.json");
+		//ResourceCache::GetInstance()->LoadFromJsonFile(L"res/index.json");
 
 		// 从 XML 文件中读取资源信息
-		g_Loader.LoadFromXmlFile(L"res/index.xml");
+		ResourceCache::GetInstance()->LoadFromXmlFile(L"res/index.xml");
 
 		// 切换到第一个舞台
 		ChangeDemoStage(0);
-	}
-
-	void OnDestroy() override
-	{
-		// 退出游戏时销毁资源
-		g_Loader.Destroy();
 	}
 
 	void ChangeDemoStage(int index)
@@ -70,13 +61,13 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::Instance()->SetTitle(L"Kiwano示例程序 - " + title);
+			Window::GetInstance()->SetTitle(L"Kiwano示例程序 - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
-			Director::Instance()->EnterStage(scene);
+			Director::GetInstance()->EnterStage(scene);
 
 			// 添加按键监听
-			scene->AddListener(Event::KeyUp, MakeClosure(this, &DemoApp::KeyPressed));
+			scene->AddListener(Event::KeyUp, Closure(this, &DemoApp::KeyPressed));
 
 			// 显示提示文字
 			String intro_str = String::format(L"按键 1~%d 可切换示例\n", s_DemoNum);

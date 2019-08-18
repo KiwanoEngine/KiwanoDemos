@@ -16,12 +16,10 @@ public:
 	Demo5()
 	{
 		// 添加按键监听
-		AddListener(Event::KeyDown, MakeClosure(this, &Demo5::OnKeyDown));
+		AddListener(Event::KeyDown, Closure(this, &Demo5::OnKeyDown));
 
 		// 创建说明文字
 		TextPtr text = new Text(L"按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
-		// 设置节点大小为文字布局大小
-		text->SetSize(text->GetLayoutSize());
 		// 设置文字位置
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -33,13 +31,13 @@ public:
 	void OnEnter() override
 	{
 		// 进入舞台时打开控制台
-		Logger::Instance()->ShowConsole(true);
+		Logger::GetInstance()->ShowConsole(true);
 	}
 
 	void OnExit() override
 	{
 		// 退出舞台时关闭控制台
-		Logger::Instance()->ShowConsole(false);
+		Logger::GetInstance()->ShowConsole(false);
 	}
 
 	void OnKeyDown(Event const& e)
@@ -66,7 +64,7 @@ public:
 	void SendGetRequest()
 	{
 		// 发送 GET 请求
-		Logger::Instance()->Println(L"Start to send GET request...");
+		Logger::GetInstance()->Println(L"Start to send GET request...");
 
 		HttpRequestPtr request = new HttpRequest;
 		// 设置请求 URL
@@ -74,16 +72,16 @@ public:
 		// 设置请求类型为 GET
 		request->SetType(HttpRequest::Type::Get);
 		// 设置请求完成后的回调函数
-		request->SetResponseCallback(MakeClosure(this, &Demo5::Complete));
+		request->SetResponseCallback(Closure(this, &Demo5::Complete));
 
 		// 发送 HTTP 请求
-		HttpClient::Instance()->Send(request);
+		HttpClient::GetInstance()->Send(request);
 	}
 
 	void SendPostRequest()
 	{
 		// 发送 POST 请求
-		Logger::Instance()->Println(L"Start to send POST request...");
+		Logger::GetInstance()->Println(L"Start to send POST request...");
 
 		// 创建 JSON 格式的 POST 数据
 		Json request_data = {
@@ -100,15 +98,15 @@ public:
 		request->SetType(HttpRequest::Type::Post);
 		// 设置 POST 请求的数据
 		request->SetJsonData(request_data);
-		request->SetResponseCallback(MakeClosure(this, &Demo5::Complete));
+		request->SetResponseCallback(Closure(this, &Demo5::Complete));
 
-		HttpClient::Instance()->Send(request);
+		HttpClient::GetInstance()->Send(request);
 	}
 
 	void SendPutRequest()
 	{
 		// 发送 PUT 请求
-		Logger::Instance()->Println(L"Start to send PUT request...");
+		Logger::GetInstance()->Println(L"Start to send PUT request...");
 
 		// 创建 JSON 格式的 PUT 数据
 		Json request_data = Json::array({ 1, 2, 3 });
@@ -118,22 +116,22 @@ public:
 		request->SetType(HttpRequest::Type::Put);
 		// 设置 PUT 请求的数据
 		request->SetJsonData(request_data);
-		request->SetResponseCallback(MakeClosure(this, &Demo5::Complete));
+		request->SetResponseCallback(Closure(this, &Demo5::Complete));
 
-		HttpClient::Instance()->Send(request);
+		HttpClient::GetInstance()->Send(request);
 	}
 
 	void SendDeleteRequest()
 	{
 		// 发送 DELETE 请求
-		Logger::Instance()->Println(L"Start to send DELETE request...");
+		Logger::GetInstance()->Println(L"Start to send DELETE request...");
 
 		HttpRequestPtr request = new HttpRequest;
 		request->SetUrl(L"http://httpbin.org/delete");
 		request->SetType(HttpRequest::Type::Delete);
-		request->SetResponseCallback(MakeClosure(this, &Demo5::Complete));
+		request->SetResponseCallback(Closure(this, &Demo5::Complete));
 
-		HttpClient::Instance()->Send(request);
+		HttpClient::GetInstance()->Send(request);
 	}
 
 	void Complete(HttpRequestPtr request, HttpResponsePtr response)

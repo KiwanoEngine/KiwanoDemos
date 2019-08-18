@@ -11,6 +11,3 @@ using namespace kiwano::network;
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
-
-// 资源加载工具
-extern ResLoader g_Loader;

@@ -37,7 +37,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 
 	// 创建舞台并进入
 	StagePtr scene = new MainStage;
-	Director::Instance()->EnterStage(scene);
+	Director::GetInstance()->EnterStage(scene);
 
 	// 运行
 	app.Run();
