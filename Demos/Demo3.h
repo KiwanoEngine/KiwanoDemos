@@ -25,7 +25,10 @@ public:
 			bgmusic = nullptr;
 
 			TextPtr err = new Text(L"音频文件加载失败");
+			err->SetAnchor(0.5f, 0.5f);
+			err->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 			this->AddChild(err);
+			return;
 		}
 
 		// 播放音乐（参数用来设置播放循环次数，-1 表示循环播放）
@@ -33,15 +36,19 @@ public:
 
 		// 创建说明文字
 		TextPtr intro_text = new Text(L"按上下键调整音量\n按空格键暂停或继续");
-		intro_text->SetPosition(WINDOW_WIDTH / 2 - 80, WINDOW_HEIGHT / 2 - 50);
+		intro_text->SetAlignment(TextAlign::Center);
+		intro_text->SetAnchor(0.5f, 0.5f);
+		intro_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
 
 		// 创建音量文字
 		volume_text = new Text(L"当前音量：");
-		volume_text->SetPosition(WINDOW_WIDTH / 2 - 80, WINDOW_HEIGHT / 2 + 30);
+		volume_text->SetAnchor(0.5f, 0.5f);
+		volume_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 30);
 
 		// 创建状态文字
 		state_text = new Text(L"当前状态：");
-		state_text->SetPosition(WINDOW_WIDTH / 2 - 80, WINDOW_HEIGHT / 2 + 60);
+		state_text->SetAnchor(0.5f, 0.5f);
+		state_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60);
 
 		// 添加到舞台
 		this->AddChild(intro_text);
@@ -59,7 +66,7 @@ public:
 		bool playing = bgmusic->IsPlaying();
 
 		// 修改文本
-		volume_text->SetText(L"当前音量：" + std::to_wstring(volume));
+		volume_text->SetText(L"当前音量：" + String::parse(volume));
 		state_text->SetText(playing ? L"当前状态：正在播放" : L"当前状态：停止播放");
 
 		// 获取输入设备
