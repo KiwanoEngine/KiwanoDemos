@@ -38,8 +38,17 @@ public:
 		// 使用 HttpClient 组件
 		Use(HttpClient::GetInstance());
 
-		Options options(L"Kiwano示例程序", WINDOW_WIDTH, WINDOW_HEIGHT, MAKEINTRESOURCE(IDI_ICON1));
+		Options options;
+		options.title = L"Kiwano示例程序";
+		options.width = WINDOW_WIDTH;
+		options.height = WINDOW_HEIGHT;
+		options.icon = IDI_ICON1;
+		options.resizable = true;
+
 		Init(options);
+
+		// 分辨率模式
+		Renderer::GetInstance()->SetResolutionMode(ResolutionMode::Adaptive);
 	}
 
 	void OnReady() override

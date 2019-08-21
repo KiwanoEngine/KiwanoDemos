@@ -14,7 +14,7 @@ public:
 	{
 		Load(L"circle.png");
 		SetAnchor(0.5f, 0.5f);
-		SetScale(0.7f);
+		SetScale(0.7f, 0.7f);
 
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;

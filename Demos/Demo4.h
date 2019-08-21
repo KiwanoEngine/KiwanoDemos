@@ -97,7 +97,7 @@ public:
 
 		// 缩放可以调整图片显示方向
 		// 缩放至 -1 图片会反转
-		SetScaleX(facing_left ? 1.0f : -1.0f);
+		SetScale(facing_left ? 1.0f : -1.0f, 1.0f);
 	}
 
 	void StopRun()
