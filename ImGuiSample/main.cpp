@@ -14,8 +14,8 @@ public:
 		Use(ImGuiModule::GetInstance());
 
 		// ≥ı ºªØ
-		Options options(L"ImGui Demo", 1280, 800);
-		Init(options);
+		Config config(L"ImGui Demo", 1280, 800);
+		Init(config);
 	}
 
 	void OnReady() override

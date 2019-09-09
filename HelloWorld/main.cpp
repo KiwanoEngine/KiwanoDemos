@@ -1,6 +1,6 @@
 // Copyright (C) 2019 Nomango
 
-#include "kiwano/kiwano.h"
+#include <kiwano/kiwano.h>
 
 using namespace kiwano;
 
@@ -25,15 +25,15 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	Application app;
 
 	// 在初始化选项中设置窗口宽高
-	Options options;
-	options.width = 640;
-	options.height = 480;
+	Config config;
+	config.window.width = 640;
+	config.window.height = 480;
 
 	// 设置背景色
-	options.clear_color = Color(0xE5E5E5);
+	config.render.clear_color = Color(0xE5E5E5);
 
 	// 初始化 app
-	app.Init(options);
+	app.Init(config);
 
 	// 创建舞台并进入
 	StagePtr scene = new MainStage;

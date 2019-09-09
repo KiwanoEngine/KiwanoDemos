@@ -38,14 +38,14 @@ public:
 		// 使用 HttpClient 组件
 		Use(HttpClient::GetInstance());
 
-		Options options;
-		options.title = L"Kiwano示例程序";
-		options.width = WINDOW_WIDTH;
-		options.height = WINDOW_HEIGHT;
-		options.icon = IDI_ICON1;
-		options.resizable = true;
+		Config config;
+		config.window.title = L"Kiwano示例程序";
+		config.window.width = WINDOW_WIDTH;
+		config.window.height = WINDOW_HEIGHT;
+		config.window.icon = IDI_ICON1;
+		config.window.resizable = true;
 
-		Init(options);
+		Init(config);
 
 		// 分辨率模式
 		Renderer::GetInstance()->SetResolutionMode(ResolutionMode::Adaptive);

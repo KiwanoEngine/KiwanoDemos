@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "kiwano/kiwano.h"
-#include "kiwano-imgui/kiwano-imgui.h"
+#include <kiwano/kiwano.h>
+#include <kiwano-imgui/kiwano-imgui.h>
 
 using namespace kiwano;
 using namespace kiwano::imgui;

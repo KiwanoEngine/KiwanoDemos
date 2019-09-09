@@ -8,8 +8,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	{
 		Application app;
 
-		Options options(L"Box2D Demo");
-		app.Init(options);
+		Config config(L"Box2D Demo");
+		app.Init(config);
 
 		MainStagePtr scene = new MainStage;
 		Director::GetInstance()->EnterStage(scene);

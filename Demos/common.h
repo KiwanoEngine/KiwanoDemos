@@ -1,9 +1,9 @@
 // Copyright (C) 2019 Nomango
 
 #pragma once
-#include "kiwano/kiwano.h"
-#include "kiwano-audio/kiwano-audio.h"
-#include "kiwano-network/kiwano-network.h"
+#include <kiwano/kiwano.h>
+#include <kiwano-audio/kiwano-audio.h>
+#include <kiwano-network/kiwano-network.h>
 
 using namespace kiwano;
 using namespace kiwano::audio;
