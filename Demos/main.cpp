@@ -43,12 +43,8 @@ public:
 		config.window.width = WINDOW_WIDTH;
 		config.window.height = WINDOW_HEIGHT;
 		config.window.icon = IDI_ICON1;
-		config.window.resizable = true;
 
 		Init(config);
-
-		// 分辨率模式
-		Renderer::GetInstance()->SetResolutionMode(ResolutionMode::Adaptive);
 	}
 
 	void OnReady() override
