@@ -33,7 +33,7 @@ public:
 	DemoApp()
 	{
 		// 使用 Audio 组件
-		Use(Audio::GetInstance());
+		Use(AudioEngine::GetInstance());
 
 		// 使用 HttpClient 组件
 		Use(HttpClient::GetInstance());
