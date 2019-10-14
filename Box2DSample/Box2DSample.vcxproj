@@ -81,10 +81,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
-    <ClInclude Include="Circle.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="MainStage.h" />
-    <ClInclude Include="Rect.h" />
+    <ClInclude Include="Box.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

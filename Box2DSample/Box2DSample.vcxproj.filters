@@ -7,16 +7,16 @@
     <ClInclude Include="Board.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Rect.h">
+    <ClInclude Include="MainStage.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="MainStage.h">
+    <ClInclude Include="Box.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

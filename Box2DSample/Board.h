@@ -12,23 +12,29 @@ class Board
 public:
 	Board(b2World* world, const Size& size, const Point& pos)
 	{
-		SetStrokeColor(Color::White);
-		SetFillColor(Color(0, 0, 0, 0));
+		// 设置线条和填充颜色
+		Color color = 0x868686;
+		SetStrokeColor(color);
+		SetFillColor(color);
 
+		// 设置木板的大小、位置和旋转角度
 		SetRectSize(size);
 		SetAnchor(0.5f, 0.5f);
 		SetRotation(10);
 		SetPosition(pos);
 
-		b2BodyDef groundBodyDef;
-		groundBodyDef.position = Vec2Convert(GetPosition());
-		groundBodyDef.angle = 10 * math::constants::PI_F / 180.f;
-
-		b2Body* groundBody = world->CreateBody(&groundBodyDef);
-
+		// 创建木板的物理形状
 		b2PolygonShape groundBox;
-		b2Vec2 sz = Vec2Convert(Point{ size.x / 2, size.y / 2 });
+		b2Vec2 sz = Stage2World(size / 2);
 		groundBox.SetAsBox(sz.x, sz.y);
+
+		// 创建木板在物理世界的位置角度信息
+		b2BodyDef groundBodyDef;
+		groundBodyDef.position = Stage2World(GetPosition());
+		groundBodyDef.angle = Angle2Radian(10);
+
+		// 创建木板的物理世界实体
+		b2Body* groundBody = world->CreateBody(&groundBodyDef);
 		groundBody->CreateFixture(&groundBox, 0.0f);
 	}
 };

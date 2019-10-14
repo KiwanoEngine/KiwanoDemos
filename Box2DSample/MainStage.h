@@ -2,39 +2,44 @@
 
 #pragma once
 
-#include "Circle.h"
-#include "Rect.h"
+#include "Ball.h"
+#include "Box.h"
 #include "Board.h"
 
 KGE_DECLARE_SMART_PTR(MainStage);
 class MainStage
 	: public Stage
 {
-	b2World* world_;
+	b2World* world_ = nullptr;
 
 public:
 	MainStage()
 	{
-		// 设置可响应状态, 使舞台可以接收到鼠标 Click 消息
+		// 设置可响应状态, 使舞台可以接收到鼠标点击消息
 		SetResponsible(true);
 
-		// 添加消息监听
+		// 添加鼠标点击监听
 		AddListener(Event::Click, Closure(this, &MainStage::Click));
 
 		// 创建物理世界
 		world_ = new b2World(b2Vec2(0, 10));
 
+		// 添加一块静态木板
 		BoardPtr board = new Board(world_, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 50));
 		AddChild(board);
 
-		CirclePtr circle = new Circle(world_, Point(320, 240));
-		AddChild(circle);
+		// 添加一个小球
+		BallPtr ball = new Ball(world_, Point(320, 240));
+		AddChild(ball);
 	}
 
 	~MainStage()
 	{
 		if (world_)
+		{
 			delete world_;
+			world_ = nullptr;
+		}
 	}
 
 	void OnUpdate(Duration dt) override
@@ -51,13 +56,13 @@ public:
 			if (actor)
 			{
 				const b2Vec2& pos = body->GetPosition();
-				actor->SetPosition(Vec2Convert(pos));
-				actor->SetRotation(body->GetAngle() * 180.f / math::constants::PI_F);
+				actor->SetPosition(World2Stage(pos));
+				actor->SetRotation(Radian2Angle(body->GetAngle()));
 
 				// 移除掉落到舞台外的物体
 				if (actor->GetPosition().y > GetHeight() + 50)
 				{
-					body->SetUserData(0);
+					body->SetUserData(nullptr);
 					world_->DestroyBody(body);
 
 					actor->RemoveFromParent();
@@ -70,15 +75,16 @@ public:
 
 	void Click(Event const& evt)
 	{
+		// 左键添加一个小球, 右键添加一个盒子
 		if (evt.mouse.button == MouseButton::Left)
 		{
-			CirclePtr circle = new Circle(world_, Point{ evt.mouse.x, evt.mouse.y });
-			AddChild(circle);
+			BallPtr ball = new Ball(world_, Point{ evt.mouse.x, evt.mouse.y });
+			AddChild(ball);
 		}
 		else if (evt.mouse.button == MouseButton::Right)
 		{
-			SquarePtr rect = new Square(world_, Point{ evt.mouse.x, evt.mouse.y });
-			AddChild(rect);
+			BoxPtr box = new Box(world_, Point{ evt.mouse.x, evt.mouse.y });
+			AddChild(box);
 		}
 	}
 };
