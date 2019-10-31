@@ -150,7 +150,7 @@ public:
 
 				std::wcout << L"Response: " << std::endl << result.dump(4) << std::endl;
 			}
-			catch (json_exception& e)
+			catch (core::json_exception& e)
 			{
 				std::wcout << L"Parse JSON failed: " << e.what() << std::endl;
 			}
