@@ -4,11 +4,11 @@
 
 using namespace kiwano;
 
-class MainStage
+class HelloWorld
 	: public Stage
 {
 public:
-	MainStage()
+	HelloWorld()
 	{
 		String imageFile = L"../logo/logo_text.png";	// 图片路径
 		SpritePtr image = new Sprite(imageFile);		// 创建图片精灵
@@ -36,7 +36,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	app.Init(config);
 
 	// 创建舞台并进入
-	StagePtr scene = new MainStage;
+	StagePtr scene = new HelloWorld;
 	Director::GetInstance()->EnterStage(scene);
 
 	// 运行

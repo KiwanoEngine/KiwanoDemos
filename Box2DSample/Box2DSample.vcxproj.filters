@@ -4,19 +4,22 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="MainStage.h">
+    <ClInclude Include="Demo1.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
+    <ClInclude Include="Demo2.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Ball.h">
+    <ClInclude Include="Circle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo3.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

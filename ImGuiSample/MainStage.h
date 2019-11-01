@@ -8,8 +8,8 @@
 using namespace kiwano;
 using namespace kiwano::imgui;
 
-KGE_DECLARE_SMART_PTR(MainStage);
-class MainStage
+KGE_DECLARE_SMART_PTR(ImGuiStage);
+class ImGuiStage
 	: public Stage
 {
 	bool show_demo_window = true;
@@ -17,7 +17,7 @@ class MainStage
 	Color clear_color = Color(0.45f, 0.55f, 0.6f, 1.f);
 
 public:
-	MainStage()
+	ImGuiStage()
 	{
 		// 创建 ImGui 图层
 		ImGuiLayerPtr layer = new ImGuiLayer;
@@ -30,10 +30,10 @@ public:
 		}, L"DemoWindow");
 
 		// 添加一个简单窗口
-		layer->AddItem(Closure(this, &MainStage::SimpleWindow), L"SimpleWindow");
+		layer->AddItem(Closure(this, &ImGuiStage::SimpleWindow), L"SimpleWindow");
 
 		// 再添加一个窗口
-		layer->AddItem(Closure(this, &MainStage::AnotherWindow), L"AnotherWindow");
+		layer->AddItem(Closure(this, &ImGuiStage::AnotherWindow), L"AnotherWindow");
 	}
 
 	void SimpleWindow()

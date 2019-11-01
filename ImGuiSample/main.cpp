@@ -20,7 +20,7 @@ public:
 
 	void OnReady() override
 	{
-		MainStagePtr scene = new MainStage;
+		ImGuiStagePtr scene = new ImGuiStage;
 		Director::GetInstance()->EnterStage(scene);
 	}
 };
