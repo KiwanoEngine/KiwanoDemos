@@ -131,8 +131,9 @@ public:
 			auto lwheel_body = lwheel->GetBody();
 			auto rwheel_body = rwheel->GetBody();
 
-			//lwheel_body->GetFixtureList().SetFriction(0.9f);
-			//rwheel_body->GetFixtureList().SetFriction(0.9f);
+			// 设置摩擦力
+			lwheel_body->GetFixtureList().SetFriction(0.9f);
+			rwheel_body->GetFixtureList().SetFriction(0.9f);
 
 			// 创建左轮子关节
 			WheelJoint::Param param1(chassis_body_, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
@@ -175,12 +176,18 @@ Demo2::Demo2()
 		AddChild(map_);
 
 		// 创建地面
-		ActorPtr ground = new Ground(this, Point(0, GetHeight() - 350));
+		ActorPtr ground = new Ground(this, Point(0, GetHeight() - 250));
 		map_->AddChild(ground);
 
 		// 创建小车
 		car_ = new Car(this, Point(190, 240));
 		map_->AddChild(car_);
+
+		// 添加文本说明
+		TextPtr intro = new Text(L"按←→↓键控制小车");
+		intro->SetAnchor(0.5f, 0.5f);
+		intro->SetPosition(GetWidth() / 2, GetHeight() - 60);
+		AddChild(intro);
 	}
 }
 

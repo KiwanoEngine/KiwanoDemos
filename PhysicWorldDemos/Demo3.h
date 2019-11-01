@@ -6,11 +6,19 @@
 KGE_DECLARE_SMART_PTR(Demo3);
 KGE_DECLARE_SMART_PTR(KeyText);
 
+namespace
+{
+	const float min_h_force = 5.0f;
+	const float max_h_force = 20.0f;
+	const float min_v_force = 40.0f;
+	const float max_v_force = 60.0f;
+}
+
+
 class Demo3
 	: public PhysicWorld
 {
 	PhysicBodyPtr ground_;
-	PhysicContactCallbackListenerPtr listener_;
 
 public:
 	Demo3();
@@ -22,7 +30,7 @@ public:
 	void OnContactEnd(PhysicContact contact);
 
 	// 设置物体颜色
-	void SetBodyColor(PhysicBodyPtr body, const Color& color);
+	void SetBodyColor(PhysicBody* body, const Color& color);
 
 	void OnKeyDown(Event const& evt);
 
@@ -64,8 +72,8 @@ public:
 
 		// 给身体一个随机受力
 		float neg = (math::Random(0, 1) == 0 ? -1.f : 1.f);
-		float h = neg * math::Random(5.f, 20.f);
-		float v = -math::Random(60.f, 80.f);
+		float h = neg * math::Random(min_h_force, max_h_force);
+		float v = -math::Random(min_v_force, max_v_force);
 		body_->ApplyForceToCenter(Vec2(h, v));
 	}
 };
@@ -82,29 +90,31 @@ Demo3::Demo3()
 	AddListener(Event::KeyDown, Closure(this, &Demo3::OnKeyDown));
 
 	// 接触监听
-	listener_ = new PhysicContactCallbackListener;
-	listener_->SetCallbackOnContactBegin(Closure(this, &Demo3::OnContactBegin));
-	listener_->SetCallbackOnContactEnd(Closure(this, &Demo3::OnContactEnd));
-	AddContactListener(listener_);
+	auto listener = new PhysicContactCallbackListener;
+	listener->SetCallbackOnContactBegin(Closure(this, &Demo3::OnContactBegin));
+	listener->SetCallbackOnContactEnd(Closure(this, &Demo3::OnContactEnd));
+	AddContactListener(listener);
+
+	// 添加文本说明
+	TextPtr intro = new Text(L"按任意键发射粒子！");
+	intro->SetAnchor(0.5f, 0.5f);
+	intro->SetPosition(GetWidth() / 2, GetHeight() - 100);
+	AddChild(intro);
 }
 
-inline void Demo3::OnContactBegin(PhysicContact contact)
+void Demo3::OnContactBegin(PhysicContact contact)
 {
-	auto body_a = contact.GetFixtureA().GetBody();
-	auto body_b = contact.GetFixtureB().GetBody();
-	SetBodyColor(body_a, Color::OrangeRed);
-	SetBodyColor(body_b, Color::OrangeRed);
+	SetBodyColor(contact.GetFixtureA().GetBody(), Color::OrangeRed);
+	SetBodyColor(contact.GetFixtureB().GetBody(), Color::OrangeRed);
 }
 
-inline void Demo3::OnContactEnd(PhysicContact contact)
+void Demo3::OnContactEnd(PhysicContact contact)
 {
-	auto body_a = contact.GetFixtureA().GetBody();
-	auto body_b = contact.GetFixtureB().GetBody();
-	SetBodyColor(body_a, Color::White);
-	SetBodyColor(body_b, Color::White);
+	SetBodyColor(contact.GetFixtureA().GetBody(), Color::White);
+	SetBodyColor(contact.GetFixtureB().GetBody(), Color::White);
 }
 
-void Demo3::SetBodyColor(PhysicBodyPtr body, const Color& color)
+void Demo3::SetBodyColor(PhysicBody* body, const Color& color)
 {
 	if (body->GetType() == PhysicBody::Type::Dynamic)
 	{

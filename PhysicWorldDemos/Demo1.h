@@ -69,6 +69,12 @@ Demo1::Demo1()
 
 	// 添加一个小球
 	AddCircle(Point(GetWidth() / 2, 200));
+
+	// 添加文本说明
+	TextPtr intro = new Text(L"点击鼠标左右键创建物体");
+	intro->SetAnchor(0.5f, 0.5f);
+	intro->SetPosition(GetWidth() / 2, GetHeight() / 2);
+	AddChild(intro);
 }
 
 void Demo1::OnUpdate(Duration dt)
