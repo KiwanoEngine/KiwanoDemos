@@ -16,23 +16,23 @@ namespace
 
 
 class Demo3
-	: public PhysicWorld
+	: public physics::World
 {
-	PhysicBodyPtr ground_;
+	physics::BodyPtr ground_;
 
 public:
 	Demo3();
 
 	// 接触开始
-	void OnContactBegin(PhysicContact contact);
+	void OnContactBegin(Event& evt);
 
 	// 接触结束
-	void OnContactEnd(PhysicContact contact);
+	void OnContactEnd(Event& evt);
 
 	// 设置物体颜色
-	void SetBodyColor(PhysicBody* body, const Color& color);
+	void SetBodyColor(physics::Body* body, const Color& color);
 
-	void OnKeyDown(Event const& evt);
+	void OnKeyDown(Event& evt);
 
 	void OnUpdate(Duration dt) override;
 
@@ -47,10 +47,10 @@ public:
 class KeyText
 	: public Text
 {
-	PhysicBodyPtr body_;
+	physics::BodyPtr body_;
 
 public:
-	KeyText(PhysicWorld* world, const Point& pos, WCHAR ch)
+	KeyText(physics::World* world, const Point& pos, WCHAR ch)
 	{
 		// 设置文本内容、字号和颜色
 		SetText(String(1, ch));
@@ -66,8 +66,8 @@ public:
 		UpdateLayout();
 
 		// 添加物理身体
-		body_ = new PhysicBody(world, this);
-		body_->SetType(PhysicBody::Type::Dynamic);
+		body_ = new physics::Body(world, this);
+		body_->SetType(physics::Body::Type::Dynamic);
 		body_->AddBoxShape(GetSize(), 1.f);
 
 		// 给身体一个随机受力
@@ -81,19 +81,17 @@ public:
 
 Demo3::Demo3()
 {
-	ground_ = new PhysicBody(this, nullptr);
-	ground_->SetType(PhysicBody::Type::Static);
+	ground_ = new physics::Body(this, nullptr);
+	ground_->SetType(physics::Body::Type::Static);
 	ground_->SetBodyPosition(Point(GetWidth() / 2, GetHeight()));
 	ground_->AddBoxShape(Size(GetWidth(), 10));
 
 	// 按键监听
-	AddListener(Event::KeyDown, Closure(this, &Demo3::OnKeyDown));
+	AddListener(event::KeyDown, Closure(this, &Demo3::OnKeyDown));
 
 	// 接触监听
-	auto listener = new PhysicContactCallbackListener;
-	listener->SetCallbackOnContactBegin(Closure(this, &Demo3::OnContactBegin));
-	listener->SetCallbackOnContactEnd(Closure(this, &Demo3::OnContactEnd));
-	AddContactListener(listener);
+	AddListener(event::ContactBegin, Closure(this, &Demo3::OnContactBegin));
+	AddListener(event::ContactEnd, Closure(this, &Demo3::OnContactEnd));
 
 	// 添加文本说明
 	TextPtr intro = new Text(L"按任意键发射粒子！");
@@ -102,33 +100,45 @@ Demo3::Demo3()
 	AddChild(intro);
 }
 
-void Demo3::OnContactBegin(PhysicContact contact)
+void Demo3::OnContactBegin(Event& evt)
 {
-	SetBodyColor(contact.GetFixtureA().GetBody(), Color::OrangeRed);
-	SetBodyColor(contact.GetFixtureB().GetBody(), Color::OrangeRed);
+	// 两物体碰撞后颜色变为橘红色
+	KGE_ASSERT(evt.type == event::ContactBegin);
+	auto contact_evt = dynamic_cast<physics::ContactBeginEvent&>(evt);
+	SetBodyColor(contact_evt.body_a, Color::OrangeRed);
+	SetBodyColor(contact_evt.body_b, Color::OrangeRed);
 }
 
-void Demo3::OnContactEnd(PhysicContact contact)
+void Demo3::OnContactEnd(Event& evt)
 {
-	SetBodyColor(contact.GetFixtureA().GetBody(), Color::White);
-	SetBodyColor(contact.GetFixtureB().GetBody(), Color::White);
+	// 两物体碰撞结束后颜色变回白色
+	KGE_ASSERT(evt.type == event::ContactEnd);
+	auto contact_evt = dynamic_cast<physics::ContactEndEvent&>(evt);
+	SetBodyColor(contact_evt.body_a, Color::White);
+	SetBodyColor(contact_evt.body_b, Color::White);
 }
 
-void Demo3::SetBodyColor(PhysicBody* body, const Color& color)
+void Demo3::SetBodyColor(physics::Body* body, const Color& color)
 {
-	if (body->GetType() == PhysicBody::Type::Dynamic)
+	// 只处理动态物体
+	if (body->GetType() == physics::Body::Type::Dynamic)
 	{
 		auto text = static_cast<Text*>(body->GetActor());
 		text->SetColor(color);
 	}
 }
 
-void Demo3::OnKeyDown(Event const& evt)
+void Demo3::OnKeyDown(Event& evt)
 {
-	if (evt.key.code >= KeyCode::A && evt.key.code <= KeyCode::Z)
+	KGE_ASSERT(evt.type == event::KeyDown);
+
+	// 处理 A-Z 键
+	auto key_evt = dynamic_cast<KeyDownEvent&>(evt);
+	if (key_evt.code >= KeyCode::A && key_evt.code <= KeyCode::Z)
 	{
+		// 在屏幕底部创建一个 KeyText
 		Point pos(GetWidth() / 2, GetHeight() - 20);
-		KeyTextPtr key = new KeyText(this, pos, evt.key.code - KeyCode::A + L'A');
+		KeyTextPtr key = new KeyText(this, pos, key_evt.code - KeyCode::A + L'A');
 		AddChild(key);
 	}
 }

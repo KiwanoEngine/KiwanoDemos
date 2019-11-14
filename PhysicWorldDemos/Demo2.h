@@ -8,7 +8,7 @@ KGE_DECLARE_SMART_PTR(Car);
 KGE_DECLARE_SMART_PTR(Ground);
 
 class Demo2
-	: public PhysicWorld
+	: public physics::World
 {
 	ActorPtr map_;
 	CarPtr car_;
@@ -29,11 +29,11 @@ public:
 class Ground
 	: public PathActor
 {
-	PhysicBodyPtr ground_;
+	physics::BodyPtr ground_;
 	Vector<Point> path_points_;	// 路径点
 
 public:
-	Ground(PhysicWorld* world, Point const& pos)
+	Ground(physics::World* world, Point const& pos)
 	{
 		// 设置
 		SetFillColor(Color::Transparent);
@@ -52,13 +52,13 @@ public:
 		EndPath(false);
 
 		// 根据路径点生成物理边
-		ground_ = new PhysicBody(world, this);
+		ground_ = new physics::Body(world, this);
 		{
-			PhysicEdgeShape shape;
+			physics::EdgeShape shape;
 			for (size_t i = 1; i < path_points_.size(); ++i)
 			{
 				shape.Set(path_points_[i - 1], path_points_[i]);
-				ground_->AddFixture(&shape, PhysicFixture::Param(0.f, 0.6f));
+				ground_->AddFixture(&shape, physics::Fixture::Param(0.f, 0.6f));
 			}
 		}
 	}
@@ -96,13 +96,13 @@ class Car
 	: public Actor
 {
 	PathActorPtr chassis_;
-	PhysicBodyPtr chassis_body_;
+	physics::BodyPtr chassis_body_;
 
-	WheelJointPtr joint1_;
-	WheelJointPtr joint2_;
+	physics::WheelJointPtr joint1_;
+	physics::WheelJointPtr joint2_;
 
 public:
-	Car(PhysicWorld* world, Point const& pos)
+	Car(physics::World* world, Point const& pos)
 	{
 		// 创建小车躯干
 		chassis_ = new PathActor;
@@ -116,8 +116,8 @@ public:
 			chassis_->AddLines(vertices);
 			chassis_->EndPath(true);
 
-			chassis_body_ = new PhysicBody(world, chassis_);
-			chassis_body_->SetType(PhysicBody::Type::Dynamic);
+			chassis_body_ = new physics::Body(world, chassis_);
+			chassis_body_->SetType(physics::Body::Type::Dynamic);
 			chassis_body_->AddPolygonShape(vertices, 1.0f);
 		}
 
@@ -136,22 +136,22 @@ public:
 			rwheel_body->GetFixtureList().SetFriction(0.9f);
 
 			// 创建左轮子关节
-			WheelJoint::Param param1(chassis_body_, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
+			physics::WheelJoint::Param param1(chassis_body_, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
 			param1.frequency_hz = 4.0f;				// 频率和阻尼率赋予关节弹性
 			param1.damping_ratio = 0.7f;
 			param1.enable_motor = true;				// 启用马达
 			param1.motor_speed = 0.0f;				// 初始马达速度为零
 			param1.max_motor_torque = 2000;			// 最大马达转矩
-			joint1_ = new WheelJoint(world, param1);
+			joint1_ = new physics::WheelJoint(world, param1);
 
 			// 创建右轮子关节
-			WheelJoint::Param param2(chassis_body_, rwheel_body, rwheel_body->GetBodyPosition(), Vec2(0, 1));
+			physics::WheelJoint::Param param2(chassis_body_, rwheel_body, rwheel_body->GetBodyPosition(), Vec2(0, 1));
 			param2.frequency_hz = 4.0f;
 			param2.damping_ratio = 0.7f;
 			param2.enable_motor = false;
 			param2.motor_speed = 0.0f;
 			param2.max_motor_torque = 1000;
-			joint2_ = new WheelJoint(world, param2);
+			joint2_ = new physics::WheelJoint(world, param2);
 		}
 	}
 

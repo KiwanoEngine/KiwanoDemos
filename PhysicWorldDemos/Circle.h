@@ -7,10 +7,10 @@ KGE_DECLARE_SMART_PTR(Circle);
 class Circle
 	: public Sprite
 {
-	PhysicBodyPtr body_;
+	physics::BodyPtr body_;
 
 public:
-	Circle(PhysicWorld* world, const Point& pos, float radius)
+	Circle(physics::World* world, const Point& pos, float radius)
 	{
 		Load(L"resources/ball.png");
 		SetAnchor(0.5f, 0.5f);
@@ -18,14 +18,14 @@ public:
 		SetSize(Size(radius * 2, radius * 2));
 
 		// 创建物理身体
-		body_ = new PhysicBody(world, this);
+		body_ = new physics::Body(world, this);
 		// 设置物理身体类型为动态
-		body_->SetType(PhysicBody::Type::Dynamic);
+		body_->SetType(physics::Body::Type::Dynamic);
 		// 添加物理形状
 		body_->AddCircleShape(radius, 1.f);
 	}
 
-	PhysicBodyPtr GetBody()
+	physics::BodyPtr GetBody()
 	{
 		return body_;
 	}

@@ -36,8 +36,8 @@ public:
 		);
 
 		// 添加按键监听
-		AddListener(Event::KeyDown, Closure(this, &Tiger::OnKeyDown));
-		AddListener(Event::KeyUp, Closure(this, &Tiger::OnKeyUp));
+		AddListener(event::KeyDown, Closure(this, &Tiger::OnKeyDown));
+		AddListener(event::KeyUp, Closure(this, &Tiger::OnKeyUp));
 
 		// 默认方向为 Left
 		facing_left = true;
@@ -47,21 +47,27 @@ public:
 		SetAnchor(0.5f, 0.5f);
 	}
 
-	void OnKeyDown(Event const& e)
+	void OnKeyDown(Event& evt)
 	{
-		if (e.key.code == KeyCode::Left)
+		KGE_ASSERT(evt.type == event::KeyDown);
+
+		auto key_evt = dynamic_cast<KeyDownEvent&>(evt);
+		if (key_evt.code == KeyCode::Left)
 			Run(Direction::Left);
-		else if (e.key.code == KeyCode::Right)
+		else if (key_evt.code == KeyCode::Right)
 			Run(Direction::Right);
-		else if (e.key.code == KeyCode::Up)
+		else if (key_evt.code == KeyCode::Up)
 			Run(Direction::Up);
-		else if (e.key.code == KeyCode::Down)
+		else if (key_evt.code == KeyCode::Down)
 			Run(Direction::Down);
 	}
 
-	void OnKeyUp(Event const& e)
+	void OnKeyUp(Event& evt)
 	{
-		switch (e.key.code)
+		KGE_ASSERT(evt.type == event::KeyUp);
+
+		auto key_evt = dynamic_cast<KeyUpEvent&>(evt);
+		switch (key_evt.code)
 		{
 		case KeyCode::Left:
 		case KeyCode::Right:

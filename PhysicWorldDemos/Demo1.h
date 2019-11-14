@@ -8,7 +8,7 @@ KGE_DECLARE_SMART_PTR(Demo1);
 KGE_DECLARE_SMART_PTR(Board);
 
 class Demo1
-	: public PhysicWorld
+	: public physics::World
 {
 public:
 	Demo1();
@@ -16,7 +16,7 @@ public:
 	void OnUpdate(Duration dt) override;
 
 	// 鼠标点击事件
-	void OnClick(Event const& evt);
+	void OnClick(Event& evt);
 
 	// 添加方块
 	void AddSquare(const Point& pos);
@@ -32,10 +32,10 @@ public:
 class Board
 	: public RectActor
 {
-	PhysicBodyPtr body_;
+	physics::BodyPtr body_;
 
 public:
-	Board(PhysicWorld* world, const Size& size, const Point& pos)
+	Board(physics::World* world, const Size& size, const Point& pos)
 	{
 		// 设置线条和填充颜色
 		Color color = 0x868686;
@@ -48,8 +48,8 @@ public:
 		SetRotation(10);
 		SetPosition(pos);
 
-		body_ = new PhysicBody(world, this);
-		body_->SetType(PhysicBody::Type::Static);
+		body_ = new physics::Body(world, this);
+		body_->SetType(physics::Body::Type::Static);
 		body_->AddBoxShape(GetSize());
 	}
 };
@@ -61,7 +61,7 @@ Demo1::Demo1()
 	SetResponsible(true);
 
 	// 添加鼠标点击监听
-	AddListener(Event::Click, Closure(this, &Demo1::OnClick));
+	AddListener(event::MouseClick, Closure(this, &Demo1::OnClick));
 
 	// 添加一块静态木板
 	BoardPtr board = new Board(this, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
@@ -95,16 +95,19 @@ void Demo1::OnUpdate(Duration dt)
 	}
 }
 
-void Demo1::OnClick(Event const& evt)
+void Demo1::OnClick(Event& evt)
 {
+	KGE_ASSERT(evt.type == event::MouseClick);
+
 	// 左键添加一个小球, 右键添加一个盒子
-	if (evt.mouse.button == MouseButton::Left)
+	auto mouse_evt = dynamic_cast<MouseClickEvent&>(evt);
+	if (mouse_evt.button == MouseButton::Left)
 	{
-		AddCircle(Point{ evt.mouse.x, evt.mouse.y });
+		AddCircle(mouse_evt.pos);
 	}
-	else if (evt.mouse.button == MouseButton::Right)
+	else if (mouse_evt.button == MouseButton::Right)
 	{
-		AddSquare(Point{ evt.mouse.x, evt.mouse.y });
+		AddSquare(mouse_evt.pos);
 	}
 }
 

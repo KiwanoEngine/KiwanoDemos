@@ -16,7 +16,7 @@ public:
 	Demo5()
 	{
 		// 添加按键监听
-		AddListener(Event::KeyDown, Closure(this, &Demo5::OnKeyDown));
+		AddListener(event::KeyDown, Closure(this, &Demo5::OnKeyDown));
 
 		// 创建说明文字
 		TextPtr text = new Text(L"按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
@@ -40,22 +40,25 @@ public:
 		Logger::GetInstance()->ShowConsole(false);
 	}
 
-	void OnKeyDown(Event const& e)
+	void OnKeyDown(Event& evt)
 	{
+		KGE_ASSERT(evt.type == event::KeyDown);
+
 		// 按不同键发送不同请求
-		if (e.key.code == KeyCode::G)
+		auto key_evt = dynamic_cast<KeyDownEvent&>(evt);
+		if (key_evt.code == KeyCode::G)
 		{
 			SendGetRequest();
 		}
-		else if (e.key.code == KeyCode::P)
+		else if (key_evt.code == KeyCode::P)
 		{
 			SendPostRequest();
 		}
-		else if (e.key.code == KeyCode::U)
+		else if (key_evt.code == KeyCode::U)
 		{
 			SendPutRequest();
 		}
-		else if (e.key.code == KeyCode::D)
+		else if (key_evt.code == KeyCode::D)
 		{
 			SendDeleteRequest();
 		}
@@ -150,7 +153,7 @@ public:
 
 				std::wcout << L"Response: " << std::endl << result.dump(4) << std::endl;
 			}
-			catch (core::json_exception& e)
+			catch (common::json_exception& e)
 			{
 				std::wcout << L"Parse JSON failed: " << e.what() << std::endl;
 			}

@@ -72,7 +72,7 @@ public:
 			Director::GetInstance()->EnterStage(scene);
 
 			// 添加按键监听
-			scene->AddListener(Event::KeyUp, Closure(this, &DemoApp::KeyPressed));
+			scene->AddListener(event::KeyUp, Closure(this, &DemoApp::KeyPressed));
 
 			// 显示提示文字
 			String intro_str = String::format(L"按键 1~%d 可切换示例\n", s_DemoNum);
@@ -83,14 +83,15 @@ public:
 		}
 	}
 
-	void KeyPressed(Event const& evt)
+	void KeyPressed(Event& evt)
 	{
-		KGE_ASSERT(evt.type == Event::KeyUp);
+		KGE_ASSERT(evt.type == event::KeyUp);
 
-		if (evt.key.code > KeyCode::Num0 &&
-			evt.key.code <= (KeyCode::Num0 + s_DemoNum))
+		auto key_evt = dynamic_cast<KeyUpEvent&>(evt);
+		if (key_evt.code > KeyCode::Num0 &&
+			key_evt.code <= (KeyCode::Num0 + s_DemoNum))
 		{
-			int index = evt.key.code - KeyCode::Num1;
+			int index = key_evt.code - KeyCode::Num1;
 			ChangeDemoStage(index);
 		}
 	}

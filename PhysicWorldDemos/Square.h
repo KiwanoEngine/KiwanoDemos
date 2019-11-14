@@ -6,11 +6,11 @@
 KGE_DECLARE_SMART_PTR(Square);
 class Square
 	: public Sprite
-	, public PhysicBody
+	, public physics::Body
 {
 public:
-	Square(PhysicWorld* world, const Point& pos, const Size& size)
-		: PhysicBody(world, this)
+	Square(physics::World* world, const Point& pos, const Size& size)
+		: physics::Body(world, this)
 	{
 		Load(L"resources/box.png");
 		SetAnchor(0.5f, 0.5f);
@@ -18,12 +18,12 @@ public:
 		SetSize(size);
 
 		// 设置物理身体类型为动态
-		SetType(PhysicBody::Type::Dynamic);
+		SetType(physics::Body::Type::Dynamic);
 		// 添加物理形状
 		AddBoxShape(GetSize(), 1.f);
 	}
 
-	PhysicBodyPtr GetBody()
+	physics::BodyPtr GetBody()
 	{
 		return this;
 	}
