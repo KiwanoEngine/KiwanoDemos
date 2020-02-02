@@ -27,17 +27,17 @@ public:
 	Tiger()
 	{
 		// 加载帧动画
-		run_frames = ResourceCache::GetInstance()->GetFrameSequence(L"tiger_running");
-		stand_frames = ResourceCache::GetInstance()->GetFrameSequence(L"tiger_standing");
+		run_frames = ResourceCache::Instance().Get<FrameSequence>(L"tiger_running");
+		stand_frames = ResourceCache::Instance().Get<FrameSequence>(L"tiger_standing");
 
 		// 执行动画
 		AddAction(
-			Tween::Animation(1_s, stand_frames).SetLoops(-1)
+			Tween::Animation(1_sec, stand_frames).SetLoops(-1)
 		);
 
 		// 添加按键监听
-		AddListener(event::KeyDown, Closure(this, &Tiger::OnKeyDown));
-		AddListener(event::KeyUp, Closure(this, &Tiger::OnKeyUp));
+		AddListener<KeyDownEvent>(Closure(this, &Tiger::OnKeyDown));
+		AddListener<KeyUpEvent>(Closure(this, &Tiger::OnKeyUp));
 
 		// 默认方向为 Left
 		facing_left = true;
@@ -47,27 +47,27 @@ public:
 		SetAnchor(0.5f, 0.5f);
 	}
 
-	void OnKeyDown(Event& evt)
+	void OnKeyDown(Event* evt)
 	{
-		KGE_ASSERT(evt.type == event::KeyDown);
+		KGE_ASSERT(evt->IsType<KeyDownEvent>());
 
-		auto key_evt = dynamic_cast<KeyDownEvent&>(evt);
-		if (key_evt.code == KeyCode::Left)
+		auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
+		if (key_evt->code == KeyCode::Left)
 			Run(Direction::Left);
-		else if (key_evt.code == KeyCode::Right)
+		else if (key_evt->code == KeyCode::Right)
 			Run(Direction::Right);
-		else if (key_evt.code == KeyCode::Up)
+		else if (key_evt->code == KeyCode::Up)
 			Run(Direction::Up);
-		else if (key_evt.code == KeyCode::Down)
+		else if (key_evt->code == KeyCode::Down)
 			Run(Direction::Down);
 	}
 
-	void OnKeyUp(Event& evt)
+	void OnKeyUp(Event* evt)
 	{
-		KGE_ASSERT(evt.type == event::KeyUp);
+		KGE_ASSERT(evt->IsType<KeyUpEvent>());
 
-		auto key_evt = dynamic_cast<KeyUpEvent&>(evt);
-		switch (key_evt.code)
+		auto key_evt = dynamic_cast<KeyUpEvent*>(evt);
+		switch (key_evt->code)
 		{
 		case KeyCode::Left:
 		case KeyCode::Right:
@@ -87,7 +87,7 @@ public:
 
 			// 执行跑步动画
 			AddAction(
-				Tween::Animation(0.5_s, run_frames).SetLoops(-1)
+				Tween::Animation(0.5_sec, run_frames).SetLoops(-1)
 			);
 		}
 
@@ -115,7 +115,7 @@ public:
 
 			// 执行站立动画
 			AddAction(
-				Tween::Animation(1_s, stand_frames).SetLoops(-1)
+				Tween::Animation(1_sec, stand_frames).SetLoops(-1)
 			);
 		}
 	}
@@ -161,7 +161,8 @@ public:
 	Demo4()
 	{
 		// 创建背景
-		SpritePtr bg = new Sprite(L"res/spring_forest.jpg");
+		SpritePtr bg = new Sprite;
+		bg->Load(L"res/spring_forest.jpg");
 		bg->SetSize(GetSize());
 
 		// 创建老虎
@@ -171,7 +172,7 @@ public:
 		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextPtr text = new Text(L"按上下左右键移动");
+		TextActorPtr text = new TextActor(L"按上下左右键移动");
 		// 设置文字位置
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);

@@ -16,7 +16,7 @@ public:
 	void OnUpdate(Duration dt) override;
 
 	// 鼠标点击事件
-	void OnClick(Event& evt);
+	void OnClick(Event* evt);
 
 	// 添加方块
 	void AddSquare(const Point& pos);
@@ -48,7 +48,8 @@ public:
 		SetRotation(10);
 		SetPosition(pos);
 
-		body_ = new physics::Body(world, this);
+		body_ = new physics::Body;
+		body_->InitBody(world, this);
 		body_->SetType(physics::Body::Type::Static);
 		body_->AddBoxShape(GetSize());
 	}
@@ -61,7 +62,7 @@ Demo1::Demo1()
 	SetResponsible(true);
 
 	// 添加鼠标点击监听
-	AddListener(event::MouseClick, Closure(this, &Demo1::OnClick));
+	AddListener<MouseClickEvent>(Closure(this, &Demo1::OnClick));
 
 	// 添加一块静态木板
 	BoardPtr board = new Board(this, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
@@ -71,7 +72,7 @@ Demo1::Demo1()
 	AddCircle(Point(GetWidth() / 2, 200));
 
 	// 添加文本说明
-	TextPtr intro = new Text(L"点击鼠标左右键创建物体");
+	TextActorPtr intro = new TextActor(L"点击鼠标左右键创建物体");
 	intro->SetAnchor(0.5f, 0.5f);
 	intro->SetPosition(GetWidth() / 2, GetHeight() / 2);
 	AddChild(intro);
@@ -81,11 +82,11 @@ void Demo1::OnUpdate(Duration dt)
 {
 	// 移除掉落到场景外的物体
 	Vector<ActorPtr> outed;
-	for (auto child : GetAllChildren())
+	for (auto& child : GetAllChildren())
 	{
-		if (child->GetPosition().y > GetHeight() + 50)
+		if (child.GetPosition().y > GetHeight() + 50)
 		{
-			outed.push_back(child);
+			outed.push_back(&child);
 		}
 	}
 
@@ -95,19 +96,19 @@ void Demo1::OnUpdate(Duration dt)
 	}
 }
 
-void Demo1::OnClick(Event& evt)
+void Demo1::OnClick(Event* evt)
 {
-	KGE_ASSERT(evt.type == event::MouseClick);
+	KGE_ASSERT(evt->IsType<MouseClickEvent>());
 
 	// 左键添加一个小球, 右键添加一个盒子
-	auto mouse_evt = dynamic_cast<MouseClickEvent&>(evt);
-	if (mouse_evt.button == MouseButton::Left)
+	auto mouse_evt = dynamic_cast<MouseClickEvent*>(evt);
+	if (mouse_evt->button == MouseButton::Left)
 	{
-		AddCircle(mouse_evt.pos);
+		AddCircle(mouse_evt->pos);
 	}
-	else if (mouse_evt.button == MouseButton::Right)
+	else if (mouse_evt->button == MouseButton::Right)
 	{
-		AddSquare(mouse_evt.pos);
+		AddSquare(mouse_evt->pos);
 	}
 }
 

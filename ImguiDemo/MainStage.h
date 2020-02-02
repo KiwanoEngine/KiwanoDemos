@@ -24,16 +24,16 @@ public:
 		AddChild(layer);
 
 		// 添加 ImGui 提供的 Demo 窗口
-		layer->AddItem([=]() {
+		layer->AddItem(L"DemoWindow", [=]() {
 			if (show_demo_window)
 				ImGui::ShowDemoWindow(&show_demo_window);
-		}, L"DemoWindow");
+		});
 
 		// 添加一个简单窗口
-		layer->AddItem(Closure(this, &ImGuiStage::SimpleWindow), L"SimpleWindow");
+		layer->AddItem(L"SimpleWindow", Closure(this, &ImGuiStage::SimpleWindow));
 
 		// 再添加一个窗口
-		layer->AddItem(Closure(this, &ImGuiStage::AnotherWindow), L"AnotherWindow");
+		layer->AddItem(L"AnotherWindow", Closure(this, &ImGuiStage::AnotherWindow));
 	}
 
 	void SimpleWindow()
@@ -59,7 +59,7 @@ public:
 		ImGui::End();
 
 		// 修改窗口背景色
-		Renderer::GetInstance()->SetClearColor(clear_color);
+		Renderer::Instance().SetClearColor(clear_color);
 	}
 
 	void AnotherWindow()

@@ -15,7 +15,7 @@ public:
 	Demo1()
 	{
 		// 获取人物图片
-		FramePtr man_image = ResourceCache::GetInstance()->GetFrame(L"man");
+		FramePtr man_image = ResourceCache::Instance().Get<Frame>(L"man");
 
 		// 创建缓动方程列表
 		auto ease_functions = {
@@ -31,19 +31,20 @@ public:
 		for (auto& func : ease_functions)
 		{
 			// 初始化人物
-			SpritePtr man = new Sprite(man_image);
+			SpritePtr man = new Sprite;
+			man->SetFrame(man_image);
 			man->SetPosition(100, height);
 			man->SetScale(0.5f, 0.3f);
 			this->AddChild(man);
 
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			auto move = Tween::MoveBy(4_s, Point{ 350, 0 }).SetEaseFunc(func);
+			auto move = Tween::MoveBy(4_sec, Point{ 350, 0 }).SetEaseFunc(func);
 			// 动画：延迟 1 秒
-			auto delay = Tween::Delay(1_s);
+			auto delay = Tween::Delay(1_sec);
 			// 动画：组合前两个动画，并循环执行
 			auto group = Tween::Group({ move, delay }).SetLoops(-1);
 			// 动画结束后自动恢复人物位置
-			group.SetLoopDoneCallback([ptr = man.get()]() { ptr->Move(-350, 0); });
+			group.SetLoopDoneCallback([](Actor* target) { target->Move(-350, 0); });
 
 			// 执行动画
 			man->AddAction(group);

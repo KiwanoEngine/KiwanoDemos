@@ -7,8 +7,8 @@ class Demo3
 	: public Stage
 {
 	SoundPtr bgmusic;		// 音乐对象
-	TextPtr volume_text;	// 音量文字
-	TextPtr state_text;		// 播放状态文字
+	TextActorPtr volume_text;	// 音量文字
+	TextActorPtr state_text;		// 播放状态文字
 
 public:
 	static StagePtr Create()
@@ -24,7 +24,7 @@ public:
 		{
 			bgmusic = nullptr;
 
-			TextPtr err = new Text(L"音频文件加载失败");
+			TextActorPtr err = new TextActor(L"音频文件加载失败");
 			err->SetAnchor(0.5f, 0.5f);
 			err->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 			this->AddChild(err);
@@ -35,18 +35,18 @@ public:
 		bgmusic->Play(-1);
 
 		// 创建说明文字
-		TextPtr intro_text = new Text(L"按上下键调整音量\n按空格键暂停或继续");
+		TextActorPtr intro_text = new TextActor(L"按上下键调整音量\n按空格键暂停或继续");
 		intro_text->SetAlignment(TextAlign::Center);
 		intro_text->SetAnchor(0.5f, 0.5f);
 		intro_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
 
 		// 创建音量文字
-		volume_text = new Text(L"当前音量：");
+		volume_text = new TextActor(L"当前音量：");
 		volume_text->SetAnchor(0.5f, 0.5f);
 		volume_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 30);
 
 		// 创建状态文字
-		state_text = new Text(L"当前状态：");
+		state_text = new TextActor(L"当前状态：");
 		state_text->SetAnchor(0.5f, 0.5f);
 		state_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60);
 
@@ -70,20 +70,20 @@ public:
 		state_text->SetText(playing ? L"当前状态：正在播放" : L"当前状态：停止播放");
 
 		// 获取输入设备
-		auto input = Input::GetInstance();
+		auto& input = Input::Instance();
 
 		// 按空格键暂停或继续
-		if (input->WasPressed(KeyCode::Space))
+		if (input.WasPressed(KeyCode::Space))
 		{
 			bgmusic->IsPlaying() ? bgmusic->Pause() : bgmusic->Resume();
 		}
 
 		// 按上下键调整音量
-		if (input->WasPressed(KeyCode::Up))
+		if (input.WasPressed(KeyCode::Up))
 		{
 			bgmusic->SetVolume(volume + 0.1f);
 		}
-		else if (input->WasPressed(KeyCode::Down))
+		else if (input.WasPressed(KeyCode::Down))
 		{
 			bgmusic->SetVolume(volume - 0.1f);
 		}

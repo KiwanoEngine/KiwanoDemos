@@ -27,7 +27,7 @@ public:
 
 // 地面
 class Ground
-	: public PathActor
+	: public PathShapeActor
 {
 	physics::BodyPtr ground_;
 	Vector<Point> path_points_;	// 路径点
@@ -52,14 +52,14 @@ public:
 		EndPath(false);
 
 		// 根据路径点生成物理边
-		ground_ = new physics::Body(world, this);
+		ground_ = new physics::Body;
+		ground_->InitBody(world, this);
+
+		physics::EdgeShape shape;
+		for (size_t i = 1; i < path_points_.size(); ++i)
 		{
-			physics::EdgeShape shape;
-			for (size_t i = 1; i < path_points_.size(); ++i)
-			{
-				shape.Set(path_points_[i - 1], path_points_[i]);
-				ground_->AddFixture(&shape, physics::Fixture::Param(0.f, 0.6f));
-			}
+			shape.Set(path_points_[i - 1], path_points_[i]);
+			ground_->AddFixture(&shape, physics::Fixture::Param(0.f, 0.6f));
 		}
 	}
 
@@ -95,7 +95,7 @@ public:
 class Car
 	: public Actor
 {
-	PathActorPtr chassis_;
+	PathShapeActorPtr chassis_;
 	physics::BodyPtr chassis_body_;
 
 	physics::WheelJointPtr joint1_;
@@ -105,7 +105,7 @@ public:
 	Car(physics::World* world, Point const& pos)
 	{
 		// 创建小车躯干
-		chassis_ = new PathActor;
+		chassis_ = new PathShapeActor;
 		{
 			chassis_->SetPosition(pos + Point(0, -100));
 			AddChild(chassis_);
@@ -116,7 +116,8 @@ public:
 			chassis_->AddLines(vertices);
 			chassis_->EndPath(true);
 
-			chassis_body_ = new physics::Body(world, chassis_);
+			chassis_body_ = new physics::Body;
+			chassis_body_->InitBody(world, chassis_);
 			chassis_body_->SetType(physics::Body::Type::Dynamic);
 			chassis_body_->AddPolygonShape(vertices, 1.0f);
 		}
@@ -132,8 +133,8 @@ public:
 			auto rwheel_body = rwheel->GetBody();
 
 			// 设置摩擦力
-			lwheel_body->GetFixtureList().SetFriction(0.9f);
-			rwheel_body->GetFixtureList().SetFriction(0.9f);
+			lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
+			rwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
 
 			// 创建左轮子关节
 			physics::WheelJoint::Param param1(chassis_body_, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
@@ -142,7 +143,9 @@ public:
 			param1.enable_motor = true;				// 启用马达
 			param1.motor_speed = 0.0f;				// 初始马达速度为零
 			param1.max_motor_torque = 2000;			// 最大马达转矩
-			joint1_ = new physics::WheelJoint(world, param1);
+
+			joint1_ = new physics::WheelJoint;
+			joint1_->InitJoint(world, param1);
 
 			// 创建右轮子关节
 			physics::WheelJoint::Param param2(chassis_body_, rwheel_body, rwheel_body->GetBodyPosition(), Vec2(0, 1));
@@ -151,7 +154,9 @@ public:
 			param2.enable_motor = false;
 			param2.motor_speed = 0.0f;
 			param2.max_motor_torque = 1000;
-			joint2_ = new physics::WheelJoint(world, param2);
+
+			joint2_ = new physics::WheelJoint;
+			joint2_->InitJoint(world, param2);
 		}
 	}
 
@@ -184,7 +189,7 @@ Demo2::Demo2()
 		map_->AddChild(car_);
 
 		// 添加文本说明
-		TextPtr intro = new Text(L"按←→↓键控制小车");
+		TextActorPtr intro = new TextActor(L"按←→↓键控制小车");
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(GetWidth() / 2, GetHeight() - 60);
 		AddChild(intro);
@@ -206,16 +211,16 @@ void Demo2::OnUpdate(Duration dt)
 	}
 
 	// 按键处理
-	auto input = Input::GetInstance();
-	if (input->IsDown(KeyCode::Right))
+	auto& input = Input::Instance();
+	if (input.IsDown(KeyCode::Right))
 	{
 		car_->SetSpeed(360.0f * 3);
 	}
-	else if (input->IsDown(KeyCode::Left))
+	else if (input.IsDown(KeyCode::Left))
 	{
 		car_->SetSpeed(-360.0f * 3);
 	}
-	else if (input->IsDown(KeyCode::Down))
+	else if (input.IsDown(KeyCode::Down))
 	{
 		car_->SetSpeed(0);
 	}

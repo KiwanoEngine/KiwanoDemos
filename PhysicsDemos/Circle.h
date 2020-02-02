@@ -18,7 +18,8 @@ public:
 		SetSize(Size(radius * 2, radius * 2));
 
 		// 创建物理身体
-		body_ = new physics::Body(world, this);
+		body_ = new physics::Body;
+		body_->InitBody(world, this);
 		// 设置物理身体类型为动态
 		body_->SetType(physics::Body::Type::Dynamic);
 		// 添加物理形状

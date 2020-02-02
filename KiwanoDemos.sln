@@ -8,7 +8,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demos", "Demos\Demos.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImguiDemo", "ImguiDemo\ImguiDemo.vcxproj", "{6152D36C-EA40-4968-A696-244B6CA58395}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicWorldDemos", "PhysicWorldDemos\PhysicWorldDemos.vcxproj", "{324CFF47-4EB2-499A-BE5F-53A82E3BA14B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsDemos", "PhysicsDemos\PhysicsDemos.vcxproj", "{324CFF47-4EB2-499A-BE5F-53A82E3BA14B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

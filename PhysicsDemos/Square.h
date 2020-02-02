@@ -10,13 +10,14 @@ class Square
 {
 public:
 	Square(physics::World* world, const Point& pos, const Size& size)
-		: physics::Body(world, this)
 	{
 		Load(L"resources/box.png");
 		SetAnchor(0.5f, 0.5f);
 		SetPosition(pos);
 		SetSize(size);
 
+		// 初始化物理身体
+		InitBody(world, this);
 		// 设置物理身体类型为动态
 		SetType(physics::Body::Type::Dynamic);
 		// 添加物理形状

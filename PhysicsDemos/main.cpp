@@ -27,12 +27,8 @@ class DemoApp
 public:
 	DemoApp()
 	{
-		Config config;
-		config.window.title = L"物理引擎示例";
-		config.window.width = 1200;
-		config.window.height = 900;
-
-		Init(config);
+		// 创建窗口
+		Window::Instance().Create(L"Physics World", 1200, 900);
 	}
 
 	void OnReady() override
@@ -48,32 +44,32 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::GetInstance()->SetTitle(L"物理引擎示例 - " + title);
+			Window::Instance().SetTitle(L"物理引擎示例 - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
-			Director::GetInstance()->EnterStage(scene);
+			Director::Instance().EnterStage(scene);
 
 			// 添加按键监听
-			scene->AddListener(event::KeyUp, Closure(this, &DemoApp::KeyPressed));
+			scene->AddListener<KeyUpEvent>(Closure(this, &DemoApp::KeyPressed));
 
 			// 显示提示文字
 			String intro_str = String::format(L"按键 1~%d 可切换示例\n", s_DemoNum);
-			TextPtr intro = new Text(intro_str + title);
+			TextActorPtr intro = new TextActor(intro_str + title);
 			intro->SetFontSize(16.f);
 			intro->SetPosition(10, 10);
 			scene->AddChild(intro);
 		}
 	}
 
-	void KeyPressed(Event& evt)
+	void KeyPressed(Event* evt)
 	{
-		KGE_ASSERT(evt.type == event::KeyUp);
+		KGE_ASSERT(evt->IsType<KeyUpEvent>());
 
-		auto key_evt = dynamic_cast<KeyUpEvent&>(evt);
-		if (key_evt.code > KeyCode::Num0&&
-			key_evt.code <= (KeyCode::Num0 + s_DemoNum))
+		auto key_evt = dynamic_cast<KeyUpEvent*>(evt);
+
+		int index = int(key_evt->code) - int(KeyCode::Num1);
+		if (index >= 0 && index < s_DemoNum)
 		{
-			int index = key_evt.code - KeyCode::Num1;
 			ChangeDemoStage(index);
 		}
 	}

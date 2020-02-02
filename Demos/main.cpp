@@ -33,27 +33,22 @@ public:
 	DemoApp()
 	{
 		// 使用 Audio 组件
-		Use(AudioEngine::GetInstance());
+		Use(&AudioEngine::Instance());
 
 		// 使用 HttpClient 组件
-		Use(HttpClient::GetInstance());
+		Use(&HttpClient::Instance());
 
-		Config config;
-		config.window.title = L"Kiwano示例程序";
-		config.window.width = WINDOW_WIDTH;
-		config.window.height = WINDOW_HEIGHT;
-		config.window.icon = IDI_ICON1;
-
-		Init(config);
+		// 创建窗口
+		Window::Instance().Create(L"Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
 	}
 
 	void OnReady() override
 	{
 		// 从 JSON 文件中读取资源信息
-		//ResourceCache::GetInstance()->LoadFromJsonFile(L"res/index.json");
+		//ResourceCache::Instance().LoadFromJsonFile(L"res/index.json");
 
 		// 从 XML 文件中读取资源信息
-		ResourceCache::GetInstance()->LoadFromXmlFile(L"res/index.xml");
+		ResourceCache::Instance().LoadFromXmlFile(L"res/index.xml");
 
 		// 切换到第一个舞台
 		ChangeDemoStage(0);
@@ -66,32 +61,34 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::GetInstance()->SetTitle(L"Kiwano示例程序 - " + title);
+			Window::Instance().SetTitle(L"Kiwano示例程序 - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
-			Director::GetInstance()->EnterStage(scene);
+			Director::Instance().EnterStage(scene);
 
 			// 添加按键监听
-			scene->AddListener(event::KeyUp, Closure(this, &DemoApp::KeyPressed));
+			scene->AddListener<KeyUpEvent>(Closure(this, &DemoApp::KeyPressed));
 
 			// 显示提示文字
 			String intro_str = String::format(L"按键 1~%d 可切换示例\n", s_DemoNum);
-			TextPtr intro = new Text(intro_str + title);
+			TextActorPtr intro = new TextActor(intro_str + title);
 			intro->SetFontSize(16.f);
 			intro->SetPosition(10, 10);
 			scene->AddChild(intro);
 		}
 	}
 
-	void KeyPressed(Event& evt)
+	void KeyPressed(Event* evt)
 	{
-		KGE_ASSERT(evt.type == event::KeyUp);
+		KGE_ASSERT(evt->IsType<KeyUpEvent>());
 
-		auto key_evt = dynamic_cast<KeyUpEvent&>(evt);
-		if (key_evt.code > KeyCode::Num0 &&
-			key_evt.code <= (KeyCode::Num0 + s_DemoNum))
+		KGE_ASSERT(evt->IsType<KeyUpEvent>());
+
+		auto key_evt = dynamic_cast<KeyUpEvent*>(evt);
+
+		int index = int(key_evt->code) - int(KeyCode::Num1);
+		if (index >= 0 && index < s_DemoNum)
 		{
-			int index = key_evt.code - KeyCode::Num1;
 			ChangeDemoStage(index);
 		}
 	}
