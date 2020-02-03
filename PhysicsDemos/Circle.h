@@ -5,14 +5,31 @@
 
 KGE_DECLARE_SMART_PTR(Circle);
 class Circle
-	: public Sprite
+	: public ShapeActor
 {
 	physics::BodyPtr body_;
 
 public:
 	Circle(physics::World* world, const Point& pos, float radius)
 	{
-		Load(L"resources/ball.png");
+		// 使用几何形状生成器绘制圆形
+		GeometrySink sink;
+		// 从圆心开始形状路径
+		sink.BeginPath(Point(radius, radius));
+		// 添加半径线
+		sink.AddLine(Point(radius, 0));
+		// 添加圆形的两个圆弧
+		sink.AddArc(Point(radius, 2 * radius), Size(radius, radius), 0.0f);
+		sink.AddArc(Point(radius, 0), Size(radius, radius), 0.0f);
+		// 结束形状路径
+		sink.EndPath();
+
+		// 设置形状及颜色
+		SetGeometry(sink.GetGeometry());
+		SetFillColor(Color::Transparent);
+		SetStrokeColor(Color::White);
+
+		// 设置位置和锚点
 		SetAnchor(0.5f, 0.5f);
 		SetPosition(pos);
 		SetSize(Size(radius * 2, radius * 2));

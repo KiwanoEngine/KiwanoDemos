@@ -5,13 +5,18 @@
 
 KGE_DECLARE_SMART_PTR(Square);
 class Square
-	: public Sprite
+	: public ShapeActor
 	, public physics::Body
 {
 public:
 	Square(physics::World* world, const Point& pos, const Size& size)
 	{
-		Load(L"resources/box.png");
+		// 设置形状及颜色
+		SetGeometry(Geometry::CreateRect(Rect(0, 0, size.x, size.y)));
+		SetFillColor(Color::Transparent);
+		SetStrokeColor(Color::White);
+
+		// 设置位置和锚点
 		SetAnchor(0.5f, 0.5f);
 		SetPosition(pos);
 		SetSize(size);

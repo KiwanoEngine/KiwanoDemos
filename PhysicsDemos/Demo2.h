@@ -27,7 +27,7 @@ public:
 
 // 地面
 class Ground
-	: public PathShapeActor
+	: public ShapeActor
 {
 	physics::BodyPtr ground_;
 	Vector<Point> path_points_;	// 路径点
@@ -44,12 +44,14 @@ public:
 		GeneratePathPoints();
 
 		// 根据路径点绘制路径
-		BeginPath(path_points_[0]);
+		GeometrySink sink;
+		sink.BeginPath(path_points_[0]);
 		for (size_t i = 1; i < path_points_.size(); ++i)
 		{
-			AddLine(path_points_[i]);
+			sink.AddLine(path_points_[i]);
 		}
-		EndPath(false);
+		sink.EndPath();
+		SetGeometry(sink.GetGeometry());
 
 		// 根据路径点生成物理边
 		ground_ = new physics::Body;
@@ -95,7 +97,7 @@ public:
 class Car
 	: public Actor
 {
-	PathShapeActorPtr chassis_;
+	ShapeActorPtr chassis_;
 	physics::BodyPtr chassis_body_;
 
 	physics::WheelJointPtr joint1_;
@@ -105,16 +107,22 @@ public:
 	Car(physics::World* world, Point const& pos)
 	{
 		// 创建小车躯干
-		chassis_ = new PathShapeActor;
+		chassis_ = new ShapeActor;
 		{
 			chassis_->SetPosition(pos + Point(0, -100));
 			AddChild(chassis_);
 
 			// 小车躯干点
 			Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
-			chassis_->BeginPath(vertices[0]);
-			chassis_->AddLines(vertices);
-			chassis_->EndPath(true);
+
+			GeometrySink sink;
+			sink.BeginPath(vertices[0]);
+			sink.AddLines(vertices);
+			sink.EndPath(true);
+
+			chassis_->SetGeometry(sink.GetGeometry());
+			chassis_->SetFillColor(Color::Transparent);
+			chassis_->SetStrokeColor(Color::White);
 
 			chassis_body_ = new physics::Body;
 			chassis_body_->InitBody(world, chassis_);

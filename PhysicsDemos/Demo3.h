@@ -10,8 +10,8 @@ namespace
 {
 	const float min_h_force = 5.0f;
 	const float max_h_force = 20.0f;
-	const float min_v_force = 40.0f;
-	const float max_v_force = 60.0f;
+	const float min_v_force = 50.0f;
+	const float max_v_force = 80.0f;
 }
 
 
@@ -55,6 +55,7 @@ public:
 		// 设置文本内容、字号和颜色
 		SetText(String(1, ch));
 		SetFillColor(Color::White);
+		SetFontFamily(L"Arial");
 		SetFontSize(35);
 		SetFontWeight(FontWeight::ExtraBold);
 
