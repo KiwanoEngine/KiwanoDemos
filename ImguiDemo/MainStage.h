@@ -12,65 +12,83 @@ KGE_DECLARE_SMART_PTR(ImGuiStage);
 class ImGuiStage
 	: public Stage
 {
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	Color clear_color = Color(0.45f, 0.55f, 0.6f, 1.f);
+	SpritePtr logo;
 
 public:
 	ImGuiStage()
 	{
+		logo = new Sprite;
+		logo->Load(L"logo.png");
+		logo->SetSize(160, 160);
+		logo->SetAnchor(0.5f, 0.5f);
+		logo->SetPosition(GetWidth() / 2, GetHeight() / 2);
+		AddChild(logo);
+
 		// 创建 ImGui 图层
 		ImGuiLayerPtr layer = new ImGuiLayer;
+		// 添加控制台
+		layer->AddItem(L"ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
 		AddChild(layer);
-
-		// 添加 ImGui 提供的 Demo 窗口
-		layer->AddItem(L"DemoWindow", [=]() {
-			if (show_demo_window)
-				ImGui::ShowDemoWindow(&show_demo_window);
-		});
-
-		// 添加一个简单窗口
-		layer->AddItem(L"SimpleWindow", Closure(this, &ImGuiStage::SimpleWindow));
-
-		// 再添加一个窗口
-		layer->AddItem(L"AnotherWindow", Closure(this, &ImGuiStage::AnotherWindow));
 	}
 
-	void SimpleWindow()
+	void ControlPanel()
 	{
-		static float f = 0.0f;
-		static int counter = 0;
+		static bool visibility = true;
+		static float rotation = 0.0f;
+		static Color clear_color = Color(0xE5E5E5);
 
-		ImGui::Begin("Hello, world!");
+		ImGui::Begin("Control Panel");
 
-		ImGui::Text("This is some useful text.");
-		ImGui::Checkbox("Demo Window", &show_demo_window);
-		ImGui::Checkbox("Another Window", &show_another_window);
+		ImGui::Text("Use the following widgets to control actor behaviors");
 
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		ImGui::Checkbox("visibility", &visibility);
+
+		if (ImGui::Button(" < "))
+		{
+			logo->Move(-3.0f, 0.0f);
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button(" ^ "))
+		{
+			logo->Move(0.0f, -3.0f);
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button(" v "))
+		{
+			logo->Move(0.0f, 3.0f);
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button(" > "))
+		{
+			logo->Move(3.0f, 0.0f);
+		}
+
+		ImGui::SliderFloat("rotation", &rotation, 0.0f, 360.0f);
+
 		ImGui::ColorEdit3("clear color", (float*)&clear_color);
 
-		if (ImGui::Button("Button"))
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
+		if (ImGui::Button("reset"))
+		{
+			visibility = true;
+			rotation = 0.0f;
 
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			logo->SetPosition(GetWidth() / 2, GetHeight() / 2);
+		}
+
+		ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
 		ImGui::End();
+
+		// 修改可见性
+		logo->SetVisible(visibility);
+
+		// 修改旋转角度
+		logo->SetRotation(rotation);
 
 		// 修改窗口背景色
 		Renderer::Instance().SetClearColor(clear_color);
-	}
-
-	void AnotherWindow()
-	{
-		if (show_another_window)
-		{
-			ImGui::Begin("Another Window", &show_another_window);
-			ImGui::Text("Hello from another window!");
-			if (ImGui::Button("Close Me"))
-				show_another_window = false;
-			ImGui::End();
-		}
 	}
 };

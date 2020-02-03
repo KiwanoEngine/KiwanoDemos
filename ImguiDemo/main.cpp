@@ -14,7 +14,7 @@ public:
 		Use(&ImGuiModule::Instance());
 
 		// ´´½¨´°¿Ú
-		Window::Instance().Create(L"ImGui Demo", 1280, 800);
+		Window::Instance().Create(L"ImGui Demo", 800, 600);
 	}
 
 	void OnReady() override

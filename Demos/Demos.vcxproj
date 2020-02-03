@@ -103,14 +103,14 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Kiwano.redist.0.9.187\build\native\Kiwano.redist.targets" Condition="Exists('..\packages\Kiwano.redist.0.9.187\build\native\Kiwano.redist.targets')" />
-    <Import Project="..\packages\Kiwano.0.9.187\build\native\Kiwano.targets" Condition="Exists('..\packages\Kiwano.0.9.187\build\native\Kiwano.targets')" />
+    <Import Project="..\packages\Kiwano.redist.0.9.188\build\native\Kiwano.redist.targets" Condition="Exists('..\packages\Kiwano.redist.0.9.188\build\native\Kiwano.redist.targets')" />
+    <Import Project="..\packages\Kiwano.0.9.188\build\native\Kiwano.targets" Condition="Exists('..\packages\Kiwano.0.9.188\build\native\Kiwano.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Kiwano.redist.0.9.187\build\native\Kiwano.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kiwano.redist.0.9.187\build\native\Kiwano.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\Kiwano.0.9.187\build\native\Kiwano.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kiwano.0.9.187\build\native\Kiwano.targets'))" />
+    <Error Condition="!Exists('..\packages\Kiwano.redist.0.9.188\build\native\Kiwano.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kiwano.redist.0.9.188\build\native\Kiwano.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\Kiwano.0.9.188\build\native\Kiwano.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kiwano.0.9.188\build\native\Kiwano.targets'))" />
   </Target>
 </Project>
