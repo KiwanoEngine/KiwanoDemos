@@ -98,6 +98,7 @@ Demo3::Demo3()
 
 	// 添加文本说明
 	TextActorPtr intro = new TextActor(L"按任意键发射粒子！");
+	intro->SetFillColor(Color::White);
 	intro->SetAnchor(0.5f, 0.5f);
 	intro->SetPosition(GetWidth() / 2, GetHeight() - 100);
 	AddChild(intro);

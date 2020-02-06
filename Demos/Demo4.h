@@ -172,15 +172,16 @@ public:
 		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextActorPtr text = new TextActor(L"按上下左右键移动");
+		TextActorPtr intro = new TextActor(L"按上下左右键移动");
 		// 设置文字位置
-		text->SetAnchor(0.5f, 0.5f);
-		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);
-		text->SetAlignment(TextAlign::Center);
+		intro->SetAnchor(0.5f, 0.5f);
+		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);
+		intro->SetFillColor(Color::White);
+		intro->SetAlignment(TextAlign::Center);
 
 		// 添加到舞台
 		this->AddChild(bg);
 		this->AddChild(tiger);
-		this->AddChild(text);
+		this->AddChild(intro);
 	}
 };

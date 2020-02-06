@@ -81,14 +81,15 @@ public:
 		hero->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextActorPtr text = new TextActor(L"按上下左右键移动\n按鼠标左键旋转\n点击鼠标右键隐藏");
+		TextActorPtr intro = new TextActor(L"按上下左右键移动\n按鼠标左键旋转\n点击鼠标右键隐藏");
 		// 设置文字位置
-		text->SetAnchor(0.5f, 0.5f);
-		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);
-		text->SetAlignment(TextAlign::Center);
+		intro->SetAnchor(0.5f, 0.5f);
+		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);
+		intro->SetFillColor(Color::White);
+		intro->SetAlignment(TextAlign::Center);
 
 		// 添加到舞台
 		this->AddChild(hero);
-		this->AddChild(text);
+		this->AddChild(intro);
 	}
 };

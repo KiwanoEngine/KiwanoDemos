@@ -19,13 +19,14 @@ public:
 		AddListener<KeyDownEvent>(Closure(this, &Demo5::OnKeyDown));
 
 		// 创建说明文字
-		TextActorPtr text = new TextActor(L"按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
+		TextActorPtr intro = new TextActor(L"按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
 		// 设置文字位置
-		text->SetAnchor(0.5f, 0.5f);
-		text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+		intro->SetAnchor(0.5f, 0.5f);
+		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+		intro->SetFillColor(Color::White);
 
 		// 添加到舞台
-		this->AddChild(text);
+		this->AddChild(intro);
 	}
 
 	void OnEnter() override

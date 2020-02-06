@@ -72,6 +72,7 @@ public:
 			// 显示提示文字
 			String intro_str = String::format(L"按键 1~%d 可切换示例\n", s_DemoNum);
 			TextActorPtr intro = new TextActor(intro_str + title);
+			intro->SetFillColor(Color::White);
 			intro->SetFontSize(16.f);
 			intro->SetPosition(10, 10);
 			scene->AddChild(intro);

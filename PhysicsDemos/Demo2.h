@@ -44,14 +44,14 @@ public:
 		GeneratePathPoints();
 
 		// 根据路径点绘制路径
-		GeometrySink sink;
+		ShapeSink sink;
 		sink.BeginPath(path_points_[0]);
 		for (size_t i = 1; i < path_points_.size(); ++i)
 		{
 			sink.AddLine(path_points_[i]);
 		}
 		sink.EndPath();
-		SetGeometry(sink.GetGeometry());
+		SetShape(sink.GetShape());
 
 		// 根据路径点生成物理边
 		ground_ = new physics::Body;
@@ -115,12 +115,12 @@ public:
 			// 小车躯干点
 			Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
 
-			GeometrySink sink;
+			ShapeSink sink;
 			sink.BeginPath(vertices[0]);
 			sink.AddLines(vertices);
 			sink.EndPath(true);
 
-			chassis_->SetGeometry(sink.GetGeometry());
+			chassis_->SetShape(sink.GetShape());
 			chassis_->SetFillColor(Color::Transparent);
 			chassis_->SetStrokeColor(Color::White);
 
@@ -198,6 +198,7 @@ Demo2::Demo2()
 
 		// 添加文本说明
 		TextActorPtr intro = new TextActor(L"按←→↓键控制小车");
+		intro->SetFillColor(Color::White);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(GetWidth() / 2, GetHeight() - 60);
 		AddChild(intro);

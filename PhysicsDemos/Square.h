@@ -12,7 +12,7 @@ public:
 	Square(physics::World* world, const Point& pos, const Size& size)
 	{
 		// 设置形状及颜色
-		SetGeometry(Geometry::CreateRect(Rect(0, 0, size.x, size.y)));
+		SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
 		SetFillColor(Color::Transparent);
 		SetStrokeColor(Color::White);
 

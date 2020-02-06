@@ -12,8 +12,8 @@ class Circle
 public:
 	Circle(physics::World* world, const Point& pos, float radius)
 	{
-		// 使用几何形状生成器绘制圆形
-		GeometrySink sink;
+		// 使用形状生成器绘制圆形
+		ShapeSink sink;
 		// 从圆心开始形状路径
 		sink.BeginPath(Point(radius, radius));
 		// 添加半径线
@@ -25,7 +25,7 @@ public:
 		sink.EndPath();
 
 		// 设置形状及颜色
-		SetGeometry(sink.GetGeometry());
+		SetShape(sink.GetShape());
 		SetFillColor(Color::Transparent);
 		SetStrokeColor(Color::White);
 

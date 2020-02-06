@@ -27,6 +27,7 @@ public:
 			TextActorPtr err = new TextActor(L"音频文件加载失败");
 			err->SetAnchor(0.5f, 0.5f);
 			err->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+			err->SetFillColor(Color::White);
 			this->AddChild(err);
 			return;
 		}
@@ -35,23 +36,26 @@ public:
 		bgmusic->Play(-1);
 
 		// 创建说明文字
-		TextActorPtr intro_text = new TextActor(L"按上下键调整音量\n按空格键暂停或继续");
-		intro_text->SetAlignment(TextAlign::Center);
-		intro_text->SetAnchor(0.5f, 0.5f);
-		intro_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
+		TextActorPtr intro = new TextActor(L"按上下键调整音量\n按空格键暂停或继续");
+		intro->SetFillColor(Color::White);
+		intro->SetAlignment(TextAlign::Center);
+		intro->SetAnchor(0.5f, 0.5f);
+		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
 
 		// 创建音量文字
 		volume_text = new TextActor(L"当前音量：");
+		volume_text->SetFillColor(Color::White);
 		volume_text->SetAnchor(0.5f, 0.5f);
 		volume_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 30);
 
 		// 创建状态文字
 		state_text = new TextActor(L"当前状态：");
+		state_text->SetFillColor(Color::White);
 		state_text->SetAnchor(0.5f, 0.5f);
 		state_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60);
 
 		// 添加到舞台
-		this->AddChild(intro_text);
+		this->AddChild(intro);
 		this->AddChild(volume_text);
 		this->AddChild(state_text);
 	}

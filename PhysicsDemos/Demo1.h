@@ -73,6 +73,7 @@ Demo1::Demo1()
 
 	// 添加文本说明
 	TextActorPtr intro = new TextActor(L"点击鼠标左右键创建物体");
+	intro->SetFillColor(Color::White);
 	intro->SetAnchor(0.5f, 0.5f);
 	intro->SetPosition(GetWidth() / 2, GetHeight() / 2);
 	AddChild(intro);
