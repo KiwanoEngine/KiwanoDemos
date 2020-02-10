@@ -10,17 +10,17 @@ class ImGuiApp
 public:
 	ImGuiApp()
 	{
-		// 添加 ImGui 组件
-		Use(&ImGuiModule::Instance());
+		// 娣诲姞 ImGui 缁勪欢
+		Use(&ImGuiModule::GetInstance());
 
-		// 创建窗口
-		Window::Instance().Create(L"ImGui Demo", 800, 600);
+		// 鍒涘缓绐楀彛
+		Window::GetInstance().Create("ImGui Demo", 800, 600);
 	}
 
 	void OnReady() override
 	{
 		ImGuiStagePtr scene = new ImGuiStage;
-		Director::Instance().EnterStage(scene);
+		Director::GetInstance().EnterStage(scene);
 	}
 };
 

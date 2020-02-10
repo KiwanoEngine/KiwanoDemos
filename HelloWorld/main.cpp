@@ -10,22 +10,22 @@ class HelloWorld
 public:
 	HelloWorld()
 	{
-		// ´´½¨Í¼Æ¬¾«Áé
+		// åˆ›å»ºå›¾ç‰‡ç²¾çµ
 		SpritePtr sprite = new Sprite;
 
-		// ¼ÓÔØÍ¼Æ¬
-		sprite->Load(L"../logo/logo_text.png");
+		// åŠ è½½å›¾ç‰‡
+		sprite->Load("../logo/logo_text.png");
 
-		// ĞŞ¸Ä¾«ÁéÎ»ÖÃ, Ê¹¾«ÁéÔÚÆÁÄ»ÉÏ¾ÓÖĞ
+		// ä¿®æ”¹ç²¾çµä½ç½®, ä½¿ç²¾çµåœ¨å±å¹•ä¸Šå±…ä¸­
 		sprite->SetPosition(640 / 2, 480 / 2);
 
-		// ĞŞ¸Ä¾«ÁéÃªµã, Ê¹Í¼Æ¬ÖĞĞÄ¶ÔÆëÆÁÄ»ÖĞĞÄ
+		// ä¿®æ”¹ç²¾çµé”šç‚¹, ä½¿å›¾ç‰‡ä¸­å¿ƒå¯¹é½å±å¹•ä¸­å¿ƒ
 		sprite->SetAnchor(0.5, 0.5);
 
-		// ĞŞ¸ÄËõ·ÅÂÊ, Í¼Æ¬ËõĞ¡µ½ 0.5 ±¶
+		// ä¿®æ”¹ç¼©æ”¾ç‡, å›¾ç‰‡ç¼©å°åˆ° 0.5 å€
 		sprite->SetScale(0.5f, 0.5f);
 
-		// Ìí¼Óµ½ÎèÌ¨ÖĞ
+		// æ·»åŠ åˆ°èˆå°ä¸­
 		this->AddChild(sprite);
 	}
 };
@@ -36,26 +36,26 @@ class HelloWorldApp
 public:
 	void OnReady() override
 	{
-		// ´´½¨ÎèÌ¨
+		// åˆ›å»ºèˆå°
 		StagePtr scene = new HelloWorld;
 
-		// ½øÈëÎèÌ¨
-		Director::Instance().EnterStage(scene);
+		// è¿›å…¥èˆå°
+		Director::GetInstance().EnterStage(scene);
 	}
 };
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
-	// ´´½¨´°¿Ú
-	Window::Instance().Create(L"Hello World", 640, 480);
+	// åˆ›å»ºçª—å£
+	Window::GetInstance().Create("Hello World", 640, 480);
 
-	// ÉèÖÃ±³¾°É«
-	Renderer::Instance().SetClearColor(Color(0xE5E5E5));
+	// è®¾ç½®èƒŒæ™¯è‰²
+	Renderer::GetInstance().SetClearColor(Color(0xE5E5E5));
 
-	// ´´½¨³ÌĞòÊµÀı
+	// åˆ›å»ºç¨‹åºå®ä¾‹
 	HelloWorldApp app;
 
-	// ÔËĞĞ
+	// è¿è¡Œ
 	app.Run();
 	return 0;
 }

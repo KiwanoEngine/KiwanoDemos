@@ -25,51 +25,53 @@ public:
 };
 
 
-// µØÃæ
+// åœ°é¢
 class Ground
 	: public ShapeActor
 {
-	physics::BodyPtr ground_;
-	Vector<Point> path_points_;	// Â·¾¶µã
+	physics::BodyPtr body_;
 
 public:
-	Ground(physics::World* world, Point const& pos)
+	static GroundPtr Create(physics::World* world, Point const& pos)
 	{
-		// ÉèÖÃ
-		SetFillColor(Color::Transparent);
-		SetStrokeColor(Color::White);
-		SetPosition(pos);
+		GroundPtr ground = new Ground;
 
-		// Éú³ÉÂ·¾¶µã
-		GeneratePathPoints();
+		// è®¾ç½®å½¢çŠ¶é¢œè‰²å’Œä½ç½®
+		ground->SetFillColor(Color::Transparent);
+		ground->SetStrokeColor(Color::White);
+		ground->SetPosition(pos);
 
-		// ¸ù¾İÂ·¾¶µã»æÖÆÂ·¾¶
+		// ç”Ÿæˆè·¯å¾„ç‚¹
+		Vector<Point> path_points = ground->GeneratePathPoints();
+
+		// æ ¹æ®è·¯å¾„ç‚¹ç»˜åˆ¶è·¯å¾„
 		ShapeSink sink;
-		sink.BeginPath(path_points_[0]);
-		for (size_t i = 1; i < path_points_.size(); ++i)
+		sink.BeginPath(path_points[0]);
+		for (size_t i = 1; i < path_points.size(); ++i)
 		{
-			sink.AddLine(path_points_[i]);
+			sink.AddLine(path_points[i]);
 		}
 		sink.EndPath();
-		SetShape(sink.GetShape());
+		ground->SetShape(sink.GetShape());
 
-		// ¸ù¾İÂ·¾¶µãÉú³ÉÎïÀí±ß
-		ground_ = new physics::Body;
-		ground_->InitBody(world, this);
-
-		physics::EdgeShape shape;
-		for (size_t i = 1; i < path_points_.size(); ++i)
+		// æ ¹æ®è·¯å¾„ç‚¹ç”Ÿæˆç‰©ç†è¾¹
+		physics::BodyPtr body = physics::Body::Create(world, ground, physics::Body::Type::Static);
+		for (size_t i = 1; i < path_points.size(); ++i)
 		{
-			shape.Set(path_points_[i - 1], path_points_[i]);
-			ground_->AddFixture(&shape, physics::Fixture::Param(0.f, 0.6f));
+			body->AddEdgeShape(path_points[i - 1], path_points[i], 0.0f, 0.6f);
 		}
+
+		ground->body_ = body;
+		return ground;
 	}
 
-	void GeneratePathPoints()
+	Vector<Point> GeneratePathPoints()
 	{
-		path_points_.push_back(Point(5, -400));
-		path_points_.push_back(Point(5, 0));
-		path_points_.push_back(Point(200, 0));
+		Vector<Point> path_points;	// è·¯å¾„ç‚¹
+
+		path_points.push_back(Point(5, -400));
+		path_points.push_back(Point(5, 0));
+		path_points.push_back(Point(200, 0));
 
 		float hs[] = { -25, -100, -300, 0, 0, 100, 200, 200, 125, 0 };
 		float x = 200, dx = 500;
@@ -77,104 +79,107 @@ public:
 		for (int i = 0; i < 10; ++i)
 		{
 			float y = hs[i];
-			path_points_.push_back(Point(x + dx, y));
+			path_points.push_back(Point(x + dx, y));
 			x += dx;
 		}
 
 		for (int i = 0; i < 10; ++i)
 		{
 			float y = hs[i];
-			path_points_.push_back(Point(x + dx, y));
+			path_points.push_back(Point(x + dx, y));
 			x += dx;
 		}
 
-		path_points_.push_back(Point(x, -400));
+		path_points.push_back(Point(x, -400));
+
+		return path_points;
 	}
 };
 
 
-// Ğ¡³µ
+// å°è½¦
 class Car
 	: public Actor
 {
 	ShapeActorPtr chassis_;
 	physics::BodyPtr chassis_body_;
 
-	physics::WheelJointPtr joint1_;
-	physics::WheelJointPtr joint2_;
+	physics::WheelJointPtr left_joint_;
+	physics::WheelJointPtr right_joint_;
 
 public:
-	Car(physics::World* world, Point const& pos)
+	static CarPtr Create(physics::World* world, Point const& pos)
 	{
-		// ´´½¨Ğ¡³µÇû¸É
-		chassis_ = new ShapeActor;
-		{
-			chassis_->SetPosition(pos + Point(0, -100));
-			AddChild(chassis_);
+		CarPtr car = new Car;
 
-			// Ğ¡³µÇû¸Éµã
-			Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
+		// åˆ›å»ºå°è½¦èº¯å¹²
+		ShapeActorPtr chassis = ShapeActor::Create();
+		chassis->SetPosition(pos + Point(0, -100));
 
-			ShapeSink sink;
-			sink.BeginPath(vertices[0]);
-			sink.AddLines(vertices);
-			sink.EndPath(true);
+		// å°è½¦èº¯å¹²ç‚¹
+		Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
 
-			chassis_->SetShape(sink.GetShape());
-			chassis_->SetFillColor(Color::Transparent);
-			chassis_->SetStrokeColor(Color::White);
+		ShapeSink sink;
+		sink.BeginPath(vertices[0]);
+		sink.AddLines(vertices);
+		sink.EndPath(true);
 
-			chassis_body_ = new physics::Body;
-			chassis_body_->InitBody(world, chassis_);
-			chassis_body_->SetType(physics::Body::Type::Dynamic);
-			chassis_body_->AddPolygonShape(vertices, 1.0f);
-		}
+		chassis->SetShape(sink.GetShape());
+		chassis->SetFillColor(Color::Transparent);
+		chassis->SetStrokeColor(Color::White);
 
-		// ´´½¨×óÓÒÂÖ×Ó
-		CirclePtr lwheel = new Circle(world, pos + Point(-100, -35), 40.0f);
-		CirclePtr rwheel = new Circle(world, pos + Point(100, -40), 40.0f);
-		{
-			AddChild(lwheel);
-			AddChild(rwheel);
+		physics::BodyPtr chassis_body = physics::Body::Create(world, chassis, physics::Body::Type::Dynamic);
+		chassis_body->AddPolygonShape(vertices, 1.0f);
 
-			auto lwheel_body = lwheel->GetBody();
-			auto rwheel_body = rwheel->GetBody();
+		// åˆ›å»ºå·¦å³è½®å­
+		CirclePtr lwheel = Circle::Create(world, pos + Point(-100, -35), 40.0f);
+		CirclePtr rwheel = Circle::Create(world, pos + Point(100, -40), 40.0f);
 
-			// ÉèÖÃÄ¦²ÁÁ¦
-			lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
-			rwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
+		auto lwheel_body = lwheel->GetBody();
+		auto rwheel_body = rwheel->GetBody();
 
-			// ´´½¨×óÂÖ×Ó¹Ø½Ú
-			physics::WheelJoint::Param param1(chassis_body_, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
-			param1.frequency_hz = 4.0f;				// ÆµÂÊºÍ×èÄáÂÊ¸³Óè¹Ø½Úµ¯ĞÔ
-			param1.damping_ratio = 0.7f;
-			param1.enable_motor = true;				// ÆôÓÃÂí´ï
-			param1.motor_speed = 0.0f;				// ³õÊ¼Âí´ïËÙ¶ÈÎªÁã
-			param1.max_motor_torque = 2000;			// ×î´óÂí´ï×ª¾Ø
+		// è®¾ç½®æ‘©æ“¦åŠ›
+		lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
+		rwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
 
-			joint1_ = new physics::WheelJoint;
-			joint1_->InitJoint(world, param1);
+		// åˆ›å»ºå·¦è½®å­å…³èŠ‚
+		physics::WheelJoint::Param param1(chassis_body, lwheel_body, lwheel_body->GetBodyPosition(), Vec2(0, 1));
+		param1.frequency_hz = 4.0f;				// é¢‘ç‡å’Œé˜»å°¼ç‡èµ‹äºˆå…³èŠ‚å¼¹æ€§
+		param1.damping_ratio = 0.7f;
+		param1.enable_motor = true;				// å¯ç”¨é©¬è¾¾
+		param1.motor_speed = 0.0f;				// åˆå§‹é©¬è¾¾é€Ÿåº¦ä¸ºé›¶
+		param1.max_motor_torque = 2000;			// æœ€å¤§é©¬è¾¾è½¬çŸ©
 
-			// ´´½¨ÓÒÂÖ×Ó¹Ø½Ú
-			physics::WheelJoint::Param param2(chassis_body_, rwheel_body, rwheel_body->GetBodyPosition(), Vec2(0, 1));
-			param2.frequency_hz = 4.0f;
-			param2.damping_ratio = 0.7f;
-			param2.enable_motor = false;
-			param2.motor_speed = 0.0f;
-			param2.max_motor_torque = 1000;
+		physics::JointPtr left_joint = physics::WheelJoint::Create(world, param1);
 
-			joint2_ = new physics::WheelJoint;
-			joint2_->InitJoint(world, param2);
-		}
+		// åˆ›å»ºå³è½®å­å…³èŠ‚
+		physics::WheelJoint::Param param2(chassis_body, rwheel_body, rwheel_body->GetBodyPosition(), Vec2(0, 1));
+		param2.frequency_hz = 4.0f;
+		param2.damping_ratio = 0.7f;
+		param2.enable_motor = false;
+		param2.motor_speed = 0.0f;
+		param2.max_motor_torque = 1000;
+
+		physics::JointPtr right_joint = physics::WheelJoint::Create(world, param2);
+
+		car->AddChild(chassis);
+		car->AddChild(lwheel);
+		car->AddChild(rwheel);
+
+		car->chassis_ = chassis;
+		car->chassis_body_ = chassis_body;
+		car->left_joint_ = left_joint;
+		car->right_joint_ = right_joint;
+		return car;
 	}
 
-	// ¸øĞ¡³µºóÂÖÌá¹©¶¯Á¦
+	// ç»™å°è½¦åè½®æä¾›åŠ¨åŠ›
 	void SetSpeed(float speed)
 	{
-		joint1_->SetMotorSpeed(speed);
+		left_joint_->SetMotorSpeed(speed);
 	}
 
-	// »ñÈ¡ÉíÌåÎ»ÖÃ
+	// è·å–èº«ä½“ä½ç½®
 	Point GetBodyPosition() const
 	{
 		return chassis_->GetPosition();
@@ -184,20 +189,20 @@ public:
 
 Demo2::Demo2()
 {
-	map_ = new Actor;
+	map_ = Actor::Create();
 	{
 		AddChild(map_);
 
-		// ´´½¨µØÃæ
-		ActorPtr ground = new Ground(this, Point(0, GetHeight() - 250));
+		// åˆ›å»ºåœ°é¢
+		ActorPtr ground = Ground::Create(this, Point(0, GetHeight() - 250));
 		map_->AddChild(ground);
 
-		// ´´½¨Ğ¡³µ
-		car_ = new Car(this, Point(190, 240));
+		// åˆ›å»ºå°è½¦
+		car_ = Car::Create(this, Point(190, 240));
 		map_->AddChild(car_);
 
-		// Ìí¼ÓÎÄ±¾ËµÃ÷
-		TextActorPtr intro = new TextActor(L"°´¡û¡ú¡ı¼ü¿ØÖÆĞ¡³µ");
+		// æ·»åŠ æ–‡æœ¬è¯´æ˜
+		TextActorPtr intro = TextActor::Create("æŒ‰â†â†’â†“é”®æ§åˆ¶å°è½¦");
 		intro->SetFillColor(Color::White);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(GetWidth() / 2, GetHeight() - 60);
@@ -207,11 +212,11 @@ Demo2::Demo2()
 
 void Demo2::OnUpdate(Duration dt)
 {
-	// »ñÈ¡Ğ¡³µÎ»ÖÃ
+	// è·å–å°è½¦ä½ç½®
 	Point pos = car_->GetBodyPosition();
 	if (pos.x > GetWidth() / 2)
 	{
-		// Ğ¡³µÎ»ÖÃ³¬¹ıÆÁÄ»Ò»°ë´óĞ¡Ê±, ÒÆ¶¯Õû¸öµØÍ¼, ÈÃÊÓ½Ç¸úËæĞ¡³µ
+		// å°è½¦ä½ç½®è¶…è¿‡å±å¹•ä¸€åŠå¤§å°æ—¶, ç§»åŠ¨æ•´ä¸ªåœ°å›¾, è®©è§†è§’è·Ÿéšå°è½¦
 		map_->SetPositionX(GetWidth() / 2 - pos.x);
 	}
 	else
@@ -219,8 +224,8 @@ void Demo2::OnUpdate(Duration dt)
 		map_->SetPositionX(0.f);
 	}
 
-	// °´¼ü´¦Àí
-	auto& input = Input::Instance();
+	// æŒ‰é”®å¤„ç†
+	auto& input = Input::GetInstance();
 	if (input.IsDown(KeyCode::Right))
 	{
 		car_->SetSpeed(360.0f * 3);

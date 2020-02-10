@@ -15,37 +15,37 @@ public:
 
 	Demo5()
 	{
-		// Ìí¼Ó°´¼ü¼àÌı
+		// æ·»åŠ æŒ‰é”®ç›‘å¬
 		AddListener<KeyDownEvent>(Closure(this, &Demo5::OnKeyDown));
 
-		// ´´½¨ËµÃ÷ÎÄ×Ö
-		TextActorPtr intro = new TextActor(L"°´G·¢ËÍGETÇëÇó\n°´P·¢ËÍPOSTÇëÇó\n°´U·¢ËÍPUTÇëÇó\n°´D·¢ËÍDELETEÇëÇó");
-		// ÉèÖÃÎÄ×ÖÎ»ÖÃ
+		// åˆ›å»ºè¯´æ˜æ–‡å­—
+		TextActorPtr intro = TextActor::Create("æŒ‰Gå‘é€GETè¯·æ±‚\næŒ‰På‘é€POSTè¯·æ±‚\næŒ‰Uå‘é€PUTè¯·æ±‚\næŒ‰Då‘é€DELETEè¯·æ±‚");
+		// è®¾ç½®æ–‡å­—ä½ç½®
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 		intro->SetFillColor(Color::White);
 
-		// Ìí¼Óµ½ÎèÌ¨
+		// æ·»åŠ åˆ°èˆå°
 		this->AddChild(intro);
 	}
 
 	void OnEnter() override
 	{
-		// ½øÈëÎèÌ¨Ê±´ò¿ª¿ØÖÆÌ¨
-		Logger::Instance().ShowConsole(true);
+		// è¿›å…¥èˆå°æ—¶æ‰“å¼€æ§åˆ¶å°
+		Logger::GetInstance().ShowConsole(true);
 	}
 
 	void OnExit() override
 	{
-		// ÍË³öÎèÌ¨Ê±¹Ø±Õ¿ØÖÆÌ¨
-		Logger::Instance().ShowConsole(false);
+		// é€€å‡ºèˆå°æ—¶å…³é—­æ§åˆ¶å°
+		Logger::GetInstance().ShowConsole(false);
 	}
 
 	void OnKeyDown(Event* evt)
 	{
 		KGE_ASSERT(evt->IsType<KeyDownEvent>());
 
-		// °´²»Í¬¼ü·¢ËÍ²»Í¬ÇëÇó
+		// æŒ‰ä¸åŒé”®å‘é€ä¸åŒè¯·æ±‚
 		auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
 		if (key_evt->code == KeyCode::G)
 		{
@@ -67,114 +67,114 @@ public:
 
 	void SendGetRequest()
 	{
-		// ·¢ËÍ GET ÇëÇó
-		KGE_LOG(L"Start to send GET request...");
+		// å‘é€ GET è¯·æ±‚
+		KGE_LOG("Start to send GET request...");
 
-		HttpRequestPtr request = new HttpRequest;
-		// ÉèÖÃÇëÇó URL
-		request->SetUrl(L"http://httpbin.org/get");
-		// ÉèÖÃÇëÇóÀàĞÍÎª GET
-		request->SetType(HttpRequest::Type::Get);
-		// ÉèÖÃÇëÇóÍê³ÉºóµÄ»Øµ÷º¯Êı
-		request->SetResponseCallback(Closure(this, &Demo5::Complete));
+		// åˆ›å»ºHTTPè¯·æ±‚
+		HttpRequestPtr request = HttpRequest::Create(
+			"http://httpbin.org/get",
+			HttpType::Get,
+			Closure(this, &Demo5::Complete)
+		);
 
-		// ·¢ËÍ HTTP ÇëÇó
-		HttpClient::Instance().Send(request);
+		// å‘é€ HTTP è¯·æ±‚
+		HttpClient::GetInstance().Send(request);
 	}
 
 	void SendPostRequest()
 	{
-		// ·¢ËÍ POST ÇëÇó
-		KGE_LOG(L"Start to send POST request...");
+		// å‘é€ POST è¯·æ±‚
+		KGE_LOG("Start to send POST request...");
 
-		// ´´½¨ JSON ¸ñÊ½µÄ POST Êı¾İ
+		// åˆ›å»º JSON æ ¼å¼çš„ POST æ•°æ®
 		Json request_data = {
-			{ L"string",	L"testÖĞÎÄ" },
-			{ L"boolean",	true },
-			{ L"integer",	12 },
-			{ L"float",		3.125 },
-			{ L"array",		{ 1, 2, 3, 4, 4.5 } },
-			{ L"object",	{ L"key", L"value" } },
+			{ "string", "a simple string" },
+			{ "boolean", true },
+			{ "integer", 12 },
+			{ "float", 3.125 },
+			{ "array", { 1, 2, 3, 4, 4.5 } },
+			{ "object", { "key", "value" } },
 		};
 
-		HttpRequestPtr request = new HttpRequest;
-		request->SetUrl(L"http://httpbin.org/post");
-		request->SetType(HttpRequest::Type::Post);
-		// ÉèÖÃ POST ÇëÇóµÄÊı¾İ
-		request->SetJsonData(request_data);
-		request->SetResponseCallback(Closure(this, &Demo5::Complete));
+		HttpRequestPtr request = HttpRequest::Create(
+			"http://httpbin.org/post",
+			HttpType::Post,
+			request_data,
+			Closure(this, &Demo5::Complete)
+		);
 
-		HttpClient::Instance().Send(request);
+		HttpClient::GetInstance().Send(request);
 	}
 
 	void SendPutRequest()
 	{
-		// ·¢ËÍ PUT ÇëÇó
-		KGE_LOG(L"Start to send PUT request...");
+		// å‘é€ PUT è¯·æ±‚
+		KGE_LOG("Start to send PUT request...");
 
-		// ´´½¨ JSON ¸ñÊ½µÄ PUT Êı¾İ
+		// åˆ›å»º JSON æ ¼å¼çš„ PUT æ•°æ®
 		Json request_data = Json::array({ 1, 2, 3 });
 
-		HttpRequestPtr request = new HttpRequest;
-		request->SetUrl(L"http://httpbin.org/put");
-		request->SetType(HttpRequest::Type::Put);
-		// ÉèÖÃ PUT ÇëÇóµÄÊı¾İ
-		request->SetJsonData(request_data);
-		request->SetResponseCallback(Closure(this, &Demo5::Complete));
+		HttpRequestPtr request = HttpRequest::Create(
+			"http://httpbin.org/put",
+			HttpType::Put,
+			request_data,
+			Closure(this, &Demo5::Complete)
+		);
 
-		HttpClient::Instance().Send(request);
+		HttpClient::GetInstance().Send(request);
 	}
 
 	void SendDeleteRequest()
 	{
-		// ·¢ËÍ DELETE ÇëÇó
-		KGE_LOG(L"Start to send DELETE request...");
+		// å‘é€ DELETE è¯·æ±‚
+		KGE_LOG("Start to send DELETE request...");
 
-		HttpRequestPtr request = new HttpRequest;
-		request->SetUrl(L"http://httpbin.org/delete");
-		request->SetType(HttpRequest::Type::Delete);
-		request->SetResponseCallback(Closure(this, &Demo5::Complete));
+		HttpRequestPtr request = HttpRequest::Create(
+			"http://httpbin.org/delete",
+			HttpType::Delete,
+			Closure(this, &Demo5::Complete)
+		);
 
-		HttpClient::Instance().Send(request);
+		HttpClient::GetInstance().Send(request);
 	}
 
 	void Complete(HttpRequestPtr request, HttpResponsePtr response)
 	{
-		// ÅĞ¶ÏÇëÇóÊÇ·ñ³É¹¦
+		// åˆ¤æ–­è¯·æ±‚æ˜¯å¦æˆåŠŸ
 		if (response->IsSucceed())
 		{
 			try
 			{
-				// ½«»ñÈ¡µ½µÄÊı¾İ½âÎö³É JSON ¸ñÊ½
+				// å°†è·å–åˆ°çš„æ•°æ®è§£ææˆ JSON æ ¼å¼
 				Json response_data = Json::parse(response->GetData());
 				Json result = {
-					{L"HttpCode", response->GetResponseCode()},
-					{L"Data", response_data},
+					{"HttpCode", response->GetResponseCode()},
+					{"Data", response_data},
 				};
 
-				KGE_LOG(L"Response:\n", result.dump(4));
+				KGE_LOG("Response:\n", result.dump(4));
 			}
 			catch (std::exception&)
 			{
-				KGE_ERROR(L"Parse JSON failed!");
+				KGE_ERROR("Parse JSON failed!");
 			}
 		}
 		else
 		{
-			// ÇëÇóÊ§°ÜÊ±´òÓ¡´íÎóĞÅÏ¢
+			// è¯·æ±‚å¤±è´¥æ—¶æ‰“å°é”™è¯¯ä¿¡æ¯
 			OutputError(response);
 		}
 	}
 
 	void OutputError(HttpResponsePtr response)
 	{
-		// ´òÓ¡ HTTP ÏìÓ¦½á¹ûµÄ×´Ì¬ÂëºÍ´íÎóĞÅÏ¢
+		// æ‰“å° HTTP å“åº”ç»“æœçš„çŠ¶æ€ç å’Œé”™è¯¯ä¿¡æ¯
 		Json result = {
-				{L"HttpCode", response->GetResponseCode()},
-				{L"Error", response->GetError()},
+				{"HttpCode", response->GetResponseCode()},
+				{"Error", response->GetError()},
 		};
 
 		String result_str = result.dump(4);
-		KGE_ERROR(L"Response: %s\n", result_str.c_str());
+		KGE_ERROR("Response: %s\n", result_str.c_str());
 	}
 };

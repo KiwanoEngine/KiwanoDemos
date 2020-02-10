@@ -17,17 +17,14 @@ class ImGuiStage
 public:
 	ImGuiStage()
 	{
-		logo = new Sprite;
-		logo->Load(L"logo.png");
+		logo = Sprite::Create("logo.png");
 		logo->SetSize(160, 160);
 		logo->SetAnchor(0.5f, 0.5f);
 		logo->SetPosition(GetWidth() / 2, GetHeight() / 2);
 		AddChild(logo);
 
-		// ´´½¨ ImGui Í¼²ã
-		ImGuiLayerPtr layer = new ImGuiLayer;
-		// Ìí¼Ó¿ØÖÆÌ¨
-		layer->AddItem(L"ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
+		// åˆ›å»º ImGui å›¾å±‚
+		ImGuiLayerPtr layer = ImGuiLayer::Create("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
 		AddChild(layer);
 	}
 
@@ -82,13 +79,13 @@ public:
 
 		ImGui::End();
 
-		// ĞŞ¸Ä¿É¼ûĞÔ
+		// ä¿®æ”¹å¯è§æ€§
 		logo->SetVisible(visibility);
 
-		// ĞŞ¸ÄĞı×ª½Ç¶È
+		// ä¿®æ”¹æ—‹è½¬è§’åº¦
 		logo->SetRotation(rotation);
 
-		// ĞŞ¸Ä´°¿Ú±³¾°É«
-		Renderer::Instance().SetClearColor(clear_color);
+		// ä¿®æ”¹çª—å£èƒŒæ™¯è‰²
+		Renderer::GetInstance().SetClearColor(clear_color);
 	}
 };

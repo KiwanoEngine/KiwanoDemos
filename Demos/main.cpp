@@ -16,11 +16,11 @@ namespace
 	};
 
 	Demo s_Demos[] = {
-		{ L"¶¯»­Ê¾Àý", Demo1::Create },
-		{ L"ÊäÈëÊ¾Àý", Demo2::Create },
-		{ L"ÒôÆµ²¥·ÅÊ¾Àý", Demo3::Create },
-		{ L"Ö¡¶¯»­Ê¾Àý", Demo4::Create },
-		{ L"ÍøÂçÇëÇóÊ¾Àý", Demo5::Create },
+		{ "åŠ¨ç”»ç¤ºä¾‹", Demo1::Create },
+		{ "è¾“å…¥ç¤ºä¾‹", Demo2::Create },
+		{ "éŸ³é¢‘æ’­æ”¾ç¤ºä¾‹", Demo3::Create },
+		{ "å¸§åŠ¨ç”»ç¤ºä¾‹", Demo4::Create },
+		{ "ç½‘ç»œè¯·æ±‚ç¤ºä¾‹", Demo5::Create },
 	};
 	int s_CurrIndex = -1;
 	int s_DemoNum = sizeof(s_Demos) / sizeof(Demo);
@@ -32,25 +32,25 @@ class DemoApp
 public:
 	DemoApp()
 	{
-		// Ê¹ÓÃ Audio ×é¼þ
-		Use(&AudioEngine::Instance());
+		// ä½¿ç”¨ Audio ç»„ä»¶
+		Use(&AudioEngine::GetInstance());
 
-		// Ê¹ÓÃ HttpClient ×é¼þ
-		Use(&HttpClient::Instance());
+		// ä½¿ç”¨ HttpClient ç»„ä»¶
+		Use(&HttpClient::GetInstance());
 
-		// ´´½¨´°¿Ú
-		Window::Instance().Create(L"Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
+		// åˆ›å»ºçª—å£
+		Window::GetInstance().Create("Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
 	}
 
 	void OnReady() override
 	{
-		// ´Ó JSON ÎÄ¼þÖÐ¶ÁÈ¡×ÊÔ´ÐÅÏ¢
-		//ResourceCache::Instance().LoadFromJsonFile(L"res/index.json");
+		// ä»Ž JSON æ–‡ä»¶ä¸­è¯»å–èµ„æºä¿¡æ¯
+		//ResourceCache::GetInstance().LoadFromJsonFile("res/index.json");
 
-		// ´Ó XML ÎÄ¼þÖÐ¶ÁÈ¡×ÊÔ´ÐÅÏ¢
-		ResourceCache::Instance().LoadFromXmlFile(L"res/index.xml");
+		// ä»Ž XML æ–‡ä»¶ä¸­è¯»å–èµ„æºä¿¡æ¯
+		ResourceCache::GetInstance().LoadFromXmlFile("res/index.xml");
 
-		// ÇÐ»»µ½µÚÒ»¸öÎèÌ¨
+		// åˆ‡æ¢åˆ°ç¬¬ä¸€ä¸ªèˆžå°
 		ChangeDemoStage(0);
 	}
 
@@ -61,17 +61,17 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::Instance().SetTitle(L"KiwanoÊ¾Àý³ÌÐò - " + title);
+			Window::GetInstance().SetTitle("Kiwanoç¤ºä¾‹ç¨‹åº - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
-			Director::Instance().EnterStage(scene);
+			Director::GetInstance().EnterStage(scene);
 
-			// Ìí¼Ó°´¼ü¼àÌý
+			// æ·»åŠ æŒ‰é”®ç›‘å¬
 			scene->AddListener<KeyUpEvent>(Closure(this, &DemoApp::KeyPressed));
 
-			// ÏÔÊ¾ÌáÊ¾ÎÄ×Ö
-			String intro_str = String::format(L"°´¼ü 1~%d ¿ÉÇÐ»»Ê¾Àý\n", s_DemoNum);
-			TextActorPtr intro = new TextActor(intro_str + title);
+			// æ˜¾ç¤ºæç¤ºæ–‡å­—
+			String intro_str = String::format("æŒ‰é”® 1~%d å¯åˆ‡æ¢ç¤ºä¾‹\n", s_DemoNum);
+			TextActorPtr intro = TextActor::Create(intro_str + title);
 			intro->SetFillColor(Color::White);
 			intro->SetFontSize(16.f);
 			intro->SetPosition(10, 10);
@@ -81,8 +81,6 @@ public:
 
 	void KeyPressed(Event* evt)
 	{
-		KGE_ASSERT(evt->IsType<KeyUpEvent>());
-
 		KGE_ASSERT(evt->IsType<KeyUpEvent>());
 
 		auto key_evt = dynamic_cast<KeyUpEvent*>(evt);

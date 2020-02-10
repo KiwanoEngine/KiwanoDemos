@@ -23,13 +23,13 @@ class Demo3
 public:
 	Demo3();
 
-	// ½Ó´¥¿ªÊ¼
+	// æ¥è§¦å¼€å§‹
 	void OnContactBegin(Event* evt);
 
-	// ½Ó´¥½áÊø
+	// æ¥è§¦ç»“æŸ
 	void OnContactEnd(Event* evt);
 
-	// ÉèÖÃÎïÌåÑÕÉ«
+	// è®¾ç½®ç‰©ä½“é¢œè‰²
 	void SetBodyColor(physics::Body* body, const Color& color);
 
 	void OnKeyDown(Event* evt);
@@ -43,61 +43,62 @@ public:
 };
 
 
-// °´¼üÎÄ±¾
+// æŒ‰é”®æ–‡æœ¬
 class KeyText
 	: public TextActor
 {
 	physics::BodyPtr body_;
 
 public:
-	KeyText(physics::World* world, const Point& pos, WCHAR ch)
+	static KeyTextPtr Create(physics::World* world, const Point& pos, char ch)
 	{
-		// ÉèÖÃÎÄ±¾ÄÚÈİ¡¢×ÖºÅºÍÑÕÉ«
-		SetText(String(1, ch));
-		SetFillColor(Color::White);
-		SetFontFamily(L"Arial");
-		SetFontSize(35);
-		SetFontWeight(FontWeight::ExtraBold);
+		KeyTextPtr key = new KeyText;
 
-		// ÉèÖÃ×ø±êºÍÃªµã
-		SetAnchor(0.5f, 0.5f);
-		SetPosition(pos);
+		// è®¾ç½®æ–‡æœ¬å†…å®¹ã€å­—å·å’Œé¢œè‰²
+		key->SetText(String(1, ch));
+		key->SetFillColor(Color::White);
+		key->SetFontFamily("Arial");
+		key->SetFontSize(35);
+		key->SetFontWeight(FontWeight::ExtraBold);
 
-		// ¸üĞÂÎÄ±¾²¼¾Ö
-		UpdateLayout();
+		// è®¾ç½®åæ ‡å’Œé”šç‚¹
+		key->SetAnchor(0.5f, 0.5f);
+		key->SetPosition(pos);
 
-		// Ìí¼ÓÎïÀíÉíÌå
-		body_ = new physics::Body;
-		body_->InitBody(world, this);
-		body_->SetType(physics::Body::Type::Dynamic);
-		body_->AddBoxShape(GetSize(), 1.f);
+		// æ›´æ–°æ–‡æœ¬å¸ƒå±€
+		key->UpdateLayout();
 
-		// ¸øÉíÌåÒ»¸öËæ»úÊÜÁ¦
+		// æ·»åŠ ç‰©ç†èº«ä½“
+		physics::BodyPtr body = physics::Body::Create(world, key, physics::Body::Type::Dynamic);
+		body->AddRectShape(key->GetSize(), 1.f);
+
+		// ç»™èº«ä½“ä¸€ä¸ªéšæœºå—åŠ›
 		float neg = (math::Random(0, 1) == 0 ? -1.f : 1.f);
 		float h = neg * math::Random(min_h_force, max_h_force);
 		float v = -math::Random(min_v_force, max_v_force);
-		body_->ApplyForceToCenter(Vec2(h, v));
+		body->ApplyForceToCenter(Vec2(h, v));
+
+		key->body_ = body;
+		return key;
 	}
 };
 
 
 Demo3::Demo3()
 {
-	ground_ = new physics::Body;
-	ground_->InitBody(this, nullptr);
-	ground_->SetType(physics::Body::Type::Static);
+	ground_ = physics::Body::Create(this, nullptr, physics::Body::Type::Static);
 	ground_->SetBodyPosition(Point(GetWidth() / 2, GetHeight()));
-	ground_->AddBoxShape(Size(GetWidth(), 10));
+	ground_->AddRectShape(Size(GetWidth(), 10), 0.0f);
 
-	// °´¼ü¼àÌı
+	// æŒ‰é”®ç›‘å¬
 	AddListener<KeyDownEvent>(Closure(this, &Demo3::OnKeyDown));
 
-	// ½Ó´¥¼àÌı
+	// æ¥è§¦ç›‘å¬
 	AddListener<physics::ContactBeginEvent>(Closure(this, &Demo3::OnContactBegin));
 	AddListener<physics::ContactEndEvent>(Closure(this, &Demo3::OnContactEnd));
 
-	// Ìí¼ÓÎÄ±¾ËµÃ÷
-	TextActorPtr intro = new TextActor(L"°´ÈÎÒâ¼ü·¢ÉäÁ£×Ó£¡");
+	// æ·»åŠ æ–‡æœ¬è¯´æ˜
+	TextActorPtr intro = TextActor::Create("æŒ‰ä»»æ„é”®å‘å°„ç²’å­ï¼");
 	intro->SetFillColor(Color::White);
 	intro->SetAnchor(0.5f, 0.5f);
 	intro->SetPosition(GetWidth() / 2, GetHeight() - 100);
@@ -106,7 +107,7 @@ Demo3::Demo3()
 
 void Demo3::OnContactBegin(Event* evt)
 {
-	// Á½ÎïÌåÅö×²ºóÑÕÉ«±äÎªéÙºìÉ«
+	// ä¸¤ç‰©ä½“ç¢°æ’åé¢œè‰²å˜ä¸ºæ©˜çº¢è‰²
 	KGE_ASSERT(evt->IsType<physics::ContactBeginEvent>());
 	auto contact_evt = dynamic_cast<physics::ContactBeginEvent*>(evt);
 	SetBodyColor(contact_evt->contact.GetBodyA(), Color::OrangeRed);
@@ -115,7 +116,7 @@ void Demo3::OnContactBegin(Event* evt)
 
 void Demo3::OnContactEnd(Event* evt)
 {
-	// Á½ÎïÌåÅö×²½áÊøºóÑÕÉ«±ä»Ø°×É«
+	// ä¸¤ç‰©ä½“ç¢°æ’ç»“æŸåé¢œè‰²å˜å›ç™½è‰²
 	KGE_ASSERT(evt->IsType<physics::ContactEndEvent>());
 	auto contact_evt = dynamic_cast<physics::ContactEndEvent*>(evt);
 	SetBodyColor(contact_evt->contact.GetBodyA(), Color::White);
@@ -124,7 +125,7 @@ void Demo3::OnContactEnd(Event* evt)
 
 void Demo3::SetBodyColor(physics::Body* body, const Color& color)
 {
-	// Ö»´¦Àí¶¯Ì¬ÎïÌå
+	// åªå¤„ç†åŠ¨æ€ç‰©ä½“
 	if (body->GetType() == physics::Body::Type::Dynamic)
 	{
 		auto text = static_cast<TextActor*>(body->GetActor());
@@ -136,22 +137,22 @@ void Demo3::OnKeyDown(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<KeyDownEvent>());
 
-	// ´¦Àí A-Z ¼ü
+	// å¤„ç† A-Z é”®
 	auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
 	if (key_evt->code >= KeyCode::A && key_evt->code <= KeyCode::Z)
 	{
-		// ¼ÆËã×ÖÄ¸Öµ
-		wchar_t ch = wchar_t(key_evt->code) - wchar_t(KeyCode::A) + L'A';
-		// ÔÚÆÁÄ»µ×²¿´´½¨Ò»¸ö KeyText
+		// è®¡ç®—å­—æ¯å€¼
+		char ch = char(key_evt->code) - char(KeyCode::A) + 'A';
+		// åœ¨å±å¹•åº•éƒ¨åˆ›å»ºä¸€ä¸ª KeyText
 		Point pos(GetWidth() / 2, GetHeight() - 20);
-		KeyTextPtr key = new KeyText(this, pos, ch);
+		KeyTextPtr key = KeyText::Create(this, pos, ch);
 		AddChild(key);
 	}
 }
 
 void Demo3::OnUpdate(Duration dt)
 {
-	// ÒÆ³ıµôÂäµ½³¡¾°ÍâµÄÎïÌå
+	// ç§»é™¤æ‰è½åˆ°åœºæ™¯å¤–çš„ç‰©ä½“
 	Vector<ActorPtr> outed;
 	for (auto& child : GetAllChildren())
 	{

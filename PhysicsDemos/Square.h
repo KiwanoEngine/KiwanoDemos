@@ -9,24 +9,28 @@ class Square
 	, public physics::Body
 {
 public:
-	Square(physics::World* world, const Point& pos, const Size& size)
+	static SquarePtr Create(physics::World* world, const Point& pos, const Size& size)
 	{
-		// ÉèÖÃÐÎ×´¼°ÑÕÉ«
-		SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
-		SetFillColor(Color::Transparent);
-		SetStrokeColor(Color::White);
+		SquarePtr square = new Square;
 
-		// ÉèÖÃÎ»ÖÃºÍÃªµã
-		SetAnchor(0.5f, 0.5f);
-		SetPosition(pos);
-		SetSize(size);
+		// è®¾ç½®å½¢çŠ¶åŠé¢œè‰²
+		square->SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
+		square->SetFillColor(Color::Transparent);
+		square->SetStrokeColor(Color::White);
 
-		// ³õÊ¼»¯ÎïÀíÉíÌå
-		InitBody(world, this);
-		// ÉèÖÃÎïÀíÉíÌåÀàÐÍÎª¶¯Ì¬
-		SetType(physics::Body::Type::Dynamic);
-		// Ìí¼ÓÎïÀíÐÎ×´
-		AddBoxShape(GetSize(), 1.f);
+		// è®¾ç½®ä½ç½®å’Œé”šç‚¹
+		square->SetAnchor(0.5f, 0.5f);
+		square->SetPosition(pos);
+		square->SetSize(size);
+
+		// åˆå§‹åŒ–ç‰©ç†èº«ä½“
+		square->InitBody(world, square);
+		// è®¾ç½®ç‰©ç†èº«ä½“ç±»åž‹ä¸ºåŠ¨æ€
+		square->SetType(physics::Body::Type::Dynamic);
+		// æ·»åŠ ç‰©ç†å½¢çŠ¶
+		square->AddRectShape(square->GetSize(), 1.f);
+
+		return square;
 	}
 
 	physics::BodyPtr GetBody()

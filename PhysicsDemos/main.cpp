@@ -13,9 +13,9 @@ namespace
 	};
 
 	Demo s_Demos[] = {
-		{ L"¾²Ì¬Óë¶¯Ì¬ÎïÌå", Demo1::Create },
-		{ L"¹Ø½ÚÓëÔË¶¯", Demo2::Create },
-		{ L"½Ó´¥¼àÌý", Demo3::Create },
+		{ "é™æ€ä¸ŽåŠ¨æ€ç‰©ä½“", Demo1::Create },
+		{ "å…³èŠ‚ä¸Žè¿åŠ¨", Demo2::Create },
+		{ "æŽ¥è§¦ç›‘å¬", Demo3::Create },
 	};
 	int s_CurrIndex = -1;
 	int s_DemoNum = sizeof(s_Demos) / sizeof(Demo);
@@ -27,13 +27,13 @@ class DemoApp
 public:
 	DemoApp()
 	{
-		// ´´½¨´°¿Ú
-		Window::Instance().Create(L"Physics World", 1200, 900);
+		// åˆ›å»ºçª—å£
+		Window::GetInstance().Create("Physics World", 1200, 900);
 	}
 
 	void OnReady() override
 	{
-		// ÇÐ»»µ½µÚÒ»¸öÎèÌ¨
+		// åˆ‡æ¢åˆ°ç¬¬ä¸€ä¸ªèˆžå°
 		ChangeDemoStage(0);
 	}
 
@@ -44,17 +44,17 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::Instance().SetTitle(L"ÎïÀíÒýÇæÊ¾Àý - " + title);
+			Window::GetInstance().SetTitle("ç‰©ç†å¼•æ“Žç¤ºä¾‹ - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
-			Director::Instance().EnterStage(scene);
+			Director::GetInstance().EnterStage(scene);
 
-			// Ìí¼Ó°´¼ü¼àÌý
+			// æ·»åŠ æŒ‰é”®ç›‘å¬
 			scene->AddListener<KeyUpEvent>(Closure(this, &DemoApp::KeyPressed));
 
-			// ÏÔÊ¾ÌáÊ¾ÎÄ×Ö
-			String intro_str = String::format(L"°´¼ü 1~%d ¿ÉÇÐ»»Ê¾Àý\n", s_DemoNum);
-			TextActorPtr intro = new TextActor(intro_str + title);
+			// æ˜¾ç¤ºæç¤ºæ–‡å­—
+			String intro_str = String::format("æŒ‰é”® 1~%d å¯åˆ‡æ¢ç¤ºä¾‹\n", s_DemoNum);
+			TextActorPtr intro = TextActor::Create(intro_str + title);
 			intro->SetFillColor(Color::White);
 			intro->SetFontSize(16.f);
 			intro->SetPosition(10, 10);

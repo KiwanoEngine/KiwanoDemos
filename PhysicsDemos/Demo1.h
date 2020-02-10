@@ -15,64 +15,67 @@ public:
 
 	void OnUpdate(Duration dt) override;
 
-	// Êó±êµã»÷ÊÂ¼ş
+	// é¼ æ ‡ç‚¹å‡»äº‹ä»¶
 	void OnClick(Event* evt);
 
-	// Ìí¼Ó·½¿é
+	// æ·»åŠ æ–¹å—
 	void AddSquare(const Point& pos);
 
-	// Ìí¼ÓĞ¡Çò
+	// æ·»åŠ å°çƒ
 	void AddCircle(const Point& pos);
 
 	static inline StagePtr Create() { return new Demo1; }
 };
 
 
-// Ä¾°å
+// æœ¨æ¿
 class Board
 	: public RectActor
 {
 	physics::BodyPtr body_;
 
 public:
-	Board(physics::World* world, const Size& size, const Point& pos)
+	static BoardPtr Create(physics::World* world, const Size& size, const Point& pos)
 	{
-		// ÉèÖÃÏßÌõºÍÌî³äÑÕÉ«
+		BoardPtr board = new Board;
+
+		// è®¾ç½®çº¿æ¡å’Œå¡«å……é¢œè‰²
 		Color color = 0x868686;
-		SetStrokeColor(color);
-		SetFillColor(color);
+		board->SetStrokeColor(color);
+		board->SetFillColor(color);
 
-		// ÉèÖÃÄ¾°åµÄ´óĞ¡¡¢Î»ÖÃºÍĞı×ª½Ç¶È
-		SetRectSize(size);
-		SetAnchor(0.5f, 0.5f);
-		SetRotation(10);
-		SetPosition(pos);
+		// è®¾ç½®æœ¨æ¿çš„å¤§å°ã€ä½ç½®å’Œæ—‹è½¬è§’åº¦
+		board->SetRectSize(size);
+		board->SetAnchor(0.5f, 0.5f);
+		board->SetRotation(10);
+		board->SetPosition(pos);
 
-		body_ = new physics::Body;
-		body_->InitBody(world, this);
-		body_->SetType(physics::Body::Type::Static);
-		body_->AddBoxShape(GetSize());
+		physics::BodyPtr body = physics::Body::Create(world, board, physics::Body::Type::Static);
+		body->AddRectShape(board->GetSize(), 0.0f);
+
+		board->body_ = body;
+		return board;
 	}
 };
 
 
 Demo1::Demo1()
 {
-	// ÉèÖÃ¿ÉÏìÓ¦×´Ì¬, Ê¹ÎèÌ¨¿ÉÒÔ½ÓÊÕµ½Êó±êµã»÷ÏûÏ¢
+	// è®¾ç½®å¯å“åº”çŠ¶æ€, ä½¿èˆå°å¯ä»¥æ¥æ”¶åˆ°é¼ æ ‡ç‚¹å‡»æ¶ˆæ¯
 	SetResponsible(true);
 
-	// Ìí¼ÓÊó±êµã»÷¼àÌı
+	// æ·»åŠ é¼ æ ‡ç‚¹å‡»ç›‘å¬
 	AddListener<MouseClickEvent>(Closure(this, &Demo1::OnClick));
 
-	// Ìí¼ÓÒ»¿é¾²Ì¬Ä¾°å
-	BoardPtr board = new Board(this, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
+	// æ·»åŠ ä¸€å—é™æ€æœ¨æ¿
+	BoardPtr board = Board::Create(this, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
 	AddChild(board);
 
-	// Ìí¼ÓÒ»¸öĞ¡Çò
+	// æ·»åŠ ä¸€ä¸ªå°çƒ
 	AddCircle(Point(GetWidth() / 2, 200));
 
-	// Ìí¼ÓÎÄ±¾ËµÃ÷
-	TextActorPtr intro = new TextActor(L"µã»÷Êó±ê×óÓÒ¼ü´´½¨ÎïÌå");
+	// æ·»åŠ æ–‡æœ¬è¯´æ˜
+	TextActorPtr intro = TextActor::Create("ç‚¹å‡»é¼ æ ‡å·¦å³é”®åˆ›å»ºç‰©ä½“");
 	intro->SetFillColor(Color::White);
 	intro->SetAnchor(0.5f, 0.5f);
 	intro->SetPosition(GetWidth() / 2, GetHeight() / 2);
@@ -81,7 +84,7 @@ Demo1::Demo1()
 
 void Demo1::OnUpdate(Duration dt)
 {
-	// ÒÆ³ıµôÂäµ½³¡¾°ÍâµÄÎïÌå
+	// ç§»é™¤æ‰è½åˆ°åœºæ™¯å¤–çš„ç‰©ä½“
 	Vector<ActorPtr> outed;
 	for (auto& child : GetAllChildren())
 	{
@@ -101,7 +104,7 @@ void Demo1::OnClick(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<MouseClickEvent>());
 
-	// ×ó¼üÌí¼ÓÒ»¸öĞ¡Çò, ÓÒ¼üÌí¼ÓÒ»¸öºĞ×Ó
+	// å·¦é”®æ·»åŠ ä¸€ä¸ªå°çƒ, å³é”®æ·»åŠ ä¸€ä¸ªç›’å­
 	auto mouse_evt = dynamic_cast<MouseClickEvent*>(evt);
 	if (mouse_evt->button == MouseButton::Left)
 	{
@@ -115,12 +118,12 @@ void Demo1::OnClick(Event* evt)
 
 void Demo1::AddSquare(const Point& pos)
 {
-	SquarePtr rect = new Square(this, pos, Size(80, 80));
+	SquarePtr rect = Square::Create(this, pos, Size(80, 80));
 	AddChild(rect);
 }
 
 void Demo1::AddCircle(const Point& pos)
 {
-	CirclePtr circle = new Circle(this, pos, 50);
+	CirclePtr circle = Circle::Create(this, pos, 50);
 	AddChild(circle);
 }

@@ -14,39 +14,38 @@ public:
 
 	Demo1()
 	{
-		// »ñÈ¡ÈËÎïÍ¼Æ¬
-		FramePtr man_image = ResourceCache::Instance().Get<Frame>(L"man");
+		// ä»èµ„æºç¼“å­˜ä¸­è·å–äººç‰©å›¾ç‰‡
+		FramePtr man_image = ResourceCache::GetInstance().Get<Frame>("man");
 
-		// ´´½¨»º¶¯·½³ÌÁĞ±í
+		// åˆ›å»ºç¼“åŠ¨æ–¹ç¨‹åˆ—è¡¨
 		auto ease_functions = {
-			Ease::Linear,		// ÏßĞÔ±ä»¯
-			Ease::EaseInOut,	// ±ä»¯¹ı³ÌÖĞÓĞ»º³å
-			Ease::ExpoInOut,	// ÔÚ¿ªÊ¼ºÍ½áÊø½×¶Î·Ç³£Âı£¬µ«¹ı³Ì·Ç³£¿ì
-			Ease::BounceInOut,	// ÔÚ¿ªÊ¼ºÍ½áÊø½×¶Î¾ù¸³Óèµ¯ĞÔ
-			Ease::BackInOut		// ¿ªÊ¼ºÍ½áÊø½×¶Î¾ùÓĞÒ»¸ö¶ÌÔİµÄ·´·½ÏòÔË¶¯
+			Ease::Linear,		// çº¿æ€§å˜åŒ–
+			Ease::EaseInOut,	// å˜åŒ–è¿‡ç¨‹ä¸­æœ‰ç¼“å†²
+			Ease::ExpoInOut,	// åœ¨å¼€å§‹å’Œç»“æŸé˜¶æ®µéå¸¸æ…¢ï¼Œä½†è¿‡ç¨‹éå¸¸å¿«
+			Ease::BounceInOut,	// åœ¨å¼€å§‹å’Œç»“æŸé˜¶æ®µå‡èµ‹äºˆå¼¹æ€§
+			Ease::BackInOut		// å¼€å§‹å’Œç»“æŸé˜¶æ®µå‡æœ‰ä¸€ä¸ªçŸ­æš‚çš„åæ–¹å‘è¿åŠ¨
 		};
 
-		// ÎªÃ¿¸öÈËÎïÊ¹ÓÃ²»Í¬µÄ»º¶¯·½³ÌÖ´ĞĞ¶¯»­
+		// ä¸ºæ¯ä¸ªäººç‰©ä½¿ç”¨ä¸åŒçš„ç¼“åŠ¨æ–¹ç¨‹æ‰§è¡ŒåŠ¨ç”»
 		float height = 100.f;
 		for (auto& func : ease_functions)
 		{
-			// ³õÊ¼»¯ÈËÎï
-			SpritePtr man = new Sprite;
-			man->SetFrame(man_image);
+			// åˆå§‹åŒ–äººç‰©
+			SpritePtr man = Sprite::Create(man_image);
 			man->SetPosition(100, height);
 			man->SetScale(0.5f, 0.3f);
 			this->AddChild(man);
 
-			// ¶¯»­£º4 ÃëÄÚÏòÓÒÒÆ¶¯ 350 ÏñËØ£¬²¢ÉèÖÃ»º¶¯·½³Ì
+			// åŠ¨ç”»ï¼š4 ç§’å†…å‘å³ç§»åŠ¨ 350 åƒç´ ï¼Œå¹¶è®¾ç½®ç¼“åŠ¨æ–¹ç¨‹
 			auto move = Tween::MoveBy(4_sec, Point{ 350, 0 }).SetEaseFunc(func);
-			// ¶¯»­£ºÑÓ³Ù 1 Ãë
+			// åŠ¨ç”»ï¼šå»¶è¿Ÿ 1 ç§’
 			auto delay = Tween::Delay(1_sec);
-			// ¶¯»­£º×éºÏÇ°Á½¸ö¶¯»­£¬²¢Ñ­»·Ö´ĞĞ
+			// åŠ¨ç”»ï¼šç»„åˆå‰ä¸¤ä¸ªåŠ¨ç”»ï¼Œå¹¶å¾ªç¯æ‰§è¡Œ
 			auto group = Tween::Group({ move, delay }).SetLoops(-1);
-			// ¶¯»­½áÊøºó×Ô¶¯»Ö¸´ÈËÎïÎ»ÖÃ
+			// åŠ¨ç”»ç»“æŸåè‡ªåŠ¨æ¢å¤äººç‰©ä½ç½®
 			group.SetLoopDoneCallback([](Actor* target) { target->Move(-350, 0); });
 
-			// Ö´ĞĞ¶¯»­
+			// æ‰§è¡ŒåŠ¨ç”»
 			man->AddAction(group);
 
 			height += 60.f;

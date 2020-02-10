@@ -10,37 +10,39 @@ class Circle
 	physics::BodyPtr body_;
 
 public:
-	Circle(physics::World* world, const Point& pos, float radius)
+	static CirclePtr Create(physics::World* world, const Point& pos, float radius)
 	{
-		// Ê¹ÓÃÐÎ×´Éú³ÉÆ÷»æÖÆÔ²ÐÎ
+		CirclePtr circle = new Circle;
+
+		// ä½¿ç”¨å½¢çŠ¶ç”Ÿæˆå™¨ç»˜åˆ¶åœ†å½¢
 		ShapeSink sink;
-		// ´ÓÔ²ÐÄ¿ªÊ¼ÐÎ×´Â·¾¶
+		// ä»Žåœ†å¿ƒå¼€å§‹å½¢çŠ¶è·¯å¾„
 		sink.BeginPath(Point(radius, radius));
-		// Ìí¼Ó°ë¾¶Ïß
+		// æ·»åŠ åŠå¾„çº¿
 		sink.AddLine(Point(radius, 0));
-		// Ìí¼ÓÔ²ÐÎµÄÁ½¸öÔ²»¡
+		// æ·»åŠ åœ†å½¢çš„ä¸¤ä¸ªåœ†å¼§
 		sink.AddArc(Point(radius, 2 * radius), Size(radius, radius), 0.0f);
 		sink.AddArc(Point(radius, 0), Size(radius, radius), 0.0f);
-		// ½áÊøÐÎ×´Â·¾¶
+		// ç»“æŸå½¢çŠ¶è·¯å¾„
 		sink.EndPath();
 
-		// ÉèÖÃÐÎ×´¼°ÑÕÉ«
-		SetShape(sink.GetShape());
-		SetFillColor(Color::Transparent);
-		SetStrokeColor(Color::White);
+		// è®¾ç½®å½¢çŠ¶åŠé¢œè‰²
+		circle->SetShape(sink.GetShape());
+		circle->SetFillColor(Color::Transparent);
+		circle->SetStrokeColor(Color::White);
 
-		// ÉèÖÃÎ»ÖÃºÍÃªµã
-		SetAnchor(0.5f, 0.5f);
-		SetPosition(pos);
-		SetSize(Size(radius * 2, radius * 2));
+		// è®¾ç½®ä½ç½®å’Œé”šç‚¹
+		circle->SetAnchor(0.5f, 0.5f);
+		circle->SetPosition(pos);
+		circle->SetSize(Size(radius * 2, radius * 2));
 
-		// ´´½¨ÎïÀíÉíÌå
-		body_ = new physics::Body;
-		body_->InitBody(world, this);
-		// ÉèÖÃÎïÀíÉíÌåÀàÐÍÎª¶¯Ì¬
-		body_->SetType(physics::Body::Type::Dynamic);
-		// Ìí¼ÓÎïÀíÐÎ×´
-		body_->AddCircleShape(radius, 1.f);
+		// åˆ›å»ºç‰©ç†èº«ä½“
+		physics::BodyPtr body = physics::Body::Create(world, circle, physics::Body::Type::Dynamic);
+		// æ·»åŠ ç‰©ç†å½¢çŠ¶
+		body->AddCircleShape(radius, 1.f);
+
+		circle->body_ = body;
+		return circle;
 	}
 
 	physics::BodyPtr GetBody()
