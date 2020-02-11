@@ -4,26 +4,26 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Demo1.h">
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationDemo.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Demo2.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo3.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo4.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo5.h">
+    <ClInclude Include="AudioDemo.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="common.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>resources</Filter>
+    <ClInclude Include="EaseFunctionDemo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDemo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkDemo.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

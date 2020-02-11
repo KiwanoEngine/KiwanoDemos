@@ -3,7 +3,7 @@
 #pragma once
 #include "common.h"
 
-class Demo3
+class AudioDemo
 	: public Stage
 {
 	SoundPtr bgmusic;		// 音乐对象
@@ -13,10 +13,15 @@ class Demo3
 public:
 	static StagePtr Create()
 	{
-		return new Demo3;
+		return new AudioDemo;
 	}
 
-	Demo3()
+	static String DemoName()
+	{
+		return "Audio Demo";
+	}
+
+	AudioDemo()
 	{
 		// 加载音乐
 		bgmusic = Sound::Create("res/splash.mp3");

@@ -40,25 +40,25 @@ public:
 
 		ImGui::Checkbox("visibility", &visibility);
 
-		if (ImGui::Button(" < "))
+		if (ImGui::ArrowButton("left", ImGuiDir_Left))
 		{
 			logo->Move(-3.0f, 0.0f);
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button(" ^ "))
+		if (ImGui::ArrowButton("up", ImGuiDir_Up))
 		{
 			logo->Move(0.0f, -3.0f);
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button(" v "))
+		if (ImGui::ArrowButton("down", ImGuiDir_Down))
 		{
 			logo->Move(0.0f, 3.0f);
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button(" > "))
+		if (ImGui::ArrowButton("right", ImGuiDir_Right))
 		{
 			logo->Move(3.0f, 0.0f);
 		}

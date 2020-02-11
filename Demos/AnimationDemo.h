@@ -4,7 +4,7 @@
 #include "common.h"
 
 // 方向
-enum Direction
+enum class Direction
 {
 	Up,
 	Down,
@@ -33,13 +33,19 @@ public:
 	Tiger()
 	{
 		// 加载帧动画
-		run_frames = ResourceCache::GetInstance().Get<FrameSequence>("tiger_running");
-		stand_frames = ResourceCache::GetInstance().Get<FrameSequence>("tiger_standing");
+		run_frames = FrameSequence::Create({
+			Frame::Create("res/tiger/run/run01.png"),
+			Frame::Create("res/tiger/run/run02.png"),
+			Frame::Create("res/tiger/run/run03.png"),
+			Frame::Create("res/tiger/run/run04.png"),
+			Frame::Create("res/tiger/run/run05.png"),
+			Frame::Create("res/tiger/run/run06.png"),
+		});
+
+		stand_frames = FrameSequence::Create(Frame::Create("res/tiger/stand.png"), 3, 2);
 
 		// 执行动画
-		AddAction(
-			Tween::Animation(1_sec, stand_frames).SetLoops(-1)
-		);
+		StartStandAnimation();
 
 		// 添加按键监听
 		AddListener<KeyDownEvent>(Closure(this, &Tiger::OnKeyDown));
@@ -89,12 +95,9 @@ public:
 		if (!running)
 		{
 			running = true;
-			StopAllActions();
 
 			// 执行跑步动画
-			AddAction(
-				Tween::Animation(0.5_sec, run_frames).SetLoops(-1)
-			);
+			StartRunAnimation();
 		}
 
 		running_direction = d;
@@ -117,12 +120,9 @@ public:
 		if (running)
 		{
 			running = false;
-			StopAllActions();
 
 			// 执行站立动画
-			AddAction(
-				Tween::Animation(1_sec, stand_frames).SetLoops(-1)
-			);
+			StartStandAnimation();
 		}
 	}
 
@@ -153,18 +153,37 @@ public:
 			}
 		}
 	}
+
+	// 执行跑步动画
+	void StartRunAnimation()
+	{
+		StopAllActions();
+		AddAction(Tween::Animation(0.5_sec, run_frames).SetLoops(-1));
+	}
+
+	// 执行站立动画
+	void StartStandAnimation()
+	{
+		StopAllActions();
+		AddAction(Tween::Animation(1_sec, stand_frames).SetLoops(-1));
+	}
 };
 
-class Demo4
+class AnimationDemo
 	: public Stage
 {
 public:
 	static StagePtr Create()
 	{
-		return new Demo4;
+		return new AnimationDemo;
 	}
 
-	Demo4()
+	static String DemoName()
+	{
+		return "Animation Demo";
+	}
+
+	AnimationDemo()
 	{
 		// 创建背景
 		SpritePtr bg = Sprite::Create("res/spring_forest.jpg");

@@ -4,19 +4,24 @@
 #include "common.h"
 #include <iostream>
 
-class Demo5
+class NetworkDemo
 	: public Stage
 {
 public:
 	static StagePtr Create()
 	{
-		return new Demo5;
+		return new NetworkDemo;
 	}
 
-	Demo5()
+	static String DemoName()
+	{
+		return "Network Demo";
+	}
+
+	NetworkDemo()
 	{
 		// 添加按键监听
-		AddListener<KeyDownEvent>(Closure(this, &Demo5::OnKeyDown));
+		AddListener<KeyDownEvent>(Closure(this, &NetworkDemo::OnKeyDown));
 
 		// 创建说明文字
 		TextActorPtr intro = TextActor::Create("按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
@@ -74,7 +79,7 @@ public:
 		HttpRequestPtr request = HttpRequest::Create(
 			"http://httpbin.org/get",
 			HttpType::Get,
-			Closure(this, &Demo5::Complete)
+			Closure(this, &NetworkDemo::Complete)
 		);
 
 		// 发送 HTTP 请求
@@ -100,7 +105,7 @@ public:
 			"http://httpbin.org/post",
 			HttpType::Post,
 			request_data,
-			Closure(this, &Demo5::Complete)
+			Closure(this, &NetworkDemo::Complete)
 		);
 
 		HttpClient::GetInstance().Send(request);
@@ -118,7 +123,7 @@ public:
 			"http://httpbin.org/put",
 			HttpType::Put,
 			request_data,
-			Closure(this, &Demo5::Complete)
+			Closure(this, &NetworkDemo::Complete)
 		);
 
 		HttpClient::GetInstance().Send(request);
@@ -132,7 +137,7 @@ public:
 		HttpRequestPtr request = HttpRequest::Create(
 			"http://httpbin.org/delete",
 			HttpType::Delete,
-			Closure(this, &Demo5::Complete)
+			Closure(this, &NetworkDemo::Complete)
 		);
 
 		HttpClient::GetInstance().Send(request);

@@ -14,7 +14,7 @@ public:
 		HeroPtr hero = new Hero;
 
 		// 从资源缓存中获取GIF图像
-		GifImagePtr img = ResourceCache::GetInstance().Get<GifImage>("Kusanagi");
+		GifImagePtr img = GifImage::Create("res/Kusanagi.gif");
 
 		// 加载图片
 		if (hero->Load(img))
@@ -72,16 +72,21 @@ public:
 	}
 };
 
-class Demo2
+class InputDemo
 	: public Stage
 {
 public:
 	static StagePtr Create()
 	{
-		return new Demo2;
+		return new InputDemo;
 	}
 
-	Demo2()
+	static String DemoName()
+	{
+		return "Input Demo";
+	}
+
+	InputDemo()
 	{
 		// 创建角色
 		HeroPtr hero = Hero::Create();
