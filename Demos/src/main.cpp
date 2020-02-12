@@ -1,6 +1,8 @@
 // Copyright (C) 2019 Nomango
 
-#include "EaseFunctionDemo.h"
+#include "TextDemo.h"
+#include "EaseActionDemo.h"
+#include "ButtonDemo.h"
 #include "InputDemo.h"
 #include "AudioDemo.h"
 #include "AnimationDemo.h"
@@ -16,7 +18,9 @@ struct Demo
 #define DECLARE_DEMO(DEMO_NAME) { DEMO_NAME::DemoName(), DEMO_NAME::Create }
 
 Demo s_Demos[] = {
-	DECLARE_DEMO(EaseFunctionDemo),
+	DECLARE_DEMO(EaseActionDemo),
+	DECLARE_DEMO(TextDemo),
+	DECLARE_DEMO(ButtonDemo),
 	DECLARE_DEMO(InputDemo),
 	DECLARE_DEMO(AudioDemo),
 	DECLARE_DEMO(AnimationDemo),
@@ -66,7 +70,7 @@ public:
 	void ControlPanel()
 	{
 		ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(0, 200), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(170, 200), ImGuiCond_FirstUseEver);
 
 		ImGui::Begin("Select demos", nullptr, ImGuiWindowFlags_NoSavedSettings);
 

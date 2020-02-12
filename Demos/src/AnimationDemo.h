@@ -34,15 +34,15 @@ public:
 	{
 		// 加载帧动画
 		run_frames = FrameSequence::Create({
-			Frame::Create("res/tiger/run/run01.png"),
-			Frame::Create("res/tiger/run/run02.png"),
-			Frame::Create("res/tiger/run/run03.png"),
-			Frame::Create("res/tiger/run/run04.png"),
-			Frame::Create("res/tiger/run/run05.png"),
-			Frame::Create("res/tiger/run/run06.png"),
+			Frame::Create("res/images/tiger/run/run01.png"),
+			Frame::Create("res/images/tiger/run/run02.png"),
+			Frame::Create("res/images/tiger/run/run03.png"),
+			Frame::Create("res/images/tiger/run/run04.png"),
+			Frame::Create("res/images/tiger/run/run05.png"),
+			Frame::Create("res/images/tiger/run/run06.png"),
 		});
 
-		stand_frames = FrameSequence::Create(Frame::Create("res/tiger/stand.png"), 3, 2);
+		stand_frames = FrameSequence::Create(Frame::Create("res/images/tiger/stand.png"), 3, 2);
 
 		// 执行动画
 		StartStandAnimation();
@@ -186,7 +186,7 @@ public:
 	AnimationDemo()
 	{
 		// 创建背景
-		SpritePtr bg = Sprite::Create("res/spring_forest.jpg");
+		SpritePtr bg = Sprite::Create("res/images/spring_forest.jpg");
 		bg->SetSize(GetSize());
 
 		// 创建老虎

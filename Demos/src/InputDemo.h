@@ -14,7 +14,7 @@ public:
 		HeroPtr hero = new Hero;
 
 		// 从资源缓存中获取GIF图像
-		GifImagePtr img = GifImage::Create("res/Kusanagi.gif");
+		GifImagePtr img = GifImage::Create("res/images/Kusanagi.gif");
 
 		// 加载图片
 		if (hero->Load(img))

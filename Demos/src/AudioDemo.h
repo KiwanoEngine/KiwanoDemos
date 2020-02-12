@@ -24,7 +24,7 @@ public:
 	AudioDemo()
 	{
 		// 加载音乐
-		bgmusic = Sound::Create("res/splash.mp3");
+		bgmusic = Sound::Create("res/sounds/splash.mp3");
 
 		// 播放音乐（参数用来设置播放循环次数，-1 表示循环播放）
 		bgmusic->Play(-1);

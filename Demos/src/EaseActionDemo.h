@@ -3,24 +3,24 @@
 #pragma once
 #include "common.h"
 
-class EaseFunctionDemo
+class EaseActionDemo
 	: public Stage
 {
 public:
 	static StagePtr Create()
 	{
-		return new EaseFunctionDemo;
+		return new EaseActionDemo;
 	}
 
 	static String DemoName()
 	{
-		return "Ease Function Demo";
+		return "Ease Action Demo";
 	}
 
-	EaseFunctionDemo()
+	EaseActionDemo()
 	{
 		// 从资源缓存中获取人物图片
-		FramePtr man_image = Frame::Create("res/man.png");
+		FramePtr man_image = Frame::Create("res/images/man.png");
 
 		// 创建缓动方程列表
 		auto ease_functions = {
