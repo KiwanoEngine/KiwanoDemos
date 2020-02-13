@@ -105,7 +105,7 @@ public:
 	void ShowGroup(const Point& position)
 	{
 		// 使用Tween辅助工具创建组合动画
-		auto group = Tween::Group(
+		ActionPtr group = Tween::Group(
 			{
 				Tween::Group({ Tween::ScaleTo(0.3_sec, 0.5f, 0.5f), Tween::ScaleTo(0.7_sec, 1.0f, 1.0f) }),
 				Tween::Group({ Tween::FadeTo(0.5_sec, 0.3f), Tween::FadeIn(0.5_sec) })
