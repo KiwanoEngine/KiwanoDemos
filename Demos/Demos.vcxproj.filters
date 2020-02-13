@@ -52,6 +52,12 @@
     <ClInclude Include="src\EaseActionDemo.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\ShapeDemo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ActionDemo.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

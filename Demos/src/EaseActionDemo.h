@@ -31,29 +31,50 @@ public:
 			Ease::BackInOut		// 开始和结束阶段均有一个短暂的反方向运动
 		};
 
+		auto ease_names = {
+			"Linear",
+			"EaseInOut",
+			"ExpoInOut",
+			"BounceInOut",
+			"BackInOut",
+		};
+
 		// 为每个人物使用不同的缓动方程执行动画
-		float height = 100.f;
-		for (auto& func : ease_functions)
+		float height = 80.f;
+		for (size_t i = 0; i < ease_functions.size(); ++i)
 		{
-			// 初始化人物
-			SpritePtr man = Sprite::Create(man_image);
-			man->SetPosition(100, height);
-			man->SetScale(0.5f, 0.3f);
-			this->AddChild(man);
+			// 缓动动画
+			EaseFunc func = *(ease_functions.begin() + i);
+			// 缓动动画名称
+			String name = *(ease_names.begin() + i);
 
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			auto move = Tween::MoveBy(4_sec, Point{ 350, 0 }).SetEaseFunc(func);
+			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(func);
 			// 动画：延迟 1 秒
 			auto delay = Tween::Delay(1_sec);
 			// 动画：组合前两个动画，并循环执行
 			auto group = Tween::Group({ move, delay }).SetLoops(-1);
 			// 动画结束后自动恢复人物位置
-			group.SetLoopDoneCallback([](Actor* target) { target->Move(-350, 0); });
+			group.SetLoopDoneCallback([](Actor* target) { target->Move(-300, 0); });
 
+			// 初始化人物
+			SpritePtr man = Sprite::Create(man_image);
+			man->SetPosition(200, height);
+			man->SetAnchor(0.5f, 0.5f);
 			// 执行动画
 			man->AddAction(group);
 
-			height += 60.f;
+			// 添加提示文字
+			TextActorPtr label = TextActor::Create(name);
+			label->SetFillColor(Color::White);
+			label->SetFontSize(16.0f);
+			label->SetPosition(man->GetPositionX() - 150.0f, man->GetPositionY());
+			label->SetAnchor(0, 0.5f);
+
+			this->AddChild(label);
+			this->AddChild(man);
+
+			height += 80.f;
 		}
 	}
 };
