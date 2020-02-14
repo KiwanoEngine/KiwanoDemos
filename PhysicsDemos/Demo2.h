@@ -112,19 +112,18 @@ public:
 	{
 		CarPtr car = new Car;
 
-		// 创建小车躯干
-		ShapeActorPtr chassis = ShapeActor::Create();
-		chassis->SetPosition(pos + Point(0, -100));
-
-		// 小车躯干点
+		// 小车躯干形状顶点
 		Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
 
+		// 生成小车形状
 		ShapeSink sink;
 		sink.BeginPath(vertices[0]);
 		sink.AddLines(vertices);
 		sink.EndPath(true);
 
-		chassis->SetShape(sink.GetShape());
+		// 创建小车躯干
+		ShapeActorPtr chassis = ShapeActor::Create(sink.GetShape());
+		chassis->SetPosition(pos + Point(0, -100));
 		chassis->SetFillColor(Color::Transparent);
 		chassis->SetStrokeColor(Color::White);
 

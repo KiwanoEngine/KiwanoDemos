@@ -30,32 +30,25 @@ public:
 	}
 };
 
-class HelloWorldApp
-	: public Application
+void Startup()
 {
-public:
-	void OnReady() override
-	{
-		// 创建舞台
-		StagePtr scene = new HelloWorld;
+	// 创建舞台
+	StagePtr scene = new HelloWorld;
 
-		// 进入舞台
-		Director::GetInstance().EnterStage(scene);
-	}
-};
+	// 进入舞台
+	Director::GetInstance().EnterStage(scene);
+}
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
-	// 创建窗口
-	Window::GetInstance().Create("Hello World", 640, 480);
-
 	// 设置背景色
 	Renderer::GetInstance().SetClearColor(Color(0xE5E5E5));
 
-	// 创建程序实例
-	HelloWorldApp app;
+	// 创建窗口
+	WindowPtr window = Window::Create("Hello World", 640, 480);
 
 	// 运行
-	app.Run();
+	RunnerPtr runner = Runner::Create(window, Startup);
+	Application::GetInstance().Run(runner);
 	return 0;
 }

@@ -21,14 +21,16 @@ namespace
 	int s_DemoNum = sizeof(s_Demos) / sizeof(Demo);
 }
 
-class DemoApp
-	: public Application
+KGE_DECLARE_SMART_PTR(DemoRunner);
+class DemoRunner
+	: public Runner
 {
 public:
-	DemoApp()
+	DemoRunner()
 	{
 		// 创建窗口
-		Window::GetInstance().Create("Physics World", 1200, 900);
+		WindowPtr window = Window::Create("Physics World", 1200, 900);
+		SetMainWindow(window);
 	}
 
 	void OnReady() override
@@ -44,13 +46,13 @@ public:
 			s_CurrIndex = index;
 
 			String title = s_Demos[index].title;
-			Window::GetInstance().SetTitle("物理引擎示例 - " + title);
+			Application::GetInstance().GetMainWindow()->SetTitle("物理引擎示例 - " + title);
 
 			StagePtr scene = s_Demos[index].Create();
 			Director::GetInstance().EnterStage(scene);
 
 			// 添加按键监听
-			scene->AddListener<KeyUpEvent>(Closure(this, &DemoApp::KeyPressed));
+			scene->AddListener<KeyUpEvent>(Closure(this, &DemoRunner::KeyPressed));
 
 			// 显示提示文字
 			String intro_str = String::format("按键 1~%d 可切换示例\n", s_DemoNum);
@@ -80,8 +82,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	try
 	{
-		DemoApp app;
-		app.Run();
+		DemoRunnerPtr runner = new DemoRunner;
+		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception & e)
 	{

@@ -4,32 +4,25 @@
 
 using namespace kiwano;
 
-class ImGuiApp
-	: public Application
+void Startup()
 {
-public:
-	ImGuiApp()
-	{
-		// 添加 ImGui 组件
-		Use(&ImGuiModule::GetInstance());
-
-		// 创建窗口
-		Window::GetInstance().Create("ImGui Demo", 800, 600);
-	}
-
-	void OnReady() override
-	{
-		ImGuiStagePtr scene = new ImGuiStage;
-		Director::GetInstance().EnterStage(scene);
-	}
-};
+	ImGuiStagePtr scene = new ImGuiStage;
+	Director::GetInstance().EnterStage(scene);
+}
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	try
 	{
-		ImGuiApp app;
-		app.Run();
+		// 添加 ImGui 模块
+		Application::GetInstance().Use(ImGuiModule::GetInstance());
+
+		// 创建窗口
+		WindowPtr window = Window::Create("ImGui Demo", 800, 600);
+
+		// 运行
+		RunnerPtr runner = Runner::Create(window, Startup);
+		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception& e)
 	{

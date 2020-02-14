@@ -31,23 +31,25 @@ Demo s_Demos[] = {
 	DECLARE_DEMO(NetworkDemo),
 };
 
-class DemoApp
-	: public Application
+KGE_DECLARE_SMART_PTR(DemoRunner);
+class DemoRunner
+	: public Runner
 {
 public:
-	DemoApp()
+	DemoRunner()
 	{
-		// 使用 Audio 组件
-		Use(&AudioEngine::GetInstance());
+		// 使用 Audio 模块
+		Application::GetInstance().Use(AudioModule::GetInstance());
 
-		// 使用 HttpClient 组件
-		Use(&HttpClient::GetInstance());
+		// 使用 HttpClient 模块
+		Application::GetInstance().Use(HttpModule::GetInstance());
 
-		// 使用 ImGui 组件
-		Use(&ImGuiModule::GetInstance());
+		// 使用 ImGui 模块
+		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
 		// 创建窗口
-		Window::GetInstance().Create("Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
+		WindowPtr window = Window::Create("Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
+		SetMainWindow(window);
 	}
 
 	void OnReady() override
@@ -60,14 +62,14 @@ public:
 	{
 		// 修改窗口标题
 		String title = demo.title;
-		Window::GetInstance().SetTitle("Kiwano Demo - " + title);
+		Application::GetInstance().GetMainWindow()->SetTitle("Kiwano Demo - " + title);
 
 		// 创建舞台
 		StagePtr scene = demo.Create();
 		Director::GetInstance().EnterStage(scene);
 
 		// 创建GUI控制面板
-		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoApp::ControlPanel));
+		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}
 
@@ -95,8 +97,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	try
 	{
-		DemoApp app;
-		app.Run();
+		DemoRunnerPtr runner = new DemoRunner;
+		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception& e)
 	{

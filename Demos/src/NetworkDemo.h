@@ -83,7 +83,7 @@ public:
 		);
 
 		// 发送 HTTP 请求
-		HttpClient::GetInstance().Send(request);
+		HttpModule::GetInstance().Send(request);
 	}
 
 	void SendPostRequest()
@@ -108,7 +108,7 @@ public:
 			Closure(this, &NetworkDemo::Complete)
 		);
 
-		HttpClient::GetInstance().Send(request);
+		HttpModule::GetInstance().Send(request);
 	}
 
 	void SendPutRequest()
@@ -126,7 +126,7 @@ public:
 			Closure(this, &NetworkDemo::Complete)
 		);
 
-		HttpClient::GetInstance().Send(request);
+		HttpModule::GetInstance().Send(request);
 	}
 
 	void SendDeleteRequest()
@@ -140,7 +140,7 @@ public:
 			Closure(this, &NetworkDemo::Complete)
 		);
 
-		HttpClient::GetInstance().Send(request);
+		HttpModule::GetInstance().Send(request);
 	}
 
 	void Complete(HttpRequestPtr request, HttpResponsePtr response)
