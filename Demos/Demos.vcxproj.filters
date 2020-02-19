@@ -7,6 +7,9 @@
     <Filter Include="resources">
       <UniqueIdentifier>{04b65e7e-f0ce-4b83-a73e-501913daf790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\demos">
+      <UniqueIdentifier>{086a42c6-0ba3-4871-912f-6f475949b9b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\index.xml">
@@ -28,35 +31,35 @@
     <ClInclude Include="src\resource.h">
       <Filter>resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\AnimationDemo.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AudioDemo.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ButtonDemo.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\common.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\InputDemo.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\ActionDemo.h">
+      <Filter>src\demos</Filter>
     </ClInclude>
-    <ClInclude Include="src\NetworkDemo.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\AnimationDemo.h">
+      <Filter>src\demos</Filter>
     </ClInclude>
-    <ClInclude Include="src\TextDemo.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\AudioDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ButtonDemo.h">
+      <Filter>src\demos</Filter>
     </ClInclude>
     <ClInclude Include="src\EaseActionDemo.h">
-      <Filter>src</Filter>
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NetworkDemo.h">
+      <Filter>src\demos</Filter>
     </ClInclude>
     <ClInclude Include="src\ShapeDemo.h">
-      <Filter>src</Filter>
+      <Filter>src\demos</Filter>
     </ClInclude>
-    <ClInclude Include="src\ActionDemo.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\TextDemo.h">
+      <Filter>src\demos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

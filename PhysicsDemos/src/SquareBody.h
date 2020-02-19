@@ -6,10 +6,9 @@
 KGE_DECLARE_SMART_PTR(Square);
 class Square
 	: public ShapeActor
-	, public physics::Body
 {
 public:
-	static SquarePtr Create(physics::World* world, const Point& pos, const Size& size)
+	static SquarePtr Create(PhysicWorldPtr world, const Point& pos, const Size& size)
 	{
 		SquarePtr square = new Square;
 
@@ -23,18 +22,20 @@ public:
 		square->SetPosition(pos);
 		square->SetSize(size);
 
-		// 初始化物理身体
-		square->InitBody(world, square);
-		// 设置物理身体类型为动态
-		square->SetType(physics::Body::Type::Dynamic);
+		// 创建物理身体
+		square->body_ = PhysicBody::Create(square, PhysicBody::Type::Dynamic);
 		// 添加物理形状
-		square->AddRectShape(square->GetSize(), 1.f);
-
+		square->body_->AddRectShape(square->GetSize(), 1.f);
+		// 将物体添加到物理世界
+		world->AddBody(square->body_);
 		return square;
 	}
 
-	physics::BodyPtr GetBody()
+	PhysicBodyPtr GetBody()
 	{
-		return this;
+		return body_;
 	}
+
+private:
+	PhysicBodyPtr body_;
 };

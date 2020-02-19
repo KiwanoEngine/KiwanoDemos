@@ -64,7 +64,7 @@ public:
 		bool playing = bgmusic->IsPlaying();
 
 		// 修改文本
-		volume_text->SetText("当前音量：" + String::parse(volume));
+		volume_text->SetText("当前音量：" + std::to_string(volume));
 		state_text->SetText(playing ? "当前状态：正在播放" : "当前状态：停止播放");
 
 		// 获取输入设备

@@ -97,14 +97,14 @@ public:
 		float side = 45.f;
 
 		// 使用形状生成器创建三角形三条边
-		ShapeSink sink;
-		sink.BeginPath(Point(0, 0));
-		sink.AddLine(Point(side, 0));
-		sink.AddLine(Point(side / 2, side * math::Cos(30.0f)));
-		sink.EndPath(true);
+		ShapeMakerPtr maker = ShapeMaker::Create();
+		maker->BeginPath(Point(0, 0));
+		maker->AddLine(Point(side, 0));
+		maker->AddLine(Point(side / 2, side * math::Cos(30.0f)));
+		maker->EndPath(true);
 
 		// 获取生成的形状
-		ShapePtr shape = sink.GetShape();
+		ShapePtr shape = maker->GetShape();
 		// 创建形状角色
 		ShapeActorPtr triangle = ShapeActor::Create(shape);
 		return triangle;
@@ -118,7 +118,7 @@ public:
 		// 设置形状轮廓颜色
 		shape->SetStrokeColor(Color(Color::Blue, 0.8f));
 		// 加宽形状轮廓宽度
-		shape->SetStrokeWidth(1.3f);
+		shape->SetStrokeStyle(StrokeStyle::Create(1.3f));
 
 		// 添加动画
 		shape->AddAction(Tween::MoveTo(4_sec, Point(position.x, -50)).RemoveTargetWhenDone());

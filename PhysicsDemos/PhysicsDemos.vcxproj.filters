@@ -1,34 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="common.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo1.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo2.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Square.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo3.h">
-      <Filter>src</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="src">
       <UniqueIdentifier>{bb9e197f-36e8-4110-bf55-15ebca9754e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\demos">
+      <UniqueIdentifier>{d077973d-f9c2-410d-aa92-86c12b2a84d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\bodies">
+      <UniqueIdentifier>{76172d54-38ac-4433-950d-ae2d7f18dc0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicJointDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicContactDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicBodyDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SquareBody.h">
+      <Filter>src\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CircleBody.h">
+      <Filter>src\bodies</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

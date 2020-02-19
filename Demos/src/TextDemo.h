@@ -53,46 +53,47 @@ public:
 
 	TextActorPtr CreateTextWithOutline()
 	{
-		TextActorPtr text = TextActor::Create("A text with outline");
-		text->SetFillColor(Color::White);
-
 		// 设置文字描边颜色和宽度
-		text->SetOutlineColor(Color::BlueViolet);
-		text->SetOutlineWidth(2.0f);
+		TextStyle style;
+		style.outline_brush = Brush::Create(Color::BlueViolet);
+		style.outline_stroke = StrokeStyle::Create(3.0f);
+
+		TextActorPtr text = TextActor::Create("A text with outline", style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateTextWithBoldStyle()
 	{
-		TextActorPtr text = TextActor::Create("A text with bold style");
-		text->SetFillColor(Color::White);
-
 		// 设置字体宽度
-		text->SetFontWeight(FontWeight::Bold);
+		TextStyle style;
+		style.font_weight = FontWeight::Bold;
+
+		TextActorPtr text = TextActor::Create("A text with bold style", style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateTextWithUnderlineAndStrikethrough()
 	{
-		TextActorPtr text = TextActor::Create("A text with underline and strikethough");
-		text->SetFillColor(Color::White);
-
 		// 设置下划线和删除线
-		text->SetUnderline(true);
-		text->SetStrikethrough(true);
+		TextStyle style;
+		style.show_underline = true;
+		style.show_strikethrough = true;
+
+		TextActorPtr text = TextActor::Create("A text with underline and strikethough", style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateTextWithCustomBrush()
 	{
-		TextActorPtr text = TextActor::Create("A text with custom brush");
-
+		TextStyle style;
 		// 加粗字体和加宽轮廓
-		text->SetFontWeight(FontWeight::Bold);
-		text->SetOutlineWidth(2.0f);
+		style.font_weight = FontWeight::Bold;
+		style.outline_stroke = StrokeStyle::Create(3.0f);
 
-		// 手动更新文本布局
-		text->UpdateLayout();
+		TextActorPtr text = TextActor::Create("A text with custom brush", style);
 
 		// 创建线性渐变样式
 		LinearGradientStyle fill_style = LinearGradientStyle(
@@ -122,35 +123,36 @@ public:
 
 	TextActorPtr CreateTextWithSystemFont()
 	{
-		TextActorPtr text = TextActor::Create("A text with system font");
-		text->SetFillColor(Color::White);
-
 		// 设置字体族
-		text->SetFontFamily("Times New Roman");
+		TextStyle style;
+		style.font_family = "Times New Roman";
+
+		TextActorPtr text = TextActor::Create("A text with system font", style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateTextWithCustomFont()
 	{
-		TextActorPtr text = TextActor::Create("A text with custom font");
-		text->SetFillColor(Color::White);
-
 		// 加载字体文件
-		FontPtr font = Font::Create("res/fonts/Gothica-Book.ttf");
-		text->SetFont(font);
-		text->SetFontFamily("Gothica");
+		TextStyle style;
+		style.font = Font::Create("res/fonts/Gothica-Book.ttf");
+		style.font_family = "Gothica";
+
+		TextActorPtr text = TextActor::Create("A text with custom font", style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateMultipleLinesText()
 	{
-		TextActorPtr text = TextActor::Create("MULTIPLE LINES TEXT\nMULTIPLE LINES TEXT LONGER\nMULTIPLE LINES TEXT");
-		text->SetFillColor(Color::White);
-
-		// 设置行间距
-		text->SetLineSpacing(0.0f);
+		TextStyle style;
 		// 设置多行文本居中
-		text->SetAlignment(TextAlign::Center);
+		style.alignment = TextAlign::Center;
+
+		String content = "MULTIPLE LINES TEXT\nMULTIPLE LINES TEXT LONGER\nMULTIPLE LINES TEXT";
+		TextActorPtr text = TextActor::Create(content, style);
+		text->SetFillColor(Color::White);
 		return text;
 	}
 };

@@ -23,7 +23,7 @@ public:
 		FramePtr man_image = Frame::Create("res/images/man.png");
 
 		// 创建缓动方程列表
-		auto ease_functions = {
+		EaseFunc ease_functions[] = {
 			Ease::Linear,		// 线性变化
 			Ease::EaseInOut,	// 变化过程中有缓冲
 			Ease::ExpoInOut,	// 在开始和结束阶段非常慢，但过程非常快
@@ -31,7 +31,7 @@ public:
 			Ease::BackInOut		// 开始和结束阶段均有一个短暂的反方向运动
 		};
 
-		auto ease_names = {
+		String ease_names[] = {
 			"Linear",
 			"EaseInOut",
 			"ExpoInOut",
@@ -41,15 +41,10 @@ public:
 
 		// 为每个人物使用不同的缓动方程执行动画
 		float height = 80.f;
-		for (size_t i = 0; i < ease_functions.size(); ++i)
+		for (size_t i = 0; i < std::size(ease_functions); ++i)
 		{
-			// 缓动动画
-			EaseFunc func = *(ease_functions.begin() + i);
-			// 缓动动画名称
-			String name = *(ease_names.begin() + i);
-
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(func);
+			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(ease_functions[i]);
 			// 动画：延迟 1 秒
 			auto delay = Tween::Delay(1_sec);
 			// 动画：组合前两个动画，并循环执行
@@ -65,7 +60,7 @@ public:
 			man->AddAction(group);
 
 			// 添加提示文字
-			TextActorPtr label = TextActor::Create(name);
+			TextActorPtr label = TextActor::Create(ease_names[i]);
 			label->SetFillColor(Color::White);
 			label->SetFontSize(16.0f);
 			label->SetPosition(man->GetPositionX() - 150.0f, man->GetPositionY());

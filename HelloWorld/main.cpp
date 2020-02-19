@@ -11,10 +11,7 @@ public:
 	HelloWorld()
 	{
 		// 创建图片精灵
-		SpritePtr sprite = new Sprite;
-
-		// 加载图片
-		sprite->Load("../logo/logo_text.png");
+		SpritePtr sprite = Sprite::Create("logo.png");
 
 		// 修改精灵位置, 使精灵在屏幕上居中
 		sprite->SetPosition(640 / 2, 480 / 2);
@@ -47,8 +44,10 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	// 创建窗口
 	WindowPtr window = Window::Create("Hello World", 640, 480);
 
-	// 运行
+	// 创建运行器
 	RunnerPtr runner = Runner::Create(window, Startup);
+
+	// 运行
 	Application::GetInstance().Run(runner);
 	return 0;
 }

@@ -29,78 +29,80 @@ public:
 	void AddSpriteButton()
 	{
 		// 加载按钮图片
-		FramePtr button_frame = Frame::Create("res/images/buttons.png");
-		float button_width = button_frame->GetWidth();
-		float button_height = button_frame->GetHeight();
+		FramePtr frame = Frame::Create("res/images/buttons.png");
+		// 按钮关闭和打开时的裁剪矩形
+		Rect closed = Rect(Point(0, frame->GetHeight() / 2), Point(frame->GetWidth(), frame->GetHeight()));
+		Rect opened = Rect(Point(), Point(frame->GetWidth(), frame->GetHeight() / 2));
 
-		FramePtr closed = Frame::Create(button_frame->GetTexture());
-		closed->SetCropRect(Rect(Point(0, button_height / 2), Point(button_width, button_height)));
-
-		FramePtr opened = Frame::Create(button_frame->GetTexture());
-		opened->SetCropRect(Rect(Point(), Point(button_width, button_height / 2)));
+		// 创建精灵
+		SpritePtr sprite = Sprite::Create(frame);
+		sprite->SetSize(100, 50);
+		sprite->SetAnchor(0.5f, 0.5f);
+		sprite->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 - 50);
+		sprite->SetCropRect(closed);
+		this->AddChild(sprite);
 
 		// 创建点击按钮后的回调函数
-		auto click = [=](Button* button)
+		auto click = [=](Button*, Actor* target)
 		{
 			static bool is_opened = false;
 
 			// 强制转换为精灵按钮
-			SpriteButton* self = (SpriteButton*)button;
+			Sprite* sprite = (Sprite*)target;
 			// 重新设置按钮的打开和关闭状态
 			is_opened = !is_opened;
-			self->SetFrame(is_opened ? opened : closed, false);
+			sprite->SetCropRect(is_opened ? opened : closed);
 		};
 
-		// 创建精灵按钮
-		SpriteButtonPtr button = SpriteButton::Create(click);
-		button->SetFrame(closed);
-		button->SetSize(100, 50);
-		button->SetAnchor(0.5f, 0.5f);
-		button->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 - 50);
-		this->AddChild(button);
+		// 创建按钮
+		ButtonPtr button = Button::Create(click);
+		sprite->AddComponent(button);
 	}
 
 	void AddTextButton()
 	{
+		// 创建文字角色
+		TextActorPtr text = TextActor::Create("Click Me");
+		text->SetFillColor(Color::White);
+		text->SetFontWeight(FontWeight::Bold);
+		text->SetAnchor(0.5f, 0.5f);
+		text->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 + 50);
+		this->AddChild(text);
+
 		// 创建点击按钮后的回调函数
-		auto click = [=](Button* button)
+		auto click = [=](Button*, Actor* target)
 		{
 			// 强制转换为文本按钮
-			TextButton* self = (TextButton*)button;
-			self->SetText("Clicked!");
+			TextActor* text = (TextActor*)target;
+			text->SetText("Clicked!");
 		};
 
 		// 创建鼠标按下按钮后的回调函数
-		auto pressed = [=](Button* button)
+		auto pressed = [=](Button*, Actor* target)
 		{
 			// 强制转换为文本按钮
-			TextButton* self = (TextButton*)button;
-			self->SetText("Pressed");
+			TextActor* text = (TextActor*)target;
+			text->SetText("Pressed");
 		};
 
 		// 创建鼠标移入按钮后的回调函数
-		auto mouseover = [=](Button* button)
+		auto mouseover = [=](Button*, Actor* target)
 		{
 			// 强制转换为文本按钮
-			TextButton* self = (TextButton*)button;
-			self->SetText("Mouseover");
+			TextActor* text = (TextActor*)target;
+			text->SetText("Mouseover");
 		};
 
 		// 创建鼠标移出按钮后的回调函数
-		auto mouseout = [=](Button* button)
+		auto mouseout = [=](Button*, Actor* target)
 		{
 			// 强制转换为文本按钮
-			TextButton* self = (TextButton*)button;
-			self->SetText("Mouseout");
+			TextActor* text = (TextActor*)target;
+			text->SetText("Mouseout");
 		};
 
-		// 创建精灵按钮
-		TextButtonPtr button = TextButton::Create(click, pressed, mouseover, mouseout);
-		button->SetText("Click Me");
-		button->SetFillColor(Color::White);
-		button->SetFontWeight(FontWeight::Bold);
-		button->SetAnchor(0.5f, 0.5f);
-		button->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 + 50);
-		this->AddChild(button);
+		// 创建按钮
+		ButtonPtr button = Button::Create(click, pressed, mouseover, mouseout);
+		text->AddComponent(button);
 	}
 };
