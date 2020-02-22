@@ -68,9 +68,9 @@ PhysicContactDemo::PhysicContactDemo()
 	AddChild(ground);
 
 	// 创建地面物理身体
-	PhysicBodyPtr ground_body = PhysicBody::Create(ground, PhysicBody::Type::Static);
+	PhysicBodyPtr ground_body = PhysicBody::Create(world_, PhysicBody::Type::Static);
 	ground_body->AddRectShape(ground->GetSize(), 0.0f);
-	world_->AddBody(ground_body);
+	ground->AddComponent(ground_body);
 
 	// 按键监听
 	AddListener<KeyDownEvent>(Closure(this, &PhysicContactDemo::OnKeyDown));
@@ -161,9 +161,9 @@ KeyTextPtr KeyText::Create(PhysicWorldPtr world, const Point& pos, char ch)
 	key->SetPosition(pos);
 
 	// 添加物理身体
-	PhysicBodyPtr body = PhysicBody::Create(key, PhysicBody::Type::Dynamic);
+	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 	body->AddRectShape(key->GetSize(), 1.0f);
-	world->AddBody(body);
+	key->AddComponent(body);
 
 	// 给身体一个随机受力
 	float neg = (math::Random(0, 1) == 0 ? -1.0f : 1.0f);

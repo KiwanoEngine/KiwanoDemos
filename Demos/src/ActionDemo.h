@@ -142,11 +142,11 @@ public:
 		this->AddChild(man);
 
 		// 添加提示文字
-		TextActorPtr intro = TextActor::Create(text);
-		intro->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
-		intro->SetAnchor(0.5f, 0);
-		intro->SetFontSize(16.0f);
-		intro->SetFillColor(Color::White);
-		this->AddChild(intro);
+		TextActorPtr label = TextActor::Create(text);
+		label->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
+		label->SetAnchor(0.5f, 0);
+		label->SetFontSize(16.0f);
+		label->SetFillColor(Color::White);
+		this->AddChild(label);
 	}
 };

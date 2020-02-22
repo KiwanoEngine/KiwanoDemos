@@ -122,8 +122,8 @@ BoardPtr Board::Create(PhysicWorldPtr world, const Size& size, const Point& pos)
 	board->SetRotation(10);
 	board->SetPosition(pos);
 
-	PhysicBodyPtr body = PhysicBody::Create(board, PhysicBody::Type::Static);
+	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Static);
 	body->AddRectShape(board->GetSize(), 0.0f);
-	world->AddBody(body);
+	board->AddComponent(body);
 	return board;
 }

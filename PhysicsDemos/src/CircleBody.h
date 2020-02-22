@@ -34,19 +34,11 @@ public:
 		circle->SetSize(Size(radius * 2, radius * 2));
 
 		// 创建物理身体
-		circle->body_ = PhysicBody::Create(circle, PhysicBody::Type::Dynamic);
+		PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 		// 添加物理形状
-		circle->body_->AddCircleShape(radius, 1.f);
+		body->AddCircleShape(radius, 1.f);
 		// 将物体添加到物理世界
-		world->AddBody(circle->body_);
+		circle->AddComponent(body);
 		return circle;
 	}
-
-	PhysicBodyPtr GetBody()
-	{
-		return body_;
-	}
-
-private:
-	PhysicBodyPtr body_;
 };

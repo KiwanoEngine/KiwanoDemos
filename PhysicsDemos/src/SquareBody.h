@@ -14,7 +14,6 @@ public:
 
 		// 设置形状及颜色
 		square->SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
-		square->SetFillColor(Color::Transparent);
 		square->SetStrokeColor(Color::White);
 
 		// 设置位置和锚点
@@ -23,19 +22,11 @@ public:
 		square->SetSize(size);
 
 		// 创建物理身体
-		square->body_ = PhysicBody::Create(square, PhysicBody::Type::Dynamic);
+		PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 		// 添加物理形状
-		square->body_->AddRectShape(square->GetSize(), 1.f);
+		body->AddRectShape(square->GetSize(), 1.f);
 		// 将物体添加到物理世界
-		world->AddBody(square->body_);
+		square->AddComponent(body);
 		return square;
 	}
-
-	PhysicBodyPtr GetBody()
-	{
-		return body_;
-	}
-
-private:
-	PhysicBodyPtr body_;
 };

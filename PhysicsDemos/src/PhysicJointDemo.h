@@ -64,17 +64,15 @@ PhysicJointDemo::PhysicJointDemo()
 
 	// 创建地图
 	map_ = Actor::Create();
-	{
-		AddChild(map_);
+	AddChild(map_);
 
-		// 创建地面
-		ActorPtr ground = Ground::Create(world_, Point(0, GetHeight() - 200));
-		map_->AddChild(ground);
+	// 创建地面
+	ActorPtr ground = Ground::Create(world_, Point(0, GetHeight() - 200));
+	map_->AddChild(ground);
 
-		// 创建小车
-		car_ = Car::Create(world_, Point(190, 240));
-		map_->AddChild(car_);
-	}
+	// 创建小车
+	car_ = Car::Create(world_, Point(190, 240));
+	map_->AddChild(car_);
 }
 
 void PhysicJointDemo::OnUpdate(Duration dt)
@@ -129,12 +127,12 @@ GroundPtr Ground::Create(PhysicWorldPtr world, Point const& pos)
 	ground->SetShape(maker->GetShape());
 
 	// 根据路径点生成物理边
-	PhysicBodyPtr body = PhysicBody::Create(ground, PhysicBody::Type::Static);
+	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Static);
 	for (size_t i = 1; i < path_points.size(); ++i)
 	{
 		body->AddEdgeShape(path_points[i - 1], path_points[i], 0.0f, 0.6f);
 	}
-	world->AddBody(body);
+	ground->AddComponent(body);
 	return ground;
 }
 
@@ -187,9 +185,9 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 	car->AddChild(chassis);
 
 	// 创建小车躯干的物理身体
-	PhysicBodyPtr chassis_body = PhysicBody::Create(chassis, PhysicBody::Type::Dynamic);
+	PhysicBodyPtr chassis_body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 	chassis_body->AddPolygonShape(vertices, 1.0f);
-	world->AddBody(chassis_body);
+	chassis->AddComponent(chassis_body);
 
 	// 创建左右轮子
 	CirclePtr lwheel = Circle::Create(world, pos + Point(-100, -35), 40.0f);
@@ -197,8 +195,8 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 	car->AddChild(lwheel);
 	car->AddChild(rwheel);
 
-	auto lwheel_body = lwheel->GetBody();
-	auto rwheel_body = rwheel->GetBody();
+	auto lwheel_body = lwheel->GetPhysicBody();
+	auto rwheel_body = rwheel->GetPhysicBody();
 
 	// 设置摩擦力
 	lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
