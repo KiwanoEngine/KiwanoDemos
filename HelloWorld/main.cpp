@@ -4,36 +4,28 @@
 
 using namespace kiwano;
 
-class HelloWorld
-	: public Stage
-{
-public:
-	HelloWorld()
-	{
-		// 创建图片精灵
-		SpritePtr sprite = Sprite::Create("logo.png");
-
-		// 修改精灵位置, 使精灵在屏幕上居中
-		sprite->SetPosition(640 / 2, 480 / 2);
-
-		// 修改精灵锚点, 使图片中心对齐屏幕中心
-		sprite->SetAnchor(0.5, 0.5);
-
-		// 修改缩放率, 图片缩小到 0.5 倍
-		sprite->SetScale(0.5f, 0.5f);
-
-		// 添加到舞台中
-		this->AddChild(sprite);
-	}
-};
-
 void Startup()
 {
 	// 创建舞台
-	StagePtr scene = new HelloWorld;
+	StagePtr stage = new Stage;
+
+	// 创建精灵
+	SpritePtr sprite = Sprite::Create("logo.png");
+
+	// 修改精灵位置, 使精灵在屏幕上居中
+	sprite->SetPosition(640 / 2, 480 / 2);
+
+	// 修改精灵锚点, 使图片中心对齐屏幕中心
+	sprite->SetAnchor(0.5, 0.5);
+
+	// 修改缩放率, 图片缩小到 0.5 倍
+	sprite->SetScale(0.5f, 0.5f);
+
+	// 添加到舞台中
+	stage->AddChild(sprite);
 
 	// 进入舞台
-	Director::GetInstance().EnterStage(scene);
+	Director::GetInstance().EnterStage(stage);
 }
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
@@ -44,7 +36,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	// 创建窗口
 	WindowPtr window = Window::Create("Hello World", 640, 480);
 
-	// 创建运行器
+	// 创建运行器，程序启动后执行 Startup 函数
 	RunnerPtr runner = Runner::Create(window, Startup);
 
 	// 运行
