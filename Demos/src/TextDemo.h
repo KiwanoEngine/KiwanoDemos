@@ -30,7 +30,7 @@ public:
 		texts.push_back(CreateTextWithCustomFont());
 		texts.push_back(CreateMultipleLinesText());
 
-		// å°†æ‰€æœ‰æ–‡æœ¬è§’è‰²æ·»åŠ åˆ°åœºæ™¯
+		// ½«ËùÓĞÎÄ±¾½ÇÉ«Ìí¼Óµ½³¡¾°
 		float offset_y = 20.0f;
 		for (auto text : texts)
 		{
@@ -46,14 +46,14 @@ public:
 	{
 		TextActorPtr text = TextActor::Create("A simple text");
 
-		// è®¾ç½®æ–‡å­—å¡«å……é¢œè‰²
+		// ÉèÖÃÎÄ×ÖÌî³äÑÕÉ«
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
 	TextActorPtr CreateTextWithOutline()
 	{
-		// è®¾ç½®æ–‡å­—æè¾¹é¢œè‰²å’Œå®½åº¦
+		// ÉèÖÃÎÄ×ÖÃè±ßÑÕÉ«ºÍ¿í¶È
 		TextStyle style;
 		style.outline_brush = Brush::Create(Color::BlueViolet);
 		style.outline_stroke = StrokeStyle::Create(3.0f);
@@ -65,7 +65,7 @@ public:
 
 	TextActorPtr CreateTextWithBoldStyle()
 	{
-		// è®¾ç½®å­—ä½“å®½åº¦
+		// ÉèÖÃ×ÖÌå¿í¶È
 		TextStyle style;
 		style.font_weight = FontWeight::Bold;
 
@@ -76,7 +76,7 @@ public:
 
 	TextActorPtr CreateTextWithUnderlineAndStrikethrough()
 	{
-		// è®¾ç½®ä¸‹åˆ’çº¿å’Œåˆ é™¤çº¿
+		// ÉèÖÃÏÂ»®ÏßºÍÉ¾³ıÏß
 		TextStyle style;
 		style.show_underline = true;
 		style.show_strikethrough = true;
@@ -89,32 +89,32 @@ public:
 	TextActorPtr CreateTextWithCustomBrush()
 	{
 		TextStyle style;
-		// åŠ ç²—å­—ä½“å’ŒåŠ å®½è½®å»“
+		// ¼Ó´Ö×ÖÌåºÍ¼Ó¿íÂÖÀª
 		style.font_weight = FontWeight::Bold;
 		style.outline_stroke = StrokeStyle::Create(3.0f);
 
 		TextActorPtr text = TextActor::Create("A text with custom brush", style);
 
-		// åˆ›å»ºçº¿æ€§æ¸å˜æ ·å¼
+		// ´´½¨ÏßĞÔ½¥±äÑùÊ½
 		LinearGradientStyle fill_style = LinearGradientStyle(
-			Point(text->GetWidth() / 3, 0.0f),  // çº¿æ€§æ ·å¼èµ·ç‚¹
-			Point(text->GetWidth() * 2 / 3, text->GetHeight()),  // çº¿æ€§æ ·å¼ç»ˆç‚¹
+			Point(text->GetWidth() / 3, 0.0f),  // ÏßĞÔÑùÊ½Æğµã
+			Point(text->GetWidth() * 2 / 3, text->GetHeight()),  // ÏßĞÔÑùÊ½ÖÕµã
 			{ GradientStop(0.0f, Color::Yellow), GradientStop(1.0f, Color::Green) }
 		);
 
-		// åˆ›å»ºçº¿æ€§æ¸å˜ç”»åˆ·
+		// ´´½¨ÏßĞÔ½¥±ä»­Ë¢
 		BrushPtr fill_brush = Brush::Create(fill_style);
 		text->SetFillBrush(fill_brush);
 
-		// åˆ›å»ºå¾„å‘æ¸å˜æ ·å¼
+		// ´´½¨¾¶Ïò½¥±äÑùÊ½
 		RadialGradientStyle outline_style = RadialGradientStyle(
-			Point(text->GetWidth() / 2, text->GetHeight() / 2),  // å¾„å‘åœ†å¿ƒ
-			Vec2(),  // å¾„å‘åç§»
-			Vec2(text->GetWidth(), text->GetHeight()),  // å¾„å‘åŠå¾„
+			Point(text->GetWidth() / 2, text->GetHeight() / 2),  // ¾¶ÏòÔ²ĞÄ
+			Vec2(),  // ¾¶ÏòÆ«ÒÆ
+			Vec2(text->GetWidth(), text->GetHeight()),  // ¾¶Ïò°ë¾¶
 			{ GradientStop(0.0f, Color::Red), GradientStop(1.0f, Color::Blue) }
 		);
 
-		// åˆ›å»ºå¾„å‘æ¸å˜ç”»åˆ·
+		// ´´½¨¾¶Ïò½¥±ä»­Ë¢
 		BrushPtr outline_brush = Brush::Create(outline_style);
 		text->SetOutlineBrush(outline_brush);
 
@@ -123,7 +123,7 @@ public:
 
 	TextActorPtr CreateTextWithSystemFont()
 	{
-		// è®¾ç½®å­—ä½“æ—
+		// ÉèÖÃ×ÖÌå×å
 		TextStyle style;
 		style.font_family = "Times New Roman";
 
@@ -134,7 +134,7 @@ public:
 
 	TextActorPtr CreateTextWithCustomFont()
 	{
-		// åŠ è½½å­—ä½“æ–‡ä»¶
+		// ¼ÓÔØ×ÖÌåÎÄ¼ş
 		TextStyle style;
 		style.font = Font::Create("res/fonts/Gothica-Book.ttf");
 		style.font_family = "Gothica";
@@ -147,7 +147,7 @@ public:
 	TextActorPtr CreateMultipleLinesText()
 	{
 		TextStyle style;
-		// è®¾ç½®å¤šè¡Œæ–‡æœ¬å±…ä¸­
+		// ÉèÖÃ¶àĞĞÎÄ±¾¾ÓÖĞ
 		style.alignment = TextAlign::Center;
 
 		String content = "MULTIPLE LINES TEXT\nMULTIPLE LINES TEXT LONGER\nMULTIPLE LINES TEXT";

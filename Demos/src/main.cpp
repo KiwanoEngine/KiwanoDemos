@@ -38,37 +38,37 @@ class DemoRunner
 public:
 	DemoRunner()
 	{
-		// ä½¿ç”¨ Audio æ¨¡å—
+		// Ê¹ÓÃ Audio Ä£¿é
 		Application::GetInstance().Use(AudioModule::GetInstance());
 
-		// ä½¿ç”¨ HttpClient æ¨¡å—
+		// Ê¹ÓÃ HttpClient Ä£¿é
 		Application::GetInstance().Use(HttpModule::GetInstance());
 
-		// ä½¿ç”¨ ImGui æ¨¡å—
+		// Ê¹ÓÃ ImGui Ä£¿é
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
-		// åˆ›å»ºçª—å£
+		// ´´½¨´°¿Ú
 		WindowPtr window = Window::Create("Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
 		SetMainWindow(window);
 	}
 
 	void OnReady() override
 	{
-		// åˆ‡æ¢åˆ°ç¬¬ä¸€ä¸ªèˆžå°
+		// ÇÐ»»µ½µÚÒ»¸öÎèÌ¨
 		EnterDemo(s_Demos[0]);
 	}
 
 	void EnterDemo(Demo& demo)
 	{
-		// ä¿®æ”¹çª—å£æ ‡é¢˜
+		// ÐÞ¸Ä´°¿Ú±êÌâ
 		String title = demo.title;
 		Application::GetInstance().GetMainWindow()->SetTitle("Kiwano Demo - " + title);
 
-		// åˆ›å»ºèˆžå°
+		// ´´½¨ÎèÌ¨
 		StagePtr scene = demo.Create();
 		Director::GetInstance().EnterStage(scene);
 
-		// åˆ›å»ºGUIæŽ§åˆ¶é¢æ¿
+		// ´´½¨GUI¿ØÖÆÃæ°å
 		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}

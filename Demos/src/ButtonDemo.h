@@ -19,22 +19,22 @@ public:
 
 	ButtonDemo()
 	{
-		// æ·»åŠ ä¸€ä¸ªç²¾çµæŒ‰é’®
+		// Ìí¼ÓÒ»¸ö¾«Áé°´Å¥
 		AddSpriteButton();
 
-		// æ·»åŠ ä¸€ä¸ªæ–‡å­—æŒ‰é’®
+		// Ìí¼ÓÒ»¸öÎÄ×Ö°´Å¥
 		AddTextButton();
 	}
 
 	void AddSpriteButton()
 	{
-		// åŠ è½½æŒ‰é’®å›¾ç‰‡
+		// ¼ÓÔØ°´Å¥Í¼Æ¬
 		FramePtr frame = Frame::Create("res/images/buttons.png");
-		// æŒ‰é’®å…³é—­å’Œæ‰“å¼€æ—¶çš„è£å‰ªçŸ©å½¢
+		// °´Å¥¹Ø±ÕºÍ´ò¿ªÊ±µÄ²Ã¼ô¾ØÐÎ
 		Rect closed = Rect(Point(0, frame->GetHeight() / 2), Point(frame->GetWidth(), frame->GetHeight()));
 		Rect opened = Rect(Point(), Point(frame->GetWidth(), frame->GetHeight() / 2));
 
-		// åˆ›å»ºç²¾çµ
+		// ´´½¨¾«Áé
 		SpritePtr sprite = Sprite::Create(frame);
 		sprite->SetSize(100, 50);
 		sprite->SetAnchor(0.5f, 0.5f);
@@ -42,26 +42,26 @@ public:
 		sprite->SetCropRect(closed);
 		this->AddChild(sprite);
 
-		// åˆ›å»ºç‚¹å‡»æŒ‰é’®åŽçš„å›žè°ƒå‡½æ•°
+		// ´´½¨µã»÷°´Å¥ºóµÄ»Øµ÷º¯Êý
 		auto click = [=](Button*, Actor* target)
 		{
 			static bool is_opened = false;
 
-			// å¼ºåˆ¶è½¬æ¢ä¸ºç²¾çµæŒ‰é’®
+			// Ç¿ÖÆ×ª»»Îª¾«Áé°´Å¥
 			Sprite* sprite = (Sprite*)target;
-			// é‡æ–°è®¾ç½®æŒ‰é’®çš„æ‰“å¼€å’Œå…³é—­çŠ¶æ€
+			// ÖØÐÂÉèÖÃ°´Å¥µÄ´ò¿ªºÍ¹Ø±Õ×´Ì¬
 			is_opened = !is_opened;
 			sprite->SetCropRect(is_opened ? opened : closed);
 		};
 
-		// åˆ›å»ºæŒ‰é’®
+		// ´´½¨°´Å¥
 		ButtonPtr button = Button::Create(click);
 		sprite->AddComponent(button);
 	}
 
 	void AddTextButton()
 	{
-		// åˆ›å»ºæ–‡å­—è§’è‰²
+		// ´´½¨ÎÄ×Ö½ÇÉ«
 		TextActorPtr text = TextActor::Create("Click Me");
 		text->SetFillColor(Color::White);
 		text->SetFontWeight(FontWeight::Bold);
@@ -69,39 +69,39 @@ public:
 		text->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 + 50);
 		this->AddChild(text);
 
-		// åˆ›å»ºç‚¹å‡»æŒ‰é’®åŽçš„å›žè°ƒå‡½æ•°
+		// ´´½¨µã»÷°´Å¥ºóµÄ»Øµ÷º¯Êý
 		auto click = [=](Button*, Actor* target)
 		{
-			// å¼ºåˆ¶è½¬æ¢ä¸ºæ–‡æœ¬æŒ‰é’®
+			// Ç¿ÖÆ×ª»»ÎªÎÄ±¾°´Å¥
 			TextActor* text = (TextActor*)target;
 			text->SetText("Clicked!");
 		};
 
-		// åˆ›å»ºé¼ æ ‡æŒ‰ä¸‹æŒ‰é’®åŽçš„å›žè°ƒå‡½æ•°
+		// ´´½¨Êó±ê°´ÏÂ°´Å¥ºóµÄ»Øµ÷º¯Êý
 		auto pressed = [=](Button*, Actor* target)
 		{
-			// å¼ºåˆ¶è½¬æ¢ä¸ºæ–‡æœ¬æŒ‰é’®
+			// Ç¿ÖÆ×ª»»ÎªÎÄ±¾°´Å¥
 			TextActor* text = (TextActor*)target;
 			text->SetText("Pressed");
 		};
 
-		// åˆ›å»ºé¼ æ ‡ç§»å…¥æŒ‰é’®åŽçš„å›žè°ƒå‡½æ•°
+		// ´´½¨Êó±êÒÆÈë°´Å¥ºóµÄ»Øµ÷º¯Êý
 		auto mouseover = [=](Button*, Actor* target)
 		{
-			// å¼ºåˆ¶è½¬æ¢ä¸ºæ–‡æœ¬æŒ‰é’®
+			// Ç¿ÖÆ×ª»»ÎªÎÄ±¾°´Å¥
 			TextActor* text = (TextActor*)target;
 			text->SetText("Mouseover");
 		};
 
-		// åˆ›å»ºé¼ æ ‡ç§»å‡ºæŒ‰é’®åŽçš„å›žè°ƒå‡½æ•°
+		// ´´½¨Êó±êÒÆ³ö°´Å¥ºóµÄ»Øµ÷º¯Êý
 		auto mouseout = [=](Button*, Actor* target)
 		{
-			// å¼ºåˆ¶è½¬æ¢ä¸ºæ–‡æœ¬æŒ‰é’®
+			// Ç¿ÖÆ×ª»»ÎªÎÄ±¾°´Å¥
 			TextActor* text = (TextActor*)target;
 			text->SetText("Mouseout");
 		};
 
-		// åˆ›å»ºæŒ‰é’®
+		// ´´½¨°´Å¥
 		ButtonPtr button = Button::Create(click, pressed, mouseover, mouseout);
 		text->AddComponent(button);
 	}

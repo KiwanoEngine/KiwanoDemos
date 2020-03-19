@@ -6,40 +6,40 @@ using namespace kiwano;
 
 void Startup()
 {
-	// åˆ›å»ºèˆå°
+	// ´´½¨ÎèÌ¨
 	StagePtr stage = new Stage;
 
-	// åˆ›å»ºç²¾çµ
+	// ´´½¨¾«Áé
 	SpritePtr sprite = Sprite::Create("logo.png");
 
-	// ä¿®æ”¹ç²¾çµä½ç½®, ä½¿ç²¾çµåœ¨å±å¹•ä¸Šå±…ä¸­
+	// ĞŞ¸Ä¾«ÁéÎ»ÖÃ, Ê¹¾«ÁéÔÚÆÁÄ»ÉÏ¾ÓÖĞ
 	sprite->SetPosition(640 / 2, 480 / 2);
 
-	// ä¿®æ”¹ç²¾çµé”šç‚¹, ä½¿å›¾ç‰‡ä¸­å¿ƒå¯¹é½å±å¹•ä¸­å¿ƒ
+	// ĞŞ¸Ä¾«ÁéÃªµã, Ê¹Í¼Æ¬ÖĞĞÄ¶ÔÆëÆÁÄ»ÖĞĞÄ
 	sprite->SetAnchor(0.5, 0.5);
 
-	// ä¿®æ”¹ç¼©æ”¾ç‡, å›¾ç‰‡ç¼©å°åˆ° 0.5 å€
+	// ĞŞ¸ÄËõ·ÅÂÊ, Í¼Æ¬ËõĞ¡µ½ 0.5 ±¶
 	sprite->SetScale(0.5f, 0.5f);
 
-	// æ·»åŠ åˆ°èˆå°ä¸­
+	// Ìí¼Óµ½ÎèÌ¨ÖĞ
 	stage->AddChild(sprite);
 
-	// è¿›å…¥èˆå°
+	// ½øÈëÎèÌ¨
 	Director::GetInstance().EnterStage(stage);
 }
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
-	// è®¾ç½®èƒŒæ™¯è‰²
+	// ÉèÖÃ±³¾°É«
 	Renderer::GetInstance().SetClearColor(Color(0xE5E5E5));
 
-	// åˆ›å»ºçª—å£
+	// ´´½¨´°¿Ú
 	WindowPtr window = Window::Create("Hello World", 640, 480);
 
-	// åˆ›å»ºè¿è¡Œå™¨ï¼Œç¨‹åºå¯åŠ¨åæ‰§è¡Œ Startup å‡½æ•°
+	// ´´½¨ÔËĞĞÆ÷£¬³ÌĞòÆô¶¯ºóÖ´ĞĞ Startup º¯Êı
 	RunnerPtr runner = Runner::Create(window, Startup);
 
-	// è¿è¡Œ
+	// ÔËĞĞ
 	Application::GetInstance().Run(runner);
 	return 0;
 }

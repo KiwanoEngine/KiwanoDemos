@@ -19,7 +19,7 @@ public:
 
 	ShapeDemo()
 	{
-		// æ·»åŠ è‡ªåŠ¨ç”Ÿæˆå½¢çŠ¶çš„å®šæ—¶å™¨
+		// Ìí¼Ó×Ô¶¯Éú³ÉĞÎ×´µÄ¶¨Ê±Æ÷
 		AddTimer(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
 	}
 
@@ -58,24 +58,24 @@ public:
 			type = 0;
 	}
 
-	// åˆ›å»ºçŸ©å½¢
+	// ´´½¨¾ØĞÎ
 	ShapeActorPtr CreateRectangle()
 	{
 		RectActorPtr rect = RectActor::Create(Size(40, 40));
 		return rect;
 	}
 
-	// åˆ›å»ºæ¤­åœ†å½¢
+	// ´´½¨ÍÖÔ²ĞÎ
 	ShapeActorPtr CreateEllipse()
 	{
 		EllipseActorPtr ellipse = EllipseActor::Create(Vec2(30, 20));
 		return ellipse;
 	}
 
-	// åˆ›å»ºå¤šè¾¹å½¢
+	// ´´½¨¶à±ßĞÎ
 	ShapeActorPtr CreatePolygon()
 	{
-		// è®¡ç®—å…­è¾¹å½¢çš„å…­ä¸ªé¡¶ç‚¹
+		// ¼ÆËãÁù±ßĞÎµÄÁù¸ö¶¥µã
 		Vector<Point> vertices;
 		float radius = 30.0f;
 		for (int i = 0; i < 6; i++)
@@ -90,37 +90,37 @@ public:
 		return polygon;
 	}
 
-	// åˆ›å»ºä¸‰è§’å½¢
+	// ´´½¨Èı½ÇĞÎ
 	ShapeActorPtr CreateTriangle()
 	{
-		// ç­‰è¾¹ä¸‰è§’å½¢è¾¹é•¿
+		// µÈ±ßÈı½ÇĞÎ±ß³¤
 		float side = 45.f;
 
-		// ä½¿ç”¨å½¢çŠ¶ç”Ÿæˆå™¨åˆ›å»ºä¸‰è§’å½¢ä¸‰æ¡è¾¹
+		// Ê¹ÓÃĞÎ×´Éú³ÉÆ÷´´½¨Èı½ÇĞÎÈıÌõ±ß
 		ShapeMakerPtr maker = ShapeMaker::Create();
 		maker->BeginPath(Point(0, 0));
 		maker->AddLine(Point(side, 0));
 		maker->AddLine(Point(side / 2, side * math::Cos(30.0f)));
 		maker->EndPath(true);
 
-		// è·å–ç”Ÿæˆçš„å½¢çŠ¶
+		// »ñÈ¡Éú³ÉµÄĞÎ×´
 		ShapePtr shape = maker->GetShape();
-		// åˆ›å»ºå½¢çŠ¶è§’è‰²
+		// ´´½¨ĞÎ×´½ÇÉ«
 		ShapeActorPtr triangle = ShapeActor::Create(shape);
 		return triangle;
 	}
 
-	// å°†å½¢çŠ¶æ·»åŠ åˆ°åœºæ™¯ä¸­
+	// ½«ĞÎ×´Ìí¼Óµ½³¡¾°ÖĞ
 	void AddShape(ShapeActorPtr shape, const Point& position)
 	{
-		// è®¾ç½®å½¢çŠ¶å¡«å……é¢œè‰²
+		// ÉèÖÃĞÎ×´Ìî³äÑÕÉ«
 		shape->SetFillColor(Color(Color::Blue, 0.5f));
-		// è®¾ç½®å½¢çŠ¶è½®å»“é¢œè‰²
+		// ÉèÖÃĞÎ×´ÂÖÀªÑÕÉ«
 		shape->SetStrokeColor(Color(Color::Blue, 0.8f));
-		// åŠ å®½å½¢çŠ¶è½®å»“å®½åº¦
+		// ¼Ó¿íĞÎ×´ÂÖÀª¿í¶È
 		shape->SetStrokeStyle(StrokeStyle::Create(1.3f));
 
-		// æ·»åŠ åŠ¨ç”»
+		// Ìí¼Ó¶¯»­
 		shape->AddAction(Tween::MoveTo(4_sec, Point(position.x, -50)).RemoveTargetWhenDone());
 		shape->AddAction(Tween::RotateBy(1_sec, math::Random(40.0f, 120.0f)).SetLoops(-1));
 

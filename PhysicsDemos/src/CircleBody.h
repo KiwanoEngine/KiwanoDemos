@@ -12,32 +12,32 @@ public:
 	{
 		CirclePtr circle = new Circle;
 
-		// ä½¿ç”¨å½¢çŠ¶ç”Ÿæˆå™¨ç»˜åˆ¶åœ†å½¢
+		// Ê¹ÓÃÐÎ×´Éú³ÉÆ÷»æÖÆÔ²ÐÎ
 		ShapeMakerPtr maker = ShapeMaker::Create();
-		// ä»Žåœ†å¿ƒå¼€å§‹å½¢çŠ¶è·¯å¾„
+		// ´ÓÔ²ÐÄ¿ªÊ¼ÐÎ×´Â·¾¶
 		maker->BeginPath(Point(radius, radius));
-		// æ·»åŠ åŠå¾„çº¿
+		// Ìí¼Ó°ë¾¶Ïß
 		maker->AddLine(Point(radius, 0));
-		// æ·»åŠ åœ†å½¢çš„ä¸¤ä¸ªåœ†å¼§
+		// Ìí¼ÓÔ²ÐÎµÄÁ½¸öÔ²»¡
 		maker->AddArc(Point(radius, 2 * radius), Size(radius, radius), 0.0f);
 		maker->AddArc(Point(radius, 0), Size(radius, radius), 0.0f);
-		// ç»“æŸå½¢çŠ¶è·¯å¾„
+		// ½áÊøÐÎ×´Â·¾¶
 		maker->EndPath();
 
-		// è®¾ç½®å½¢çŠ¶åŠé¢œè‰²
+		// ÉèÖÃÐÎ×´¼°ÑÕÉ«
 		circle->SetShape(maker->GetShape());
 		circle->SetStrokeColor(Color::White);
 
-		// è®¾ç½®ä½ç½®å’Œé”šç‚¹
+		// ÉèÖÃÎ»ÖÃºÍÃªµã
 		circle->SetAnchor(0.5f, 0.5f);
 		circle->SetPosition(pos);
 		circle->SetSize(Size(radius * 2, radius * 2));
 
-		// åˆ›å»ºç‰©ç†èº«ä½“
+		// ´´½¨ÎïÀíÉíÌå
 		PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
-		// æ·»åŠ ç‰©ç†å½¢çŠ¶
+		// Ìí¼ÓÎïÀíÐÎ×´
 		body->AddCircleShape(radius, 1.f);
-		// å°†ç‰©ä½“æ·»åŠ åˆ°ç‰©ç†ä¸–ç•Œ
+		// ½«ÎïÌåÌí¼Óµ½ÎïÀíÊÀ½ç
 		circle->AddComponent(body);
 		return circle;
 	}

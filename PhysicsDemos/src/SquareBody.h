@@ -12,20 +12,20 @@ public:
 	{
 		SquarePtr square = new Square;
 
-		// è®¾ç½®å½¢çŠ¶åŠé¢œè‰²
+		// ÉèÖÃÐÎ×´¼°ÑÕÉ«
 		square->SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
 		square->SetStrokeColor(Color::White);
 
-		// è®¾ç½®ä½ç½®å’Œé”šç‚¹
+		// ÉèÖÃÎ»ÖÃºÍÃªµã
 		square->SetAnchor(0.5f, 0.5f);
 		square->SetPosition(pos);
 		square->SetSize(size);
 
-		// åˆ›å»ºç‰©ç†èº«ä½“
+		// ´´½¨ÎïÀíÉíÌå
 		PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
-		// æ·»åŠ ç‰©ç†å½¢çŠ¶
+		// Ìí¼ÓÎïÀíÐÎ×´
 		body->AddRectShape(square->GetSize(), 1.f);
-		// å°†ç‰©ä½“æ·»åŠ åˆ°ç‰©ç†ä¸–ç•Œ
+		// ½«ÎïÌåÌí¼Óµ½ÎïÀíÊÀ½ç
 		square->AddComponent(body);
 		return square;
 	}

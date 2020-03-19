@@ -26,38 +26,38 @@ class DemoRunner
 public:
 	DemoRunner()
 	{
-		// ä½¿ç”¨ ImGui æ¨¡å—
+		// Ê¹ÓÃ ImGui Ä£¿é
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
-		// åˆ›å»ºçª—å£
+		// ´´½¨´°¿Ú
 		WindowPtr window = Window::Create("Kiwano Physic Demos", 800, 600);
 		SetMainWindow(window);
 	}
 
 	void OnReady() override
 	{
-		// åˆ‡æ¢åˆ°ç¬¬ä¸€ä¸ªèˆžå°
+		// ÇÐ»»µ½µÚÒ»¸öÎèÌ¨
 		EnterDemo(s_Demos[0]);
 	}
 
 	void EnterDemo(Demo& demo)
 	{
-		// ä¿®æ”¹çª—å£æ ‡é¢˜
+		// ÐÞ¸Ä´°¿Ú±êÌâ
 		String title = demo.title;
 		Application::GetInstance().GetMainWindow()->SetTitle("Kiwano Physic Demos - " + title);
 
-		// åˆ›å»ºèˆžå°
+		// ´´½¨ÎèÌ¨
 		StagePtr scene = demo.Create();
 		Director::GetInstance().EnterStage(scene);
 
-		// æ·»åŠ æ–‡æœ¬è¯´æ˜Ž
+		// Ìí¼ÓÎÄ±¾ËµÃ÷
 		TextActorPtr intro = TextActor::Create(demo.label);
 		intro->SetFillColor(Color::White);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(scene->GetWidth() / 2, 50);
 		scene->AddChild(intro);
 
-		// åˆ›å»ºGUIæŽ§åˆ¶é¢æ¿
+		// ´´½¨GUI¿ØÖÆÃæ°å
 		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}

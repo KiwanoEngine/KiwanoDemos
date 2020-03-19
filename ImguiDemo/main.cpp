@@ -14,13 +14,13 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	try
 	{
-		// 娣诲姞 ImGui 妯″潡
+		// 添加 ImGui 模块
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
-		// 鍒涘缓绐楀彛
+		// 创建窗口
 		WindowPtr window = Window::Create("ImGui Demo", 800, 600);
 
-		// 杩愯
+		// 运行
 		RunnerPtr runner = Runner::Create(window, Startup);
 		Application::GetInstance().Run(runner);
 	}

@@ -15,26 +15,26 @@ public:
 
 	static inline String Name() { return "Physic Body Demo"; }
 
-	static inline String Label() { return "ç‚¹å‡»é¼ æ ‡å·¦å³é”®åˆ›å»ºç‰©ä½“"; }
+	static inline String Label() { return "µã»÷Êó±ê×óÓÒ¼ü´´½¨ÎïÌå"; }
 
 	PhysicBodyDemo();
 
 	void OnUpdate(Duration dt) override;
 
-	// é¼ æ ‡ç‚¹å‡»äº‹ä»¶
+	// Êó±êµã»÷ÊÂ¼ş
 	void OnClick(Event* evt);
 
-	// æ·»åŠ æ–¹å—
+	// Ìí¼Ó·½¿é
 	void AddSquare(const Point& pos);
 
-	// æ·»åŠ å°çƒ
+	// Ìí¼ÓĞ¡Çò
 	void AddCircle(const Point& pos);
 
 private:
 	PhysicWorldPtr world_;
 };
 
-// æœ¨æ¿
+// Ä¾°å
 class Board
 	: public RectActor
 {
@@ -45,27 +45,27 @@ public:
 
 PhysicBodyDemo::PhysicBodyDemo()
 {
-	// åˆ›å»ºç‰©ç†ä¸–ç•Œ
+	// ´´½¨ÎïÀíÊÀ½ç
 	world_ = PhysicWorld::Create();
 	AddComponent(world_);
 
-	// è®¾ç½®å¯å“åº”çŠ¶æ€, ä½¿èˆå°å¯ä»¥æ¥æ”¶åˆ°é¼ æ ‡ç‚¹å‡»æ¶ˆæ¯
+	// ÉèÖÃ¿ÉÏìÓ¦×´Ì¬, Ê¹ÎèÌ¨¿ÉÒÔ½ÓÊÕµ½Êó±êµã»÷ÏûÏ¢
 	SetResponsible(true);
 
-	// æ·»åŠ é¼ æ ‡ç‚¹å‡»ç›‘å¬
+	// Ìí¼ÓÊó±êµã»÷¼àÌı
 	AddListener<MouseClickEvent>(Closure(this, &PhysicBodyDemo::OnClick));
 
-	// æ·»åŠ ä¸€å—é™æ€æœ¨æ¿
+	// Ìí¼ÓÒ»¿é¾²Ì¬Ä¾°å
 	BoardPtr board = Board::Create(world_, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
 	AddChild(board);
 
-	// æ·»åŠ ä¸€ä¸ªå°çƒ
+	// Ìí¼ÓÒ»¸öĞ¡Çò
 	AddCircle(Point(GetWidth() / 2, 200));
 }
 
 void PhysicBodyDemo::OnUpdate(Duration dt)
 {
-	// ç§»é™¤æ‰è½åˆ°åœºæ™¯å¤–çš„ç‰©ä½“
+	// ÒÆ³ıµôÂäµ½³¡¾°ÍâµÄÎïÌå
 	Vector<ActorPtr> outed;
 	for (auto child : GetAllChildren())
 	{
@@ -85,7 +85,7 @@ void PhysicBodyDemo::OnClick(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<MouseClickEvent>());
 
-	// å·¦é”®æ·»åŠ ä¸€ä¸ªå°çƒ, å³é”®æ·»åŠ ä¸€ä¸ªç›’å­
+	// ×ó¼üÌí¼ÓÒ»¸öĞ¡Çò, ÓÒ¼üÌí¼ÓÒ»¸öºĞ×Ó
 	auto mouse_evt = dynamic_cast<MouseClickEvent*>(evt);
 	if (mouse_evt->button == MouseButton::Left)
 	{
@@ -113,10 +113,10 @@ BoardPtr Board::Create(PhysicWorldPtr world, const Size& size, const Point& pos)
 {
 	BoardPtr board = new Board;
 
-	// è®¾ç½®å¡«å……é¢œè‰²
+	// ÉèÖÃÌî³äÑÕÉ«
 	board->SetFillColor(Color::Gray);
 
-	// è®¾ç½®æœ¨æ¿çš„å¤§å°ã€ä½ç½®å’Œæ—‹è½¬è§’åº¦
+	// ÉèÖÃÄ¾°åµÄ´óĞ¡¡¢Î»ÖÃºÍĞı×ª½Ç¶È
 	board->SetRectSize(size);
 	board->SetAnchor(0.5f, 0.5f);
 	board->SetRotation(10);

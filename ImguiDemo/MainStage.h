@@ -23,7 +23,7 @@ public:
 		logo->SetPosition(GetWidth() / 2, GetHeight() / 2);
 		AddChild(logo);
 
-		// åˆ›å»º ImGui å›¾å±‚
+		// ´´½¨ ImGui Í¼²ã
 		ImGuiLayerPtr layer = ImGuiLayer::Create("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
 		AddChild(layer);
 	}
@@ -79,13 +79,13 @@ public:
 
 		ImGui::End();
 
-		// ä¿®æ”¹å¯è§æ€§
+		// ĞŞ¸Ä¿É¼ûĞÔ
 		logo->SetVisible(visibility);
 
-		// ä¿®æ”¹æ—‹è½¬è§’åº¦
+		// ĞŞ¸ÄĞı×ª½Ç¶È
 		logo->SetRotation(rotation);
 
-		// ä¿®æ”¹çª—å£èƒŒæ™¯è‰²
+		// ĞŞ¸Ä´°¿Ú±³¾°É«
 		Renderer::GetInstance().SetClearColor(clear_color);
 	}
 };

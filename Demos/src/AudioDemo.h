@@ -6,9 +6,9 @@
 class AudioDemo
 	: public Stage
 {
-	SoundPtr bgmusic;		// éŸ³ä¹å¯¹è±¡
-	TextActorPtr volume_text;	// éŸ³é‡æ–‡å­—
-	TextActorPtr state_text;		// æ’­æ”¾çŠ¶æ€æ–‡å­—
+	SoundPtr bgmusic;		// ÒôÀÖ¶ÔÏó
+	TextActorPtr volume_text;	// ÒôÁ¿ÎÄ×Ö
+	TextActorPtr state_text;		// ²¥·Å×´Ì¬ÎÄ×Ö
 
 public:
 	static StagePtr Create()
@@ -23,32 +23,32 @@ public:
 
 	AudioDemo()
 	{
-		// åŠ è½½éŸ³ä¹
+		// ¼ÓÔØÒôÀÖ
 		bgmusic = Sound::Create("res/sounds/splash.mp3");
 
-		// æ’­æ”¾éŸ³ä¹ï¼ˆå‚æ•°ç”¨æ¥è®¾ç½®æ’­æ”¾å¾ªçŽ¯æ¬¡æ•°ï¼Œ-1 è¡¨ç¤ºå¾ªçŽ¯æ’­æ”¾ï¼‰
+		// ²¥·ÅÒôÀÖ£¨²ÎÊýÓÃÀ´ÉèÖÃ²¥·ÅÑ­»·´ÎÊý£¬-1 ±íÊ¾Ñ­»·²¥·Å£©
 		bgmusic->Play(-1);
 
-		// åˆ›å»ºè¯´æ˜Žæ–‡å­—
-		TextActorPtr intro = TextActor::Create("æŒ‰ä¸Šä¸‹é”®è°ƒæ•´éŸ³é‡\næŒ‰ç©ºæ ¼é”®æš‚åœæˆ–ç»§ç»­");
+		// ´´½¨ËµÃ÷ÎÄ×Ö
+		TextActorPtr intro = TextActor::Create("°´ÉÏÏÂ¼üµ÷ÕûÒôÁ¿\n°´¿Õ¸ñ¼üÔÝÍ£»ò¼ÌÐø");
 		intro->SetFillColor(Color::White);
 		intro->SetAlignment(TextAlign::Center);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
 
-		// åˆ›å»ºéŸ³é‡æ–‡å­—
-		volume_text = TextActor::Create("å½“å‰éŸ³é‡ï¼š");
+		// ´´½¨ÒôÁ¿ÎÄ×Ö
+		volume_text = TextActor::Create("µ±Ç°ÒôÁ¿£º");
 		volume_text->SetFillColor(Color::White);
 		volume_text->SetAnchor(0.5f, 0.5f);
 		volume_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 30);
 
-		// åˆ›å»ºçŠ¶æ€æ–‡å­—
-		state_text = TextActor::Create("å½“å‰çŠ¶æ€ï¼š");
+		// ´´½¨×´Ì¬ÎÄ×Ö
+		state_text = TextActor::Create("µ±Ç°×´Ì¬£º");
 		state_text->SetFillColor(Color::White);
 		state_text->SetAnchor(0.5f, 0.5f);
 		state_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60);
 
-		// æ·»åŠ åˆ°èˆžå°
+		// Ìí¼Óµ½ÎèÌ¨
 		this->AddChild(intro);
 		this->AddChild(volume_text);
 		this->AddChild(state_text);
@@ -59,24 +59,24 @@ public:
 		if (bgmusic == nullptr)
 			return;
 
-		// èŽ·å–éŸ³é‡å’Œæ’­æ”¾çŠ¶æ€
+		// »ñÈ¡ÒôÁ¿ºÍ²¥·Å×´Ì¬
 		float volume = bgmusic->GetVolume();
 		bool playing = bgmusic->IsPlaying();
 
-		// ä¿®æ”¹æ–‡æœ¬
-		volume_text->SetText("å½“å‰éŸ³é‡ï¼š" + std::to_string(volume));
-		state_text->SetText(playing ? "å½“å‰çŠ¶æ€ï¼šæ­£åœ¨æ’­æ”¾" : "å½“å‰çŠ¶æ€ï¼šåœæ­¢æ’­æ”¾");
+		// ÐÞ¸ÄÎÄ±¾
+		volume_text->SetText("µ±Ç°ÒôÁ¿£º" + std::to_string(volume));
+		state_text->SetText(playing ? "µ±Ç°×´Ì¬£ºÕýÔÚ²¥·Å" : "µ±Ç°×´Ì¬£ºÍ£Ö¹²¥·Å");
 
-		// èŽ·å–è¾“å…¥è®¾å¤‡
+		// »ñÈ¡ÊäÈëÉè±¸
 		auto& input = Input::GetInstance();
 
-		// æŒ‰ç©ºæ ¼é”®æš‚åœæˆ–ç»§ç»­
+		// °´¿Õ¸ñ¼üÔÝÍ£»ò¼ÌÐø
 		if (input.WasPressed(KeyCode::Space))
 		{
 			bgmusic->IsPlaying() ? bgmusic->Pause() : bgmusic->Resume();
 		}
 
-		// æŒ‰ä¸Šä¸‹é”®è°ƒæ•´éŸ³é‡
+		// °´ÉÏÏÂ¼üµ÷ÕûÒôÁ¿
 		if (input.WasPressed(KeyCode::Up))
 		{
 			bgmusic->SetVolume(volume + 0.1f);

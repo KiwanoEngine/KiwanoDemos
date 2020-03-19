@@ -3,7 +3,7 @@
 #pragma once
 #include "common.h"
 
-// è§’è‰²
+// ½ÇÉ«
 KGE_DECLARE_SMART_PTR(Hero);
 class Hero
 	: public GifSprite
@@ -13,26 +13,26 @@ public:
 	{
 		HeroPtr hero = new Hero;
 
-		// ä»Žèµ„æºç¼“å­˜ä¸­èŽ·å–GIFå›¾åƒ
+		// ´Ó×ÊÔ´»º´æÖÐ»ñÈ¡GIFÍ¼Ïñ
 		GifImagePtr img = GifImage::Create("res/images/Kusanagi.gif");
 
-		// åŠ è½½å›¾ç‰‡
+		// ¼ÓÔØÍ¼Æ¬
 		if (hero->Load(img))
 		{
-			// è®¾ç½® GIF åŠ¨å›¾æ— é™å¾ªçŽ¯
+			// ÉèÖÃ GIF ¶¯Í¼ÎÞÏÞÑ­»·
 			hero->SetLoopCount(-1);
 			return hero;
 		}
 		return nullptr;
 	}
 
-	// æ¯å¸§æ¸²æŸ“å‰æ‰§è¡Œ OnUpdate
+	// Ã¿Ö¡äÖÈ¾Ç°Ö´ÐÐ OnUpdate
 	void OnUpdate(Duration dt) override
 	{
-		// èŽ·å–è¾“å…¥è®¾å¤‡
+		// »ñÈ¡ÊäÈëÉè±¸
 		auto& input = Input::GetInstance();
 
-		// æŒ‰ä¸‹å·¦å³é”®
+		// °´ÏÂ×óÓÒ¼ü
 		if (input.IsDown(KeyCode::Left))
 		{
 			this->Move(-2, 0);
@@ -42,7 +42,7 @@ public:
 			this->Move(2, 0);
 		}
 
-		// æŒ‰ä¸‹ä¸Šä¸‹é”®
+		// °´ÏÂÉÏÏÂ¼ü
 		if (input.IsDown(KeyCode::Up))
 		{
 			this->Move(0, -2);
@@ -52,21 +52,21 @@ public:
 			this->Move(0, 2);
 		}
 
-		// æŒ‰ä¸‹é¼ æ ‡å·¦é”®ï¼Œé¡ºæ—¶é’ˆæ—‹è½¬è§’è‰²
+		// °´ÏÂÊó±ê×ó¼ü£¬Ë³Ê±ÕëÐý×ª½ÇÉ«
 		if (input.IsDown(MouseButton::Left))
 		{
-			// èŽ·å–å½“å‰æ—‹è½¬è§’åº¦
+			// »ñÈ¡µ±Ç°Ðý×ª½Ç¶È
 			float rotation = this->GetRotation();
-			// è®¾ç½®è§’åº¦å€¼+2
+			// ÉèÖÃ½Ç¶ÈÖµ+2
 			this->SetRotation(rotation + 2);
 		}
 
-		// ç‚¹å‡»é¼ æ ‡å³é”®ï¼Œéšè—æˆ–æ˜¾ç¤ºè§’è‰²
+		// µã»÷Êó±êÓÒ¼ü£¬Òþ²Ø»òÏÔÊ¾½ÇÉ«
 		if (input.WasPressed(MouseButton::Right))
 		{
-			// èŽ·å–å½“å‰æ˜¾ç¤ºçŠ¶æ€
+			// »ñÈ¡µ±Ç°ÏÔÊ¾×´Ì¬
 			bool visible = this->IsVisible();
-			// è®¾ç½®ç›¸åçš„æ˜¾ç¤ºçŠ¶æ€
+			// ÉèÖÃÏà·´µÄÏÔÊ¾×´Ì¬
 			this->SetVisible(!visible);
 		}
 	}
@@ -88,21 +88,21 @@ public:
 
 	InputDemo()
 	{
-		// åˆ›å»ºè§’è‰²
+		// ´´½¨½ÇÉ«
 		HeroPtr hero = Hero::Create();
-		// åœ¨å±å¹•ä¸Šå±…ä¸­æ˜¾ç¤º
+		// ÔÚÆÁÄ»ÉÏ¾ÓÖÐÏÔÊ¾
 		hero->SetAnchor(0.5f, 0.5f);
 		hero->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-		// åˆ›å»ºè¯´æ˜Žæ–‡å­—
-		TextActorPtr intro = TextActor::Create("æŒ‰ä¸Šä¸‹å·¦å³é”®ç§»åŠ¨\næŒ‰é¼ æ ‡å·¦é”®æ—‹è½¬\nç‚¹å‡»é¼ æ ‡å³é”®éšè—");
-		// è®¾ç½®æ–‡å­—ä½ç½®
+		// ´´½¨ËµÃ÷ÎÄ×Ö
+		TextActorPtr intro = TextActor::Create("°´ÉÏÏÂ×óÓÒ¼üÒÆ¶¯\n°´Êó±ê×ó¼üÐý×ª\nµã»÷Êó±êÓÒ¼üÒþ²Ø");
+		// ÉèÖÃÎÄ×ÖÎ»ÖÃ
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);
 		intro->SetFillColor(Color::White);
 		intro->SetAlignment(TextAlign::Center);
 
-		// æ·»åŠ åˆ°èˆžå°
+		// Ìí¼Óµ½ÎèÌ¨
 		this->AddChild(hero);
 		this->AddChild(intro);
 	}

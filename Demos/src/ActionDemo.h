@@ -45,29 +45,29 @@ public:
 
 	void ShowRotate(const Point& position)
 	{
-		// åˆ›å»ºæ—‹è½¬åŠ¨ç”»
+		// ´´½¨Ðý×ª¶¯»­
 		ActionRotateByPtr rotate_by = ActionRotateBy::Create(1_sec, 60.0f);
-		// è®¾ç½®æ— é™å¾ªçŽ¯
+		// ÉèÖÃÎÞÏÞÑ­»·
 		rotate_by->SetLoops(-1);
 
-		// åˆ›å»ºä¸€ä¸ªå°äººæ‰§è¡Œè¯¥åŠ¨ç”»
+		// ´´½¨Ò»¸öÐ¡ÈËÖ´ÐÐ¸Ã¶¯»­
 		CreateManToRunAction("Rotating", rotate_by, position);
 	}
 
 	void ShowMove(const Point& position)
 	{
-		// åˆ›å»ºä½ç§»åŠ¨ç”»
-		// 0.5ç§’å‘xæ–¹å‘ç§»åŠ¨20åƒç´ 
+		// ´´½¨Î»ÒÆ¶¯»­
+		// 0.5ÃëÏòx·½ÏòÒÆ¶¯20ÏñËØ
 		ActionMoveByPtr move_by = ActionMoveBy::Create(0.5_sec, Vec2(20, 0));
-		// è®¾ç½®åŠ¨ç”»å»¶è¿Ÿ
+		// ÉèÖÃ¶¯»­ÑÓ³Ù
 		move_by->SetDelay(0.5_sec);
 
-		// åˆ›å»ºåå‘åŠ¨ç”»
+		// ´´½¨·´Ïò¶¯»­
 		ActionPtr move_by_reverse = move_by->Reverse();
 
-		// åˆ›å»ºç»„åˆåŠ¨ç”»
+		// ´´½¨×éºÏ¶¯»­
 		ActionPtr group = ActionGroup::Create({ move_by, move_by_reverse });
-		// è®¾ç½®æ— é™å¾ªçŽ¯
+		// ÉèÖÃÎÞÏÞÑ­»·
 		group->SetLoops(-1);
 
 		CreateManToRunAction("Move & Reverse", group, position);
@@ -75,15 +75,15 @@ public:
 
 	void ShowFadeInAndFadeOut(const Point& position)
 	{
-		// åˆ›å»ºæ·¡å‡ºåŠ¨ç”»
+		// ´´½¨µ­³ö¶¯»­
 		ActionFadeOutPtr fade_out = ActionFadeOut::Create(1.0_sec);
 
-		// åˆ›å»ºæ·¡å…¥åŠ¨ç”»
+		// ´´½¨µ­Èë¶¯»­
 		ActionFadeInPtr fade_in = ActionFadeIn::Create(1.0_sec);
 
-		// åˆ›å»ºç»„åˆåŠ¨ç”»
+		// ´´½¨×éºÏ¶¯»­
 		ActionPtr group = ActionGroup::Create({ fade_out, fade_in });
-		// è®¾ç½®æ— é™å¾ªçŽ¯
+		// ÉèÖÃÎÞÏÞÑ­»·
 		group->SetLoops(-1);
 
 		CreateManToRunAction("FadeIn & FadeOut", group, position);
@@ -91,12 +91,12 @@ public:
 
 	void ShowWalk(const Point& position)
 	{
-		// åˆ›å»ºè·¯å¾„å½¢çŠ¶
+		// ´´½¨Â·¾¶ÐÎ×´
 		ShapePtr circle = Shape::CreateCircle(Point(10.0f, 0), 10.0f);
 
-		// åˆ›å»ºè·¯å¾„ç§»åŠ¨åŠ¨ç”»
+		// ´´½¨Â·¾¶ÒÆ¶¯¶¯»­
 		ActionWalkPtr walk = ActionWalk::Create(2.0_sec, circle);
-		// è®¾ç½®æ— é™å¾ªçŽ¯
+		// ÉèÖÃÎÞÏÞÑ­»·
 		walk->SetLoops(-1);
 
 		CreateManToRunAction("Path Walk", walk, position);
@@ -104,13 +104,13 @@ public:
 
 	void ShowGroup(const Point& position)
 	{
-		// ä½¿ç”¨Tweenè¾…åŠ©å·¥å…·åˆ›å»ºç»„åˆåŠ¨ç”»
+		// Ê¹ÓÃTween¸¨Öú¹¤¾ß´´½¨×éºÏ¶¯»­
 		ActionPtr group = Tween::Group(
 			{
 				Tween::Group({ Tween::ScaleTo(0.3_sec, 0.5f, 0.5f), Tween::ScaleTo(0.7_sec, 1.0f, 1.0f) }),
 				Tween::Group({ Tween::FadeTo(0.5_sec, 0.3f), Tween::FadeIn(0.5_sec) })
 			},
-			true /* åŒæ­¥æ‰§è¡Œ */
+			true /* Í¬²½Ö´ÐÐ */
 		).SetLoops(-1);
 
 		CreateManToRunAction("Group", group, position);
@@ -120,13 +120,13 @@ public:
 	{
 		auto custom = Tween::Custom(1_sec, [](Actor* target, float percent) {
 			Sprite* sprite = (Sprite*)target;
-			// èŽ·å–å›¾ç‰‡åŽŸå®½åº¦å’Œé«˜åº¦
+			// »ñÈ¡Í¼Æ¬Ô­¿í¶ÈºÍ¸ß¶È
 			float src_width = sprite->GetSourceWidth();
 			float src_height = sprite->GetSourceHeight();
-			// æ ¹æ®åŠ¨ç”»è¿›åº¦è®¡ç®—æ–°çš„è£å‰ªçŸ©å½¢
+			// ¸ù¾Ý¶¯»­½ø¶È¼ÆËãÐÂµÄ²Ã¼ô¾ØÐÎ
 			Rect crop_rect = Rect(0, percent * src_height / 2, src_width, (0.5f + (1.0f - percent) * 0.5f) * src_height);
 			sprite->SetCropRect(crop_rect);
-			// é‡è®¾ç²¾çµå¤§å°ä¸ºè£å‰ªçŸ©å½¢å¤§å°
+			// ÖØÉè¾«Áé´óÐ¡Îª²Ã¼ô¾ØÐÎ´óÐ¡
 			sprite->SetSize(crop_rect.GetSize());
 		}).SetLoops(-1);
 
@@ -141,7 +141,7 @@ public:
 		man->SetAnchor(0.5f, 0.5f);
 		this->AddChild(man);
 
-		// æ·»åŠ æç¤ºæ–‡å­—
+		// Ìí¼ÓÌáÊ¾ÎÄ×Ö
 		TextActorPtr label = TextActor::Create(text);
 		label->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
 		label->SetAnchor(0.5f, 0);

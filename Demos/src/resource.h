@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 Demos.rc 使用
+// Microsoft Visual C++ ���ɵİ����ļ���
+// �� Demos.rc ʹ��
 //
 #define IDI_ICON1                       101
 

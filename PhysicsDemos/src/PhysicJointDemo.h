@@ -15,7 +15,7 @@ public:
 
 	static inline String Name() { return "Physic Joint Demo"; }
 
-	static inline String Label() { return "æŒ‰â†â†’â†“é”®æ§åˆ¶å°è½¦"; }
+	static inline String Label() { return "°´¡û¡ú¡ı¼ü¿ØÖÆĞ¡³µ"; }
 
 	PhysicJointDemo();
 
@@ -27,18 +27,18 @@ private:
 	CarPtr car_;
 };
 
-// åœ°é¢
+// µØÃæ
 class Ground
 	: public ShapeActor
 {
 public:
 	static GroundPtr Create(PhysicWorldPtr world, Point const& pos);
 
-	// ç”Ÿæˆåœ°é¢è·¯å¾„ç‚¹
+	// Éú³ÉµØÃæÂ·¾¶µã
 	Vector<Point> GeneratePathPoints();
 };
 
-// å°è½¦
+// Ğ¡³µ
 class Car
 	: public Actor
 {
@@ -48,40 +48,40 @@ class Car
 public:
 	static CarPtr Create(PhysicWorldPtr world, Point const& pos);
 
-	// ç»™å°è½¦åè½®æä¾›åŠ¨åŠ›
+	// ¸øĞ¡³µºóÂÖÌá¹©¶¯Á¦
 	void SetSpeed(float speed);
 
-	// è·å–å°è½¦èº¯å¹²çš„ä½ç½®
+	// »ñÈ¡Ğ¡³µÇû¸ÉµÄÎ»ÖÃ
 	Point GetPosition() const;
 };
 
 
 PhysicJointDemo::PhysicJointDemo()
 {
-	// åˆ›å»ºç‰©ç†ä¸–ç•Œ
+	// ´´½¨ÎïÀíÊÀ½ç
 	world_ = PhysicWorld::Create();
 	AddComponent(world_);
 
-	// åˆ›å»ºåœ°å›¾
+	// ´´½¨µØÍ¼
 	map_ = Actor::Create();
 	AddChild(map_);
 
-	// åˆ›å»ºåœ°é¢
+	// ´´½¨µØÃæ
 	ActorPtr ground = Ground::Create(world_, Point(0, GetHeight() - 200));
 	map_->AddChild(ground);
 
-	// åˆ›å»ºå°è½¦
+	// ´´½¨Ğ¡³µ
 	car_ = Car::Create(world_, Point(190, 240));
 	map_->AddChild(car_);
 }
 
 void PhysicJointDemo::OnUpdate(Duration dt)
 {
-	// è·å–å°è½¦ä½ç½®
+	// »ñÈ¡Ğ¡³µÎ»ÖÃ
 	Point pos = car_->GetPosition();
 	if (pos.x > GetWidth() / 2)
 	{
-		// å°è½¦ä½ç½®è¶…è¿‡å±å¹•ä¸€åŠå¤§å°æ—¶, ç§»åŠ¨æ•´ä¸ªåœ°å›¾, è®©è§†è§’è·Ÿéšå°è½¦
+		// Ğ¡³µÎ»ÖÃ³¬¹ıÆÁÄ»Ò»°ë´óĞ¡Ê±, ÒÆ¶¯Õû¸öµØÍ¼, ÈÃÊÓ½Ç¸úËæĞ¡³µ
 		map_->SetPositionX(GetWidth() / 2 - pos.x);
 	}
 	else
@@ -89,7 +89,7 @@ void PhysicJointDemo::OnUpdate(Duration dt)
 		map_->SetPositionX(0.f);
 	}
 
-	// æŒ‰é”®å¤„ç†
+	// °´¼ü´¦Àí
 	auto& input = Input::GetInstance();
 	if (input.IsDown(KeyCode::Right))
 	{
@@ -109,14 +109,14 @@ GroundPtr Ground::Create(PhysicWorldPtr world, Point const& pos)
 {
 	GroundPtr ground = new Ground;
 
-	// è®¾ç½®å½¢çŠ¶é¢œè‰²å’Œä½ç½®
+	// ÉèÖÃĞÎ×´ÑÕÉ«ºÍÎ»ÖÃ
 	ground->SetStrokeColor(Color::White);
 	ground->SetPosition(pos);
 
-	// ç”Ÿæˆè·¯å¾„ç‚¹
+	// Éú³ÉÂ·¾¶µã
 	Vector<Point> path_points = ground->GeneratePathPoints();
 
-	// æ ¹æ®è·¯å¾„ç‚¹ç»˜åˆ¶è·¯å¾„
+	// ¸ù¾İÂ·¾¶µã»æÖÆÂ·¾¶
 	ShapeMakerPtr maker = ShapeMaker::Create();
 	maker->BeginPath(path_points[0]);
 	for (size_t i = 1; i < path_points.size(); ++i)
@@ -126,7 +126,7 @@ GroundPtr Ground::Create(PhysicWorldPtr world, Point const& pos)
 	maker->EndPath();
 	ground->SetShape(maker->GetShape());
 
-	// æ ¹æ®è·¯å¾„ç‚¹ç”Ÿæˆç‰©ç†è¾¹
+	// ¸ù¾İÂ·¾¶µãÉú³ÉÎïÀí±ß
 	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Static);
 	for (size_t i = 1; i < path_points.size(); ++i)
 	{
@@ -138,7 +138,7 @@ GroundPtr Ground::Create(PhysicWorldPtr world, Point const& pos)
 
 Vector<Point> Ground::GeneratePathPoints()
 {
-	Vector<Point> path_points;	// è·¯å¾„ç‚¹
+	Vector<Point> path_points;	// Â·¾¶µã
 
 	path_points.push_back(Point(5, -400));
 	path_points.push_back(Point(5, 0));
@@ -169,27 +169,27 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 {
 	CarPtr car = new Car;
 
-	// å°è½¦èº¯å¹²å½¢çŠ¶é¡¶ç‚¹
+	// Ğ¡³µÇû¸ÉĞÎ×´¶¥µã
 	Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
 
-	// ç”Ÿæˆå°è½¦å½¢çŠ¶
+	// Éú³ÉĞ¡³µĞÎ×´
 	ShapeMakerPtr maker = ShapeMaker::Create();
 	maker->BeginPath(vertices[0]);
 	maker->AddLines(vertices);
 	maker->EndPath(true);
 
-	// åˆ›å»ºå°è½¦èº¯å¹²
+	// ´´½¨Ğ¡³µÇû¸É
 	ShapeActorPtr chassis = ShapeActor::Create(maker->GetShape());
 	chassis->SetPosition(pos + Point(0, -100));
 	chassis->SetStrokeColor(Color::White);
 	car->AddChild(chassis);
 
-	// åˆ›å»ºå°è½¦èº¯å¹²çš„ç‰©ç†èº«ä½“
+	// ´´½¨Ğ¡³µÇû¸ÉµÄÎïÀíÉíÌå
 	PhysicBodyPtr chassis_body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 	chassis_body->AddPolygonShape(vertices, 1.0f);
 	chassis->AddComponent(chassis_body);
 
-	// åˆ›å»ºå·¦å³è½®å­
+	// ´´½¨×óÓÒÂÖ×Ó
 	CirclePtr lwheel = Circle::Create(world, pos + Point(-100, -35), 40.0f);
 	CirclePtr rwheel = Circle::Create(world, pos + Point(100, -40), 40.0f);
 	car->AddChild(lwheel);
@@ -198,22 +198,22 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 	auto lwheel_body = lwheel->GetPhysicBody();
 	auto rwheel_body = rwheel->GetPhysicBody();
 
-	// è®¾ç½®æ‘©æ“¦åŠ›
+	// ÉèÖÃÄ¦²ÁÁ¦
 	lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
 	rwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
 
-	// åˆ›å»ºå·¦è½®å­å…³èŠ‚
+	// ´´½¨×óÂÖ×Ó¹Ø½Ú
 	WheelJoint::Param param1(chassis_body, lwheel_body, lwheel_body->GetPosition(), Vec2(0, 1));
-	param1.frequency_hz = 4.0f;			// é¢‘ç‡å’Œé˜»å°¼ç‡èµ‹äºˆå…³èŠ‚å¼¹æ€§
+	param1.frequency_hz = 4.0f;			// ÆµÂÊºÍ×èÄáÂÊ¸³Óè¹Ø½Úµ¯ĞÔ
 	param1.damping_ratio = 0.7f;
-	param1.enable_motor = true;			// å¯ç”¨é©¬è¾¾
-	param1.motor_speed = 0.0f;			// åˆå§‹é©¬è¾¾é€Ÿåº¦ä¸ºé›¶
-	param1.max_motor_torque = 2000;		// æœ€å¤§é©¬è¾¾è½¬çŸ©
+	param1.enable_motor = true;			// ÆôÓÃÂí´ï
+	param1.motor_speed = 0.0f;			// ³õÊ¼Âí´ïËÙ¶ÈÎªÁã
+	param1.max_motor_torque = 2000;		// ×î´óÂí´ï×ª¾Ø
 
 	WheelJointPtr left_joint = WheelJoint::Create(param1);
 	world->AddJoint(left_joint);
 
-	// åˆ›å»ºå³è½®å­å…³èŠ‚
+	// ´´½¨ÓÒÂÖ×Ó¹Ø½Ú
 	WheelJoint::Param param2(chassis_body, rwheel_body, rwheel_body->GetPosition(), Vec2(0, 1));
 	param2.frequency_hz = 4.0f;
 	param2.damping_ratio = 0.7f;

@@ -8,10 +8,10 @@ KGE_DECLARE_SMART_PTR(KeyText);
 
 namespace
 {
-	const float min_h_force = 5.0f;		//æœ€å°æ¨ªå‘é€Ÿåº¦
-	const float max_h_force = 20.0f;	//æœ€å¤§æ¨ªå‘é€Ÿåº¦
-	const float min_v_force = 50.0f;	//æœ€å°çºµå‘é€Ÿåº¦
-	const float max_v_force = 80.0f;	//æœ€å¤§çºµå‘é€Ÿåº¦
+	const float min_h_force = 5.0f;		//×îĞ¡ºáÏòËÙ¶È
+	const float max_h_force = 20.0f;	//×î´óºáÏòËÙ¶È
+	const float min_v_force = 50.0f;	//×îĞ¡×İÏòËÙ¶È
+	const float max_v_force = 80.0f;	//×î´ó×İÏòËÙ¶È
 }
 
 class PhysicContactDemo
@@ -22,17 +22,17 @@ public:
 
 	static inline String Name() { return "Physic Contact Demo"; }
 
-	static inline String Label() { return "æŒ‰ä»»æ„é”®å‘å°„ç²’å­ï¼"; }
+	static inline String Label() { return "°´ÈÎÒâ¼ü·¢ÉäÁ£×Ó£¡"; }
 
 	PhysicContactDemo();
 
-	// æ¥è§¦å¼€å§‹
+	// ½Ó´¥¿ªÊ¼
 	void OnContactBegin(Event* evt);
 
-	// æ¥è§¦ç»“æŸ
+	// ½Ó´¥½áÊø
 	void OnContactEnd(Event* evt);
 
-	// è®¾ç½®ç‰©ä½“é¢œè‰²
+	// ÉèÖÃÎïÌåÑÕÉ«
 	void SetBodyColor(PhysicBody* body, const Color& color);
 
 	void OnKeyDown(Event* evt);
@@ -43,7 +43,7 @@ private:
 	PhysicWorldPtr world_;
 };
 
-// æŒ‰é”®æ–‡æœ¬
+// °´¼üÎÄ±¾
 class KeyText
 	: public TextActor
 {
@@ -54,28 +54,28 @@ public:
 
 PhysicContactDemo::PhysicContactDemo()
 {
-	// åˆ›å»ºç‰©ç†ä¸–ç•Œ
+	// ´´½¨ÎïÀíÊÀ½ç
 	world_ = PhysicWorld::Create();
 	AddComponent(world_);
 
-	// åˆ›å»ºåœ°é¢
+	// ´´½¨µØÃæ
 	RectActorPtr ground = RectActor::Create(Size(GetWidth(), 10));
 	ground->SetFillColor(Color::Gray);
 
-	// è®¾ç½®æœ¨æ¿çš„å¤§å°ã€ä½ç½®å’Œæ—‹è½¬è§’åº¦
+	// ÉèÖÃÄ¾°åµÄ´óĞ¡¡¢Î»ÖÃºÍĞı×ª½Ç¶È
 	ground->SetAnchor(0.5f, 0.5f);
 	ground->SetPosition(Point(GetWidth() / 2, GetHeight()));
 	AddChild(ground);
 
-	// åˆ›å»ºåœ°é¢ç‰©ç†èº«ä½“
+	// ´´½¨µØÃæÎïÀíÉíÌå
 	PhysicBodyPtr ground_body = PhysicBody::Create(world_, PhysicBody::Type::Static);
 	ground_body->AddRectShape(ground->GetSize(), 0.0f);
 	ground->AddComponent(ground_body);
 
-	// æŒ‰é”®ç›‘å¬
+	// °´¼ü¼àÌı
 	AddListener<KeyDownEvent>(Closure(this, &PhysicContactDemo::OnKeyDown));
 
-	// æ¥è§¦ç›‘å¬
+	// ½Ó´¥¼àÌı
 	AddListener<ContactBeginEvent>(Closure(this, &PhysicContactDemo::OnContactBegin));
 	AddListener<ContactEndEvent>(Closure(this, &PhysicContactDemo::OnContactEnd));
 }
@@ -84,13 +84,13 @@ void PhysicContactDemo::OnKeyDown(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<KeyDownEvent>());
 
-	// å¤„ç† A-Z é”®
+	// ´¦Àí A-Z ¼ü
 	auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
 	if (key_evt->code >= KeyCode::A && key_evt->code <= KeyCode::Z)
 	{
-		// è®¡ç®—å­—æ¯å€¼
+		// ¼ÆËã×ÖÄ¸Öµ
 		char ch = char(key_evt->code) - char(KeyCode::A) + 'A';
-		// åœ¨å±å¹•åº•éƒ¨åˆ›å»ºä¸€ä¸ª KeyText
+		// ÔÚÆÁÄ»µ×²¿´´½¨Ò»¸ö KeyText
 		Point pos(GetWidth() / 2, GetHeight() - 20);
 		KeyTextPtr key = KeyText::Create(world_, pos, ch);
 		AddChild(key);
@@ -101,7 +101,7 @@ void PhysicContactDemo::OnContactBegin(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<ContactBeginEvent>());
 
-	// ä¸¤ç‰©ä½“ç¢°æ’åé¢œè‰²å˜ä¸ºæ©˜çº¢è‰²
+	// Á½ÎïÌåÅö×²ºóÑÕÉ«±äÎªéÙºìÉ«
 	auto contact_evt = dynamic_cast<ContactBeginEvent*>(evt);
 	SetBodyColor(contact_evt->contact.GetBodyA(), Color::OrangeRed);
 	SetBodyColor(contact_evt->contact.GetBodyB(), Color::OrangeRed);
@@ -111,7 +111,7 @@ void PhysicContactDemo::OnContactEnd(Event* evt)
 {
 	KGE_ASSERT(evt->IsType<ContactEndEvent>());
 
-	// ä¸¤ç‰©ä½“ç¢°æ’ç»“æŸåé¢œè‰²å˜å›ç™½è‰²
+	// Á½ÎïÌåÅö×²½áÊøºóÑÕÉ«±ä»Ø°×É«
 	auto contact_evt = dynamic_cast<ContactEndEvent*>(evt);
 	SetBodyColor(contact_evt->contact.GetBodyA(), Color::White);
 	SetBodyColor(contact_evt->contact.GetBodyB(), Color::White);
@@ -119,7 +119,7 @@ void PhysicContactDemo::OnContactEnd(Event* evt)
 
 void PhysicContactDemo::SetBodyColor(PhysicBody* body, const Color& color)
 {
-	// åªå¤„ç†åŠ¨æ€ç‰©ä½“
+	// Ö»´¦Àí¶¯Ì¬ÎïÌå
 	if (body->GetType() == PhysicBody::Type::Dynamic)
 	{
 		auto text = static_cast<TextActor*>(body->GetBoundActor());
@@ -129,7 +129,7 @@ void PhysicContactDemo::SetBodyColor(PhysicBody* body, const Color& color)
 
 void PhysicContactDemo::OnUpdate(Duration dt)
 {
-	// ç§»é™¤æ‰è½åˆ°åœºæ™¯å¤–çš„ç‰©ä½“
+	// ÒÆ³ıµôÂäµ½³¡¾°ÍâµÄÎïÌå
 	Vector<ActorPtr> outed;
 	for (auto child : GetAllChildren())
 	{
@@ -149,23 +149,23 @@ KeyTextPtr KeyText::Create(PhysicWorldPtr world, const Point& pos, char ch)
 {
 	KeyTextPtr key = new KeyText;
 
-	// è®¾ç½®æ–‡æœ¬å†…å®¹ã€å­—å·å’Œé¢œè‰²
+	// ÉèÖÃÎÄ±¾ÄÚÈİ¡¢×ÖºÅºÍÑÕÉ«
 	key->SetText(String(1, ch));
 	key->SetFillColor(Color::White);
 	key->SetFontFamily("Arial");
 	key->SetFontSize(35);
 	key->SetFontWeight(FontWeight::ExtraBold);
 
-	// è®¾ç½®åæ ‡å’Œé”šç‚¹
+	// ÉèÖÃ×ø±êºÍÃªµã
 	key->SetAnchor(0.5f, 0.5f);
 	key->SetPosition(pos);
 
-	// æ·»åŠ ç‰©ç†èº«ä½“
+	// Ìí¼ÓÎïÀíÉíÌå
 	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
 	body->AddRectShape(key->GetSize(), 1.0f);
 	key->AddComponent(body);
 
-	// ç»™èº«ä½“ä¸€ä¸ªéšæœºå—åŠ›
+	// ¸øÉíÌåÒ»¸öËæ»úÊÜÁ¦
 	float neg = (math::Random(0, 1) == 0 ? -1.0f : 1.0f);
 	float h = neg * math::Random(min_h_force, max_h_force);
 	float v = -math::Random(min_v_force, max_v_force);

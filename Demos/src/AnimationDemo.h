@@ -3,7 +3,7 @@
 #pragma once
 #include "common.h"
 
-// æ–¹å‘
+// ·½Ïò
 enum class Direction
 {
 	Up,
@@ -12,16 +12,16 @@ enum class Direction
 	Right
 };
 
-// è€è™
+// ÀÏ»¢
 KGE_DECLARE_SMART_PTR(Tiger);
 class Tiger
 	: public Sprite
 {
-	FrameSequencePtr run_frames;	// è·‘æ­¥åºåˆ—å¸§
-	FrameSequencePtr stand_frames;	// ç«™ç«‹åºåˆ—å¸§
-	bool facing_left;				// é¢æœå·¦æˆ–é¢æœå³
-	bool running;					// æ˜¯å¦æ­£åœ¨è·‘æ­¥
-	Direction running_direction;	// è·‘æ­¥æ–¹å‘
+	FrameSequencePtr run_frames;	// ÅÜ²½ĞòÁĞÖ¡
+	FrameSequencePtr stand_frames;	// Õ¾Á¢ĞòÁĞÖ¡
+	bool facing_left;				// Ãæ³¯×ó»òÃæ³¯ÓÒ
+	bool running;					// ÊÇ·ñÕıÔÚÅÜ²½
+	Direction running_direction;	// ÅÜ²½·½Ïò
 
 public:
 	static TigerPtr Create()
@@ -32,7 +32,7 @@ public:
 
 	Tiger()
 	{
-		// åŠ è½½å¸§åŠ¨ç”»
+		// ¼ÓÔØÖ¡¶¯»­
 		run_frames = FrameSequence::Create({
 			Frame::Create("res/images/tiger/run/run01.png"),
 			Frame::Create("res/images/tiger/run/run02.png"),
@@ -44,18 +44,18 @@ public:
 
 		stand_frames = FrameSequence::Create(Frame::Create("res/images/tiger/stand.png"), 3, 2);
 
-		// æ‰§è¡ŒåŠ¨ç”»
+		// Ö´ĞĞ¶¯»­
 		StartStandAnimation();
 
-		// æ·»åŠ æŒ‰é”®ç›‘å¬
+		// Ìí¼Ó°´¼ü¼àÌı
 		AddListener<KeyDownEvent>(Closure(this, &Tiger::OnKeyDown));
 		AddListener<KeyUpEvent>(Closure(this, &Tiger::OnKeyUp));
 
-		// é»˜è®¤æ–¹å‘ä¸º Left
+		// Ä¬ÈÏ·½ÏòÎª Left
 		facing_left = true;
 		running = false;
 
-		// è®¾ç½®é”šç‚¹
+		// ÉèÖÃÃªµã
 		SetAnchor(0.5f, 0.5f);
 	}
 
@@ -96,7 +96,7 @@ public:
 		{
 			running = true;
 
-			// æ‰§è¡Œè·‘æ­¥åŠ¨ç”»
+			// Ö´ĞĞÅÜ²½¶¯»­
 			StartRunAnimation();
 		}
 
@@ -110,8 +110,8 @@ public:
 			facing_left = false;
 		}
 
-		// ç¼©æ”¾å¯ä»¥è°ƒæ•´å›¾ç‰‡æ˜¾ç¤ºæ–¹å‘
-		// ç¼©æ”¾è‡³ -1 å›¾ç‰‡ä¼šåè½¬
+		// Ëõ·Å¿ÉÒÔµ÷ÕûÍ¼Æ¬ÏÔÊ¾·½Ïò
+		// Ëõ·ÅÖÁ -1 Í¼Æ¬»á·´×ª
 		SetScale(facing_left ? 1.0f : -1.0f, 1.0f);
 	}
 
@@ -121,7 +121,7 @@ public:
 		{
 			running = false;
 
-			// æ‰§è¡Œç«™ç«‹åŠ¨ç”»
+			// Ö´ĞĞÕ¾Á¢¶¯»­
 			StartStandAnimation();
 		}
 	}
@@ -130,9 +130,9 @@ public:
 	{
 		if (running)
 		{
-			// è®¡ç®—ç§»åŠ¨è·ç¦»
-			// OnUpdate å¹¶ä¸æ˜¯ä¸€ä¸ªç¨³å®šé—´éš”æ‰§è¡Œçš„å‡½æ•°, å¦‚æœæƒ³å®ç°ç¨³å®š
-			// æ¯ç§’ç§»åŠ¨ 150 åƒç´ , åº”æ ¹æ® dt å‚æ•°è®¡ç®—ç§»åŠ¨è·ç¦»
+			// ¼ÆËãÒÆ¶¯¾àÀë
+			// OnUpdate ²¢²»ÊÇÒ»¸öÎÈ¶¨¼ä¸ôÖ´ĞĞµÄº¯Êı, Èç¹ûÏëÊµÏÖÎÈ¶¨
+			// Ã¿ÃëÒÆ¶¯ 150 ÏñËØ, Ó¦¸ù¾İ dt ²ÎÊı¼ÆËãÒÆ¶¯¾àÀë
 			const float moving_per_sec = 150;
 			const float distance = moving_per_sec * dt.Seconds();
 
@@ -154,14 +154,14 @@ public:
 		}
 	}
 
-	// æ‰§è¡Œè·‘æ­¥åŠ¨ç”»
+	// Ö´ĞĞÅÜ²½¶¯»­
 	void StartRunAnimation()
 	{
 		StopAllActions();
 		AddAction(Tween::Animation(0.5_sec, run_frames).SetLoops(-1));
 	}
 
-	// æ‰§è¡Œç«™ç«‹åŠ¨ç”»
+	// Ö´ĞĞÕ¾Á¢¶¯»­
 	void StartStandAnimation()
 	{
 		StopAllActions();
@@ -185,25 +185,25 @@ public:
 
 	AnimationDemo()
 	{
-		// åˆ›å»ºèƒŒæ™¯
+		// ´´½¨±³¾°
 		SpritePtr bg = Sprite::Create("res/images/spring_forest.jpg");
 		bg->SetSize(GetSize());
 
-		// åˆ›å»ºè€è™
+		// ´´½¨ÀÏ»¢
 		TigerPtr tiger = Tiger::Create();
-		// åœ¨å±å¹•ä¸Šå±…ä¸­æ˜¾ç¤º
+		// ÔÚÆÁÄ»ÉÏ¾ÓÖĞÏÔÊ¾
 		tiger->SetAnchor(0.5f, 0.5f);
 		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-		// åˆ›å»ºè¯´æ˜æ–‡å­—
-		TextActorPtr intro = TextActor::Create("æŒ‰ä¸Šä¸‹å·¦å³é”®ç§»åŠ¨");
-		// è®¾ç½®æ–‡å­—ä½ç½®
+		// ´´½¨ËµÃ÷ÎÄ×Ö
+		TextActorPtr intro = TextActor::Create("°´ÉÏÏÂ×óÓÒ¼üÒÆ¶¯");
+		// ÉèÖÃÎÄ×ÖÎ»ÖÃ
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);
 		intro->SetFillColor(Color::White);
 		intro->SetAlignment(TextAlign::Center);
 
-		// æ·»åŠ åˆ°èˆå°
+		// Ìí¼Óµ½ÎèÌ¨
 		this->AddChild(bg);
 		this->AddChild(tiger);
 		this->AddChild(intro);

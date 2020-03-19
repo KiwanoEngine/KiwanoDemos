@@ -19,16 +19,16 @@ public:
 
 	EaseActionDemo()
 	{
-		// ä»èµ„æºç¼“å­˜ä¸­è·å–äººç‰©å›¾ç‰‡
+		// ´Ó×ÊÔ´»º´æÖĞ»ñÈ¡ÈËÎïÍ¼Æ¬
 		FramePtr man_image = Frame::Create("res/images/man.png");
 
-		// åˆ›å»ºç¼“åŠ¨æ–¹ç¨‹åˆ—è¡¨
+		// ´´½¨»º¶¯·½³ÌÁĞ±í
 		EaseFunc ease_functions[] = {
-			Ease::Linear,		// çº¿æ€§å˜åŒ–
-			Ease::EaseInOut,	// å˜åŒ–è¿‡ç¨‹ä¸­æœ‰ç¼“å†²
-			Ease::ExpoInOut,	// åœ¨å¼€å§‹å’Œç»“æŸé˜¶æ®µéå¸¸æ…¢ï¼Œä½†è¿‡ç¨‹éå¸¸å¿«
-			Ease::BounceInOut,	// åœ¨å¼€å§‹å’Œç»“æŸé˜¶æ®µå‡èµ‹äºˆå¼¹æ€§
-			Ease::BackInOut		// å¼€å§‹å’Œç»“æŸé˜¶æ®µå‡æœ‰ä¸€ä¸ªçŸ­æš‚çš„åæ–¹å‘è¿åŠ¨
+			Ease::Linear,		// ÏßĞÔ±ä»¯
+			Ease::EaseInOut,	// ±ä»¯¹ı³ÌÖĞÓĞ»º³å
+			Ease::ExpoInOut,	// ÔÚ¿ªÊ¼ºÍ½áÊø½×¶Î·Ç³£Âı£¬µ«¹ı³Ì·Ç³£¿ì
+			Ease::BounceInOut,	// ÔÚ¿ªÊ¼ºÍ½áÊø½×¶Î¾ù¸³Óèµ¯ĞÔ
+			Ease::BackInOut		// ¿ªÊ¼ºÍ½áÊø½×¶Î¾ùÓĞÒ»¸ö¶ÌÔİµÄ·´·½ÏòÔË¶¯
 		};
 
 		String ease_names[] = {
@@ -39,27 +39,27 @@ public:
 			"BackInOut",
 		};
 
-		// ä¸ºæ¯ä¸ªäººç‰©ä½¿ç”¨ä¸åŒçš„ç¼“åŠ¨æ–¹ç¨‹æ‰§è¡ŒåŠ¨ç”»
+		// ÎªÃ¿¸öÈËÎïÊ¹ÓÃ²»Í¬µÄ»º¶¯·½³ÌÖ´ĞĞ¶¯»­
 		float height = 80.f;
 		for (size_t i = 0; i < std::size(ease_functions); ++i)
 		{
-			// åŠ¨ç”»ï¼š4 ç§’å†…å‘å³ç§»åŠ¨ 350 åƒç´ ï¼Œå¹¶è®¾ç½®ç¼“åŠ¨æ–¹ç¨‹
+			// ¶¯»­£º4 ÃëÄÚÏòÓÒÒÆ¶¯ 350 ÏñËØ£¬²¢ÉèÖÃ»º¶¯·½³Ì
 			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(ease_functions[i]);
-			// åŠ¨ç”»ï¼šå»¶è¿Ÿ 1 ç§’
+			// ¶¯»­£ºÑÓ³Ù 1 Ãë
 			auto delay = Tween::Delay(1_sec);
-			// åŠ¨ç”»ï¼šç»„åˆå‰ä¸¤ä¸ªåŠ¨ç”»ï¼Œå¹¶å¾ªç¯æ‰§è¡Œ
+			// ¶¯»­£º×éºÏÇ°Á½¸ö¶¯»­£¬²¢Ñ­»·Ö´ĞĞ
 			auto group = Tween::Group({ move, delay }).SetLoops(-1);
-			// åŠ¨ç”»ç»“æŸåè‡ªåŠ¨æ¢å¤äººç‰©ä½ç½®
+			// ¶¯»­½áÊøºó×Ô¶¯»Ö¸´ÈËÎïÎ»ÖÃ
 			group.SetLoopDoneCallback([](Actor* target) { target->Move(-300, 0); });
 
-			// åˆå§‹åŒ–äººç‰©
+			// ³õÊ¼»¯ÈËÎï
 			SpritePtr man = Sprite::Create(man_image);
 			man->SetPosition(200, height);
 			man->SetAnchor(0.5f, 0.5f);
-			// æ‰§è¡ŒåŠ¨ç”»
+			// Ö´ĞĞ¶¯»­
 			man->AddAction(group);
 
-			// æ·»åŠ æç¤ºæ–‡å­—
+			// Ìí¼ÓÌáÊ¾ÎÄ×Ö
 			TextActorPtr label = TextActor::Create(ease_names[i]);
 			label->SetFillColor(Color::White);
 			label->SetFontSize(16.0f);
