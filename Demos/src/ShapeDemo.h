@@ -6,6 +6,8 @@
 class ShapeDemo
 	: public Stage
 {
+	int current_type = 0;
+
 public:
 	static StagePtr Create()
 	{
@@ -19,43 +21,43 @@ public:
 
 	ShapeDemo()
 	{
-		// 添加自动生成形状的定时器
-		AddTimer(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
+		// 自动生成形状的定时任务
+		TaskPtr task = Task::Create(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
+		AddTask(task);
 	}
 
-	void GenerateShapes(Timer* timer, Duration dt)
+	void GenerateShapes(Task* task, Duration dt)
 	{
-		static int type = 0;
 		const int max_types = 4;
 
-		Point pos = Point(GetWidth() * (type + 1) / (max_types + 1), GetHeight() + 50);
-		switch (type)
+		Point pos = Point(GetWidth() * (current_type + 1) / (max_types + 1), GetHeight() + 50);
+		switch (current_type)
 		{
 		case 0:
 		{
 			AddShape(CreateRectangle(), pos);
+			current_type++;
 			break;
 		}
 		case 1:
 		{
 			AddShape(CreateEllipse(), pos);
+			current_type++;
 			break;
 		}
 		case 2:
 		{
 			AddShape(CreatePolygon(), pos);
+			current_type++;
 			break;
 		}
 		case 3:
 		{
 			AddShape(CreateTriangle(), pos);
+			current_type = 0;
 			break;
 		}
 		}
-
-		type++;
-		if (type == max_types)
-			type = 0;
 	}
 
 	// 创建矩形
