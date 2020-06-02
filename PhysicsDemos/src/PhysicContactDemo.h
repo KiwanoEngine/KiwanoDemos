@@ -8,10 +8,10 @@ KGE_DECLARE_SMART_PTR(KeyText);
 
 namespace
 {
-	const float min_h_force = 5.0f;		//最小横向速度
-	const float max_h_force = 20.0f;	//最大横向速度
-	const float min_v_force = 50.0f;	//最小纵向速度
-	const float max_v_force = 80.0f;	//最大纵向速度
+	const float min_h_force = 5.0f;		// 最小横向受力
+	const float max_h_force = 20.0f;	// 最大横向受力
+	const float min_v_force = 50.0f;	// 最小纵向受力
+	const float max_v_force = 80.0f;	// 最大纵向受力
 }
 
 class PhysicContactDemo
@@ -166,9 +166,10 @@ KeyTextPtr KeyText::Create(PhysicWorldPtr world, const Point& pos, char ch)
 	key->AddComponent(body);
 
 	// 给身体一个随机受力
+	float ratio = body->GetMass() * 10.0f;
 	float neg = (math::Random(0, 1) == 0 ? -1.0f : 1.0f);
 	float h = neg * math::Random(min_h_force, max_h_force);
 	float v = -math::Random(min_v_force, max_v_force);
-	body->ApplyForceToCenter(Vec2(h, v));
+	body->ApplyForceToCenter(Vec2(h, v) * ratio);
 	return key;
 }

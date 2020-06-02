@@ -38,6 +38,14 @@ class DemoRunner
 public:
 	DemoRunner()
 	{
+		// 游戏设置
+		Settings settings;
+		settings.title = "Kiwano Demos";
+		settings.width = WINDOW_WIDTH;
+		settings.height = WINDOW_HEIGHT;
+		settings.icon = IDI_ICON1;
+		this->SetSettings(settings);
+
 		// 使用 Audio 模块
 		Application::GetInstance().Use(AudioModule::GetInstance());
 
@@ -46,10 +54,6 @@ public:
 
 		// 使用 ImGui 模块
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
-
-		// 创建窗口
-		WindowPtr window = Window::Create("Kiwano Demos", WINDOW_WIDTH, WINDOW_HEIGHT, IDI_ICON1);
-		SetMainWindow(window);
 	}
 
 	void OnReady() override
@@ -62,7 +66,7 @@ public:
 	{
 		// 修改窗口标题
 		String title = demo.title;
-		Application::GetInstance().GetMainWindow()->SetTitle("Kiwano Demo - " + title);
+		Application::GetInstance().GetWindow()->SetTitle("Kiwano Demo - " + title);
 
 		// 创建舞台
 		StagePtr scene = demo.Create();
