@@ -111,7 +111,7 @@ public:
 				Tween::Group({ Tween::FadeTo(0.5_sec, 0.3f), Tween::FadeIn(0.5_sec) })
 			},
 			true /* 同步执行 */
-		).SetLoops(-1);
+		).Loops(-1);
 
 		CreateManToRunAction("Group", group, position);
 	}
@@ -128,7 +128,7 @@ public:
 			sprite->SetCropRect(crop_rect);
 			// 重设精灵大小为裁剪矩形大小
 			sprite->SetSize(crop_rect.GetSize());
-		}).SetLoops(-1);
+		}).Loops(-1);
 
 		CreateManToRunAction("Custom", custom, position);
 	}

@@ -158,14 +158,14 @@ public:
 	void StartRunAnimation()
 	{
 		StopAllActions();
-		AddAction(Tween::Animation(0.5_sec, run_frames).SetLoops(-1));
+		AddAction(Tween::Animation(0.5_sec, run_frames).Loops(-1));
 	}
 
 	// Ö´ÐÐÕ¾Á¢¶¯»­
 	void StartStandAnimation()
 	{
 		StopAllActions();
-		AddAction(Tween::Animation(1_sec, stand_frames).SetLoops(-1));
+		AddAction(Tween::Animation(1_sec, stand_frames).Loops(-1));
 	}
 };
 

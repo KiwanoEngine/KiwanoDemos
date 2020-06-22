@@ -29,9 +29,12 @@ public:
 		// 使用 ImGui 模块
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
-		// 创建窗口
-		WindowPtr window = Window::Create("Kiwano Physic Demos", 800, 600);
-		SetMainWindow(window);
+		// 游戏设置
+		Settings settings;
+		settings.title = "Kiwano Physic Demos";
+		settings.width = 800;
+		settings.height = 600;
+		SetSettings(settings);
 	}
 
 	void OnReady() override
@@ -44,7 +47,7 @@ public:
 	{
 		// 修改窗口标题
 		String title = demo.title;
-		Application::GetInstance().GetMainWindow()->SetTitle("Kiwano Physic Demos - " + title);
+		Application::GetInstance().GetWindow()->SetTitle("Kiwano Physic Demos - " + title);
 
 		// 创建舞台
 		StagePtr scene = demo.Create();

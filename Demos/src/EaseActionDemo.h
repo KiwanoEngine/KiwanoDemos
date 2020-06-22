@@ -44,13 +44,13 @@ public:
 		for (size_t i = 0; i < std::size(ease_functions); ++i)
 		{
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(ease_functions[i]);
+			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).EaseFunc(ease_functions[i]);
 			// 动画：延迟 1 秒
 			auto delay = Tween::Delay(1_sec);
 			// 动画：组合前两个动画，并循环执行
-			auto group = Tween::Group({ move, delay }).SetLoops(-1);
+			auto group = Tween::Group({ move, delay }).Loops(-1);
 			// 动画结束后自动恢复人物位置
-			group.SetLoopDoneCallback([](Actor* target) { target->Move(-300, 0); });
+			group.LoopDoneCallback([](Actor* target) { target->Move(-300, 0); });
 
 			// 初始化人物
 			SpritePtr man = Sprite::Create(man_image);

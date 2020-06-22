@@ -19,11 +19,12 @@ public:
 
 	ShapeDemo()
 	{
-		// 添加自动生成形状的定时器
-		AddTimer(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
+		// 添加自动生成形状的任务
+		TaskPtr task = Task::Create(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
+		AddTask(task);
 	}
 
-	void GenerateShapes(Timer* timer, Duration dt)
+	void GenerateShapes(Task* task, Duration dt)
 	{
 		static int type = 0;
 		const int max_types = 4;
@@ -122,7 +123,7 @@ public:
 
 		// 添加动画
 		shape->AddAction(Tween::MoveTo(4_sec, Point(position.x, -50)).RemoveTargetWhenDone());
-		shape->AddAction(Tween::RotateBy(1_sec, math::Random(40.0f, 120.0f)).SetLoops(-1));
+		shape->AddAction(Tween::RotateBy(1_sec, math::Random(40.0f, 120.0f)).Loops(-1));
 
 		shape->SetRotation(math::Random(0.0f, 360.0f));
 		shape->SetPosition(position);
