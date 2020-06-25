@@ -48,12 +48,12 @@ public:
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
 		// ”Œœ∑…Ë÷√
-		Settings settings;
-		settings.title = "Kiwano Demos";
-		settings.width = WINDOW_WIDTH;
-		settings.height = WINDOW_HEIGHT;
-		settings.icon = Icon(IDI_ICON1);
-		SetSettings(settings);
+		Settings s;
+		s.window.title = "Kiwano Demos";
+		s.window.width = WINDOW_WIDTH;
+		s.window.height = WINDOW_HEIGHT;
+		s.window.icon = Icon(IDI_ICON1);
+		SetSettings(s);
 	}
 
 	void OnReady() override

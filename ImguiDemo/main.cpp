@@ -18,13 +18,13 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
 		// 游戏设置
-		Settings settings;
-		settings.title = "ImGui Demo";
-		settings.width = 800;
-		settings.height = 600;
+		Settings s;
+		s.window.title = "ImGui Demo";
+		s.window.width = 800;
+		s.window.height = 600;
 
 		// 运行
-		RunnerPtr runner = Runner::Create(settings, Startup);
+		RunnerPtr runner = Runner::Create(s, Startup);
 		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception& e)

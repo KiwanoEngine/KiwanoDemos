@@ -31,14 +31,14 @@ void Startup()
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	// 游戏设置
-	Settings settings;
-	settings.title = "Hello World";
-	settings.width = 640;
-	settings.height = 480;
-	settings.bg_color = Color::Rgb(0xE5E5E5);	// 设置背景色
+	Settings s;
+	s.window.title = "Hello World";
+	s.window.width = 640;
+	s.window.height = 480;
+	s.bg_color = Color::Rgb(0xE5E5E5);	// 设置背景色
 
 	// 创建运行器，程序启动后执行 Startup 函数
-	RunnerPtr runner = Runner::Create(settings, Startup);
+	RunnerPtr runner = Runner::Create(s, Startup);
 
 	// 运行
 	Application::GetInstance().Run(runner);

@@ -30,11 +30,11 @@ public:
 		Application::GetInstance().Use(ImGuiModule::GetInstance());
 
 		// ”Œœ∑…Ë÷√
-		Settings settings;
-		settings.title = "Kiwano Physic Demos";
-		settings.width = 800;
-		settings.height = 600;
-		SetSettings(settings);
+		Settings s;
+		s.window.title = "Kiwano Physic Demos";
+		s.window.width = 800;
+		s.window.height = 600;
+		SetSettings(s);
 	}
 
 	void OnReady() override
