@@ -36,28 +36,28 @@ public:
 		case 0:
 		{
 			AddShape(CreateRectangle(), pos);
-			current_type++;
 			break;
 		}
 		case 1:
 		{
 			AddShape(CreateEllipse(), pos);
-			current_type++;
 			break;
 		}
 		case 2:
 		{
 			AddShape(CreatePolygon(), pos);
-			current_type++;
 			break;
 		}
 		case 3:
 		{
 			AddShape(CreateTriangle(), pos);
-			current_type = 0;
 			break;
 		}
 		}
+
+		current_type++;
+		if (current_type == max_types)
+			current_type = 0;
 	}
 
 	// ´´½¨¾ØÐÎ
