@@ -24,7 +24,7 @@ public:
 		AddListener<KeyDownEvent>(Closure(this, &NetworkDemo::OnKeyDown));
 
 		// 创建说明文字
-		TextActorPtr intro = TextActor::Create("按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
+		TextActorPtr intro = new TextActor("按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
 		// 设置文字位置
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -76,7 +76,7 @@ public:
 		KGE_LOG("Start to send GET request...");
 
 		// 创建HTTP请求
-		HttpRequestPtr request = HttpRequest::Create(
+		HttpRequestPtr request = new HttpRequest(
 			"http://httpbin.org/get",
 			HttpType::Get,
 			Closure(this, &NetworkDemo::Complete)
@@ -101,7 +101,7 @@ public:
 			{ "object", { "key", "value" } },
 		};
 
-		HttpRequestPtr request = HttpRequest::Create(
+		HttpRequestPtr request = new HttpRequest(
 			"http://httpbin.org/post",
 			HttpType::Post,
 			request_data,
@@ -119,7 +119,7 @@ public:
 		// 创建 JSON 格式的 PUT 数据
 		Json request_data = Json::array({ 1, 2, 3 });
 
-		HttpRequestPtr request = HttpRequest::Create(
+		HttpRequestPtr request = new HttpRequest(
 			"http://httpbin.org/put",
 			HttpType::Put,
 			request_data,
@@ -134,7 +134,7 @@ public:
 		// 发送 DELETE 请求
 		KGE_LOG("Start to send DELETE request...");
 
-		HttpRequestPtr request = HttpRequest::Create(
+		HttpRequestPtr request = new HttpRequest(
 			"http://httpbin.org/delete",
 			HttpType::Delete,
 			Closure(this, &NetworkDemo::Complete)

@@ -44,7 +44,7 @@ public:
 
 	TextActorPtr CreateSimpleText()
 	{
-		TextActorPtr text = TextActor::Create("A simple text");
+		TextActorPtr text = new TextActor("A simple text");
 
 		// 设置文字填充颜色
 		text->SetFillColor(Color::White);
@@ -55,10 +55,10 @@ public:
 	{
 		// 设置文字描边颜色和宽度
 		TextStyle style;
-		style.outline_brush = Brush::Create(Color::BlueViolet);
-		style.outline_stroke = StrokeStyle::Create(3.0f);
+		style.outline_brush = new Brush(Color::BlueViolet);
+		style.outline_stroke = new StrokeStyle(3.0f);
 
-		TextActorPtr text = TextActor::Create("A text with outline", style);
+		TextActorPtr text = new TextActor("A text with outline", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
@@ -69,7 +69,7 @@ public:
 		TextStyle style;
 		style.font_weight = FontWeight::Bold;
 
-		TextActorPtr text = TextActor::Create("A text with bold style", style);
+		TextActorPtr text = new TextActor("A text with bold style", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
@@ -81,7 +81,7 @@ public:
 		style.show_underline = true;
 		style.show_strikethrough = true;
 
-		TextActorPtr text = TextActor::Create("A text with underline and strikethough", style);
+		TextActorPtr text = new TextActor("A text with underline and strikethough", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
@@ -91,9 +91,9 @@ public:
 		TextStyle style;
 		// 加粗字体和加宽轮廓
 		style.font_weight = FontWeight::Bold;
-		style.outline_stroke = StrokeStyle::Create(3.0f);
+		style.outline_stroke = new StrokeStyle(3.0f);
 
-		TextActorPtr text = TextActor::Create("A text with custom brush", style);
+		TextActorPtr text = new TextActor("A text with custom brush", style);
 
 		// 创建线性渐变样式
 		LinearGradientStyle fill_style = LinearGradientStyle(
@@ -103,7 +103,7 @@ public:
 		);
 
 		// 创建线性渐变画刷
-		BrushPtr fill_brush = Brush::Create(fill_style);
+		BrushPtr fill_brush = new Brush(fill_style);
 		text->SetFillBrush(fill_brush);
 
 		// 创建径向渐变样式
@@ -115,7 +115,7 @@ public:
 		);
 
 		// 创建径向渐变画刷
-		BrushPtr outline_brush = Brush::Create(outline_style);
+		BrushPtr outline_brush = new Brush(outline_style);
 		text->SetOutlineBrush(outline_brush);
 
 		return text;
@@ -127,7 +127,7 @@ public:
 		TextStyle style;
 		style.font_family = "Times New Roman";
 
-		TextActorPtr text = TextActor::Create("A text with system font", style);
+		TextActorPtr text = new TextActor("A text with system font", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
@@ -136,10 +136,10 @@ public:
 	{
 		// 加载字体文件
 		TextStyle style;
-		style.font = Font::Create("res/fonts/Gothica-Book.ttf");
+		style.font = new Font("res/fonts/Gothica-Book.ttf");
 		style.font_family = "Gothica";
 
-		TextActorPtr text = TextActor::Create("A text with custom font", style);
+		TextActorPtr text = new TextActor("A text with custom font", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
@@ -151,7 +151,7 @@ public:
 		style.alignment = TextAlign::Center;
 
 		String content = "MULTIPLE LINES TEXT\nMULTIPLE LINES TEXT LONGER\nMULTIPLE LINES TEXT";
-		TextActorPtr text = TextActor::Create(content, style);
+		TextActorPtr text = new TextActor(content, style);
 		text->SetFillColor(Color::White);
 		return text;
 	}

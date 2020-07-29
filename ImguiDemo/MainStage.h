@@ -17,14 +17,14 @@ class ImGuiStage
 public:
 	ImGuiStage()
 	{
-		logo = Sprite::Create("logo.png");
+		logo = new Sprite("logo.png");
 		logo->SetSize(160, 160);
 		logo->SetAnchor(0.5f, 0.5f);
 		logo->SetPosition(GetWidth() / 2, GetHeight() / 2);
 		AddChild(logo);
 
 		// ´´½¨ ImGui Í¼²ã
-		ImGuiLayerPtr layer = ImGuiLayer::Create("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
+		ImGuiLayerPtr layer = new ImGuiLayer("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
 		AddChild(layer);
 	}
 
@@ -42,25 +42,25 @@ public:
 
 		if (ImGui::ArrowButton("left", ImGuiDir_Left))
 		{
-			logo->Move(-3.0f, 0.0f);
+			logo->MoveBy(-3.0f, 0.0f);
 		}
 		ImGui::SameLine();
 
 		if (ImGui::ArrowButton("up", ImGuiDir_Up))
 		{
-			logo->Move(0.0f, -3.0f);
+			logo->MoveBy(0.0f, -3.0f);
 		}
 		ImGui::SameLine();
 
 		if (ImGui::ArrowButton("down", ImGuiDir_Down))
 		{
-			logo->Move(0.0f, 3.0f);
+			logo->MoveBy(0.0f, 3.0f);
 		}
 		ImGui::SameLine();
 
 		if (ImGui::ArrowButton("right", ImGuiDir_Right))
 		{
-			logo->Move(3.0f, 0.0f);
+			logo->MoveBy(3.0f, 0.0f);
 		}
 
 		ImGui::SliderFloat("rotation", &rotation, 0.0f, 360.0f);

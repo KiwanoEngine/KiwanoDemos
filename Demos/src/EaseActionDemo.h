@@ -20,7 +20,7 @@ public:
 	EaseActionDemo()
 	{
 		// 从资源缓存中获取人物图片
-		FramePtr man_image = Frame::Create("res/images/man.png");
+		FramePtr man_image = new Frame("res/images/man.png");
 
 		// 创建缓动方程列表
 		EaseFunc ease_functions[] = {
@@ -44,23 +44,23 @@ public:
 		for (size_t i = 0; i < std::size(ease_functions); ++i)
 		{
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			auto move = Tween::MoveBy(4_sec, Point{ 300, 0 }).SetEaseFunc(ease_functions[i]);
+			Action move = ActionMoveBy(4_sec, Point{ 300, 0 }).Ease(ease_functions[i]);
 			// 动画：延迟 1 秒
-			auto delay = Tween::Delay(1_sec);
+			Action delay = ActionDelay(1_sec);
 			// 动画：组合前两个动画，并循环执行
-			auto group = Tween::Group({ move, delay }).SetLoops(-1);
+			Action group = ActionGroup({ move, delay }).Loops(-1);
 			// 动画结束后自动恢复人物位置
-			group.SetLoopDoneCallback([](Actor* target) { target->Move(-300, 0); });
+			group.LoopDoneCallback([](Actor* target) { target->MoveBy(-300, 0); });
 
 			// 初始化人物
-			SpritePtr man = Sprite::Create(man_image);
+			SpritePtr man = new Sprite(man_image);
 			man->SetPosition(200, height);
 			man->SetAnchor(0.5f, 0.5f);
 			// 执行动画
 			man->AddAction(group);
 
 			// 添加提示文字
-			TextActorPtr label = TextActor::Create(ease_names[i]);
+			TextActorPtr label = new TextActor(ease_names[i]);
 			label->SetFillColor(Color::White);
 			label->SetFontSize(16.0f);
 			label->SetPosition(man->GetPositionX() - 150.0f, man->GetPositionY());

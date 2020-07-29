@@ -4,27 +4,36 @@
 
 using namespace kiwano;
 
-void Startup()
+class MyRunner : public Runner
 {
-	ImGuiStagePtr scene = new ImGuiStage;
-	Director::GetInstance().EnterStage(scene);
-}
+public:
+	MyRunner()
+	{
+		// 游戏设置
+		Settings settings;
+		settings.window.title = "ImGui Demo";
+		settings.window.width = 800;
+		settings.window.height = 600;
+
+		SetSettings(settings);
+
+		// 添加 ImGui 模块
+		Application::GetInstance().Use(ImGuiModule::GetInstance());
+	}
+
+	void OnReady() override
+	{
+		ImGuiStagePtr scene = new ImGuiStage;
+		Director::GetInstance().EnterStage(scene);
+	}
+};
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 {
 	try
 	{
-		// 游戏设置
-		Settings settings;
-		settings.title = "ImGui Demo";
-		settings.width = 800;
-		settings.height = 600;
-
 		// 创建运行器
-		RunnerPtr runner = Runner::Create(settings, Startup);
-
-		// 添加 ImGui 模块
-		Application::GetInstance().Use(ImGuiModule::GetInstance());
+		RunnerPtr runner = new MyRunner();
 
 		// 运行
 		Application::GetInstance().Run(runner);

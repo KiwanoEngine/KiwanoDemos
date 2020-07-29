@@ -40,10 +40,10 @@ public:
 	{
 		// 游戏设置
 		Settings settings;
-		settings.title = "Kiwano Demos";
-		settings.width = WINDOW_WIDTH;
-		settings.height = WINDOW_HEIGHT;
-		settings.icon = IDI_ICON1;
+		settings.window.title = "Kiwano Demos";
+		settings.window.width = WINDOW_WIDTH;
+		settings.window.height = WINDOW_HEIGHT;
+		settings.window.icon = IDI_ICON1;
 		this->SetSettings(settings);
 
 		// 使用 Audio 模块
@@ -73,7 +73,7 @@ public:
 		Director::GetInstance().EnterStage(scene);
 
 		// 创建GUI控制面板
-		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoRunner::ControlPanel));
+		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}
 

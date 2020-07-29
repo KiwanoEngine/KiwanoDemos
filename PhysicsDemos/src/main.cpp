@@ -28,9 +28,9 @@ public:
 	{
 		// 游戏设置
 		Settings settings;
-		settings.title = "Kiwano Physic Demos";
-		settings.width = 800;
-		settings.height = 600;
+		settings.window.title = "Kiwano Physic Demos";
+		settings.window.width = 800;
+		settings.window.height = 600;
 		this->SetSettings(settings);
 
 		// 使用 ImGui 模块
@@ -54,14 +54,14 @@ public:
 		Director::GetInstance().EnterStage(scene);
 
 		// 添加文本说明
-		TextActorPtr intro = TextActor::Create(demo.label);
+		TextActorPtr intro = new TextActor(demo.label);
 		intro->SetFillColor(Color::White);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(scene->GetWidth() / 2, 50);
 		scene->AddChild(intro);
 
 		// 创建GUI控制面板
-		ImGuiLayerPtr control_panel = ImGuiLayer::Create("Control", Closure(this, &DemoRunner::ControlPanel));
+		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}
 

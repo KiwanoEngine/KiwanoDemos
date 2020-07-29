@@ -32,7 +32,7 @@ class Ground
 	: public ShapeActor
 {
 public:
-	static GroundPtr Create(PhysicWorldPtr world, Point const& pos);
+	Ground(PhysicWorldPtr world, Point const& pos);
 
 	// 生成地面路径点
 	Vector<Point> GeneratePathPoints();
@@ -46,7 +46,7 @@ class Car
 	WheelJointPtr wheel_;
 
 public:
-	static CarPtr Create(PhysicWorldPtr world, Point const& pos);
+	Car(PhysicWorldPtr world, Point const& pos);
 
 	// 给小车后轮提供动力
 	void SetSpeed(float speed);
@@ -59,19 +59,19 @@ public:
 PhysicJointDemo::PhysicJointDemo()
 {
 	// 创建物理世界
-	world_ = PhysicWorld::Create();
+	world_ = new PhysicWorld();
 	AddComponent(world_);
 
 	// 创建地图
-	map_ = Actor::Create();
+	map_ = new Actor();
 	AddChild(map_);
 
 	// 创建地面
-	ActorPtr ground = Ground::Create(world_, Point(0, GetHeight() - 200));
+	ActorPtr ground = new Ground(world_, Point(0, GetHeight() - 200));
 	map_->AddChild(ground);
 
 	// 创建小车
-	car_ = Car::Create(world_, Point(190, 240));
+	car_ = new Car(world_, Point(190, 240));
 	map_->AddChild(car_);
 }
 
@@ -105,35 +105,32 @@ void PhysicJointDemo::OnUpdate(Duration dt)
 	}
 }
 
-GroundPtr Ground::Create(PhysicWorldPtr world, Point const& pos)
+Ground::Ground(PhysicWorldPtr world, Point const& pos)
 {
-	GroundPtr ground = new Ground;
-
 	// 设置形状颜色和位置
-	ground->SetStrokeColor(Color::White);
-	ground->SetPosition(pos);
+	this->SetStrokeColor(Color::White);
+	this->SetPosition(pos);
 
 	// 生成路径点
-	Vector<Point> path_points = ground->GeneratePathPoints();
+	Vector<Point> path_points = this->GeneratePathPoints();
 
 	// 根据路径点绘制路径
-	ShapeMakerPtr maker = ShapeMaker::Create();
-	maker->BeginPath(path_points[0]);
+	ShapeMaker maker;
+	maker.BeginPath(path_points[0]);
 	for (size_t i = 1; i < path_points.size(); ++i)
 	{
-		maker->AddLine(path_points[i]);
+		maker.AddLine(path_points[i]);
 	}
-	maker->EndPath();
-	ground->SetShape(maker->GetShape());
+	maker.EndPath();
+	this->SetShape(maker.GetShape());
 
 	// 根据路径点生成物理边
-	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Static);
+	PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Static);
 	for (size_t i = 1; i < path_points.size(); ++i)
 	{
 		body->AddEdgeShape(path_points[i - 1], path_points[i], 0.0f, 0.6f);
 	}
-	ground->AddComponent(body);
-	return ground;
+	this->AddComponent(body);
 }
 
 Vector<Point> Ground::GeneratePathPoints()
@@ -165,35 +162,33 @@ Vector<Point> Ground::GeneratePathPoints()
 	return path_points;
 }
 
-CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
+Car::Car(PhysicWorldPtr world, Point const& pos)
 {
-	CarPtr car = new Car;
-
 	// 小车躯干形状顶点
 	Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
 
 	// 生成小车形状
-	ShapeMakerPtr maker = ShapeMaker::Create();
-	maker->BeginPath(vertices[0]);
-	maker->AddLines(vertices);
-	maker->EndPath(true);
+	ShapeMaker maker;
+	maker.BeginPath(vertices[0]);
+	maker.AddLines(vertices);
+	maker.EndPath(true);
 
 	// 创建小车躯干
-	ShapeActorPtr chassis = ShapeActor::Create(maker->GetShape());
+	ShapeActorPtr chassis = new ShapeActor(maker.GetShape());
 	chassis->SetPosition(pos + Point(0, -100));
 	chassis->SetStrokeColor(Color::White);
-	car->AddChild(chassis);
+	this->AddChild(chassis);
 
 	// 创建小车躯干的物理身体
-	PhysicBodyPtr chassis_body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
+	PhysicBodyPtr chassis_body = new PhysicBody(world, PhysicBody::Type::Dynamic);
 	chassis_body->AddPolygonShape(vertices, 1.0f);
 	chassis->AddComponent(chassis_body);
 
 	// 创建左右轮子
-	CirclePtr lwheel = Circle::Create(world, pos + Point(-100, -35), 40.0f);
-	CirclePtr rwheel = Circle::Create(world, pos + Point(100, -40), 40.0f);
-	car->AddChild(lwheel);
-	car->AddChild(rwheel);
+	CirclePtr lwheel = new Circle(world, pos + Point(-100, -35), 40.0f);
+	CirclePtr rwheel = new Circle(world, pos + Point(100, -40), 40.0f);
+	this->AddChild(lwheel);
+	this->AddChild(rwheel);
 
 	auto lwheel_body = lwheel->GetPhysicBody();
 	auto rwheel_body = rwheel->GetPhysicBody();
@@ -210,7 +205,7 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 	param1.motor_speed = 0.0f;			// 初始马达速度为零
 	param1.max_motor_torque = 2000;		// 最大马达转矩
 
-	WheelJointPtr left_joint = WheelJoint::Create(param1);
+	WheelJointPtr left_joint = new WheelJoint(param1);
 	world->AddJoint(left_joint);
 
 	// 创建右轮子关节
@@ -221,12 +216,11 @@ CarPtr Car::Create(PhysicWorldPtr world, Point const& pos)
 	param2.motor_speed = 0.0f;
 	param2.max_motor_torque = 1000;
 
-	WheelJointPtr right_joint = WheelJoint::Create(param2);
+	WheelJointPtr right_joint = new WheelJoint(param2);
 	world->AddJoint(right_joint);
 
-	car->chassis_ = chassis;
-	car->wheel_ = left_joint;
-	return car;
+	this->chassis_ = chassis;
+	this->wheel_ = left_joint;
 }
 
 void Car::SetSpeed(float speed)

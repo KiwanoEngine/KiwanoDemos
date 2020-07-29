@@ -48,18 +48,18 @@ class KeyText
 	: public TextActor
 {
 public:
-	static KeyTextPtr Create(PhysicWorldPtr world, const Point& pos, char ch);
+	KeyText(PhysicWorldPtr world, const Point& pos, char ch);
 };
 
 
 PhysicContactDemo::PhysicContactDemo()
 {
 	// 创建物理世界
-	world_ = PhysicWorld::Create();
+	world_ = new PhysicWorld();
 	AddComponent(world_);
 
 	// 创建地面
-	RectActorPtr ground = RectActor::Create(Size(GetWidth(), 10));
+	RectActorPtr ground = new RectActor(Size(GetWidth(), 10));
 	ground->SetFillColor(Color::Gray);
 
 	// 设置木板的大小、位置和旋转角度
@@ -68,7 +68,7 @@ PhysicContactDemo::PhysicContactDemo()
 	AddChild(ground);
 
 	// 创建地面物理身体
-	PhysicBodyPtr ground_body = PhysicBody::Create(world_, PhysicBody::Type::Static);
+	PhysicBodyPtr ground_body = new PhysicBody(world_, PhysicBody::Type::Static);
 	ground_body->AddRectShape(ground->GetSize(), 0.0f);
 	ground->AddComponent(ground_body);
 
@@ -92,7 +92,7 @@ void PhysicContactDemo::OnKeyDown(Event* evt)
 		char ch = char(key_evt->code) - char(KeyCode::A) + 'A';
 		// 在屏幕底部创建一个 KeyText
 		Point pos(GetWidth() / 2, GetHeight() - 20);
-		KeyTextPtr key = KeyText::Create(world_, pos, ch);
+		KeyTextPtr key = new KeyText(world_, pos, ch);
 		AddChild(key);
 	}
 }
@@ -145,25 +145,23 @@ void PhysicContactDemo::OnUpdate(Duration dt)
 	}
 }
 
-KeyTextPtr KeyText::Create(PhysicWorldPtr world, const Point& pos, char ch)
+KeyText::KeyText(PhysicWorldPtr world, const Point& pos, char ch)
 {
-	KeyTextPtr key = new KeyText;
-
 	// 设置文本内容、字号和颜色
-	key->SetText(String(1, ch));
-	key->SetFillColor(Color::White);
-	key->SetFontFamily("Arial");
-	key->SetFontSize(35);
-	key->SetFontWeight(FontWeight::ExtraBold);
+	this->SetText(String(1, ch));
+	this->SetFillColor(Color::White);
+	this->SetFontFamily("Arial");
+	this->SetFontSize(35);
+	this->SetFontWeight(FontWeight::ExtraBold);
 
 	// 设置坐标和锚点
-	key->SetAnchor(0.5f, 0.5f);
-	key->SetPosition(pos);
+	this->SetAnchor(0.5f, 0.5f);
+	this->SetPosition(pos);
 
 	// 添加物理身体
-	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Dynamic);
-	body->AddRectShape(key->GetSize(), 1.0f);
-	key->AddComponent(body);
+	PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Dynamic);
+	body->AddRectShape(this->GetSize(), 1.0f);
+	this->AddComponent(body);
 
 	// 给身体一个随机受力
 	float ratio = body->GetMass() * 10.0f;
@@ -171,5 +169,4 @@ KeyTextPtr KeyText::Create(PhysicWorldPtr world, const Point& pos, char ch)
 	float h = neg * math::Random(min_h_force, max_h_force);
 	float v = -math::Random(min_v_force, max_v_force);
 	body->ApplyForceToCenter(Vec2(h, v) * ratio);
-	return key;
 }

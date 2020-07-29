@@ -33,16 +33,16 @@ public:
 	Tiger()
 	{
 		// 加载帧动画
-		run_frames = FrameSequence::Create({
-			Frame::Create("res/images/tiger/run/run01.png"),
-			Frame::Create("res/images/tiger/run/run02.png"),
-			Frame::Create("res/images/tiger/run/run03.png"),
-			Frame::Create("res/images/tiger/run/run04.png"),
-			Frame::Create("res/images/tiger/run/run05.png"),
-			Frame::Create("res/images/tiger/run/run06.png"),
+		run_frames = new FrameSequence({
+			new Frame("res/images/tiger/run/run01.png"),
+			new Frame("res/images/tiger/run/run02.png"),
+			new Frame("res/images/tiger/run/run03.png"),
+			new Frame("res/images/tiger/run/run04.png"),
+			new Frame("res/images/tiger/run/run05.png"),
+			new Frame("res/images/tiger/run/run06.png"),
 		});
 
-		stand_frames = FrameSequence::Create(Frame::Create("res/images/tiger/stand.png"), 3, 2);
+		stand_frames = new FrameSequence(new Frame("res/images/tiger/stand.png"), 3, 2);
 
 		// 执行动画
 		StartStandAnimation();
@@ -139,16 +139,16 @@ public:
 			switch (running_direction)
 			{
 			case Direction::Up:
-				Move(0, -distance);
+				MoveBy(0, -distance);
 				break;
 			case Direction::Down:
-				Move(0, distance);
+				MoveBy(0, distance);
 				break;
 			case Direction::Left:
-				Move(-distance, 0);
+				MoveBy(-distance, 0);
 				break;
 			case Direction::Right:
-				Move(distance, 0);
+				MoveBy(distance, 0);
 				break;
 			}
 		}
@@ -158,14 +158,14 @@ public:
 	void StartRunAnimation()
 	{
 		StopAllActions();
-		AddAction(Tween::Animation(0.5_sec, run_frames).SetLoops(-1));
+		AddAction(Animation(0.5_sec, run_frames).Loops(-1));
 	}
 
 	// 执行站立动画
 	void StartStandAnimation()
 	{
 		StopAllActions();
-		AddAction(Tween::Animation(1_sec, stand_frames).SetLoops(-1));
+		AddAction(Animation(1_sec, stand_frames).Loops(-1));
 	}
 };
 
@@ -186,17 +186,17 @@ public:
 	AnimationDemo()
 	{
 		// 创建背景
-		SpritePtr bg = Sprite::Create("res/images/spring_forest.jpg");
+		SpritePtr bg = new Sprite("res/images/spring_forest.jpg");
 		bg->SetSize(GetSize());
 
 		// 创建老虎
-		TigerPtr tiger = Tiger::Create();
+		TigerPtr tiger = new Tiger();
 		// 在屏幕上居中显示
 		tiger->SetAnchor(0.5f, 0.5f);
 		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextActorPtr intro = TextActor::Create("按上下左右键移动");
+		TextActorPtr intro = new TextActor("按上下左右键移动");
 		// 设置文字位置
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);

@@ -29,13 +29,13 @@ public:
 	void AddSpriteButton()
 	{
 		// 加载按钮图片
-		FramePtr frame = Frame::Create("res/images/buttons.png");
+		FramePtr frame = new Frame("res/images/buttons.png");
 		// 按钮关闭和打开时的裁剪矩形
 		Rect closed = Rect(Point(0, frame->GetHeight() / 2), Point(frame->GetWidth(), frame->GetHeight()));
 		Rect opened = Rect(Point(), Point(frame->GetWidth(), frame->GetHeight() / 2));
 
 		// 创建精灵
-		SpritePtr sprite = Sprite::Create(frame);
+		SpritePtr sprite = new Sprite(frame);
 		sprite->SetSize(100, 50);
 		sprite->SetAnchor(0.5f, 0.5f);
 		sprite->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 - 50);
@@ -55,14 +55,14 @@ public:
 		};
 
 		// 创建按钮
-		ButtonPtr button = Button::Create(click);
+		ButtonPtr button = new Button(click);
 		sprite->AddComponent(button);
 	}
 
 	void AddTextButton()
 	{
 		// 创建文字角色
-		TextActorPtr text = TextActor::Create("Click Me");
+		TextActorPtr text = new TextActor("Click Me");
 		text->SetFillColor(Color::White);
 		text->SetFontWeight(FontWeight::Bold);
 		text->SetAnchor(0.5f, 0.5f);
@@ -102,7 +102,7 @@ public:
 		};
 
 		// 创建按钮
-		ButtonPtr button = Button::Create(click, pressed, mouseover, mouseout);
+		ButtonPtr button = new Button(click, pressed, mouseover, mouseout);
 		text->AddComponent(button);
 	}
 };

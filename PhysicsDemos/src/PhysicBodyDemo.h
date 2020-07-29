@@ -39,14 +39,14 @@ class Board
 	: public RectActor
 {
 public:
-	static BoardPtr Create(PhysicWorldPtr world, const Size& size, const Point& pos);
+	Board(PhysicWorldPtr world, const Size& size, const Point& pos);
 };
 
 
 PhysicBodyDemo::PhysicBodyDemo()
 {
 	// 创建物理世界
-	world_ = PhysicWorld::Create();
+	world_ = new PhysicWorld();
 	AddComponent(world_);
 
 	// 设置可响应状态, 使舞台可以接收到鼠标点击消息
@@ -56,7 +56,7 @@ PhysicBodyDemo::PhysicBodyDemo()
 	AddListener<MouseClickEvent>(Closure(this, &PhysicBodyDemo::OnClick));
 
 	// 添加一块静态木板
-	BoardPtr board = Board::Create(world_, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
+	BoardPtr board = new Board(world_, Size(GetWidth() - 100, 20), Point(GetWidth() / 2, GetHeight() - 110));
 	AddChild(board);
 
 	// 添加一个小球
@@ -99,31 +99,28 @@ void PhysicBodyDemo::OnClick(Event* evt)
 
 void PhysicBodyDemo::AddSquare(const Point& pos)
 {
-	SquarePtr rect = Square::Create(world_, pos, Size(80, 80));
+	SquarePtr rect = new Square(world_, pos, Size(80, 80));
 	AddChild(rect);
 }
 
 void PhysicBodyDemo::AddCircle(const Point& pos)
 {
-	CirclePtr circle = Circle::Create(world_, pos, 50);
+	CirclePtr circle = new Circle(world_, pos, 50);
 	AddChild(circle);
 }
 
-BoardPtr Board::Create(PhysicWorldPtr world, const Size& size, const Point& pos)
+Board::Board(PhysicWorldPtr world, const Size& size, const Point& pos)
 {
-	BoardPtr board = new Board;
-
 	// 设置填充颜色
-	board->SetFillColor(Color::Gray);
+	this->SetFillColor(Color::Gray);
 
 	// 设置木板的大小、位置和旋转角度
-	board->SetRectSize(size);
-	board->SetAnchor(0.5f, 0.5f);
-	board->SetRotation(10);
-	board->SetPosition(pos);
+	this->SetRectSize(size);
+	this->SetAnchor(0.5f, 0.5f);
+	this->SetRotation(10);
+	this->SetPosition(pos);
 
-	PhysicBodyPtr body = PhysicBody::Create(world, PhysicBody::Type::Static);
-	body->AddRectShape(board->GetSize(), 0.0f);
-	board->AddComponent(body);
-	return board;
+	PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Static);
+	body->AddRectShape(this->GetSize(), 0.0f);
+	this->AddComponent(body);
 }

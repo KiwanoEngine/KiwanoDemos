@@ -24,26 +24,26 @@ public:
 	AudioDemo()
 	{
 		// 加载音乐
-		bgmusic = Sound::Create("res/sounds/splash.mp3");
+		bgmusic = new Sound("res/sounds/splash.mp3");
 
 		// 播放音乐（参数用来设置播放循环次数，-1 表示循环播放）
 		bgmusic->Play(-1);
 
 		// 创建说明文字
-		TextActorPtr intro = TextActor::Create("按上下键调整音量\n按空格键暂停或继续");
+		TextActorPtr intro = new TextActor("按上下键调整音量\n按空格键暂停或继续");
 		intro->SetFillColor(Color::White);
 		intro->SetAlignment(TextAlign::Center);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 50);
 
 		// 创建音量文字
-		volume_text = TextActor::Create("当前音量：");
+		volume_text = new TextActor("当前音量：");
 		volume_text->SetFillColor(Color::White);
 		volume_text->SetAnchor(0.5f, 0.5f);
 		volume_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 30);
 
 		// 创建状态文字
-		state_text = TextActor::Create("当前状态：");
+		state_text = new TextActor("当前状态：");
 		state_text->SetFillColor(Color::White);
 		state_text->SetAnchor(0.5f, 0.5f);
 		state_text->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60);
