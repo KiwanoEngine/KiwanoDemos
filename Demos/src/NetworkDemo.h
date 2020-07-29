@@ -7,6 +7,8 @@
 class NetworkDemo
 	: public Stage
 {
+	String text_;
+
 public:
 	static StagePtr Create()
 	{
@@ -20,60 +22,66 @@ public:
 
 	NetworkDemo()
 	{
-		// 添加按键监听
-		AddListener<KeyDownEvent>(Closure(this, &NetworkDemo::OnKeyDown));
-
-		// 创建说明文字
-		TextActorPtr intro = new TextActor("按G发送GET请求\n按P发送POST请求\n按U发送PUT请求\n按D发送DELETE请求");
-		// 设置文字位置
-		intro->SetAnchor(0.5f, 0.5f);
-		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-		intro->SetFillColor(Color::White);
-
-		// 添加到舞台
-		this->AddChild(intro);
+		// 创建GUI控制面板
+		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &NetworkDemo::ControlPanel));
+		this->AddChild(control_panel);
 	}
 
-	void OnEnter() override
+	void ControlPanel()
 	{
-		// 进入舞台时打开控制台
-		Logger::GetInstance().ShowConsole(true);
-	}
+		// imgui窗口属性
+		ImGui::SetNextWindowPosCenter(ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(500, 430), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowFocus();
 
-	void OnExit() override
-	{
-		// 退出舞台时关闭控制台
-		Logger::GetInstance().ShowConsole(false);
-	}
+		// 显示imgui窗口
+		auto flags = ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoCollapse;
+		ImGui::Begin("Try to send HTTP requests", nullptr, flags);
 
-	void OnKeyDown(Event* evt)
-	{
-		KGE_ASSERT(evt->IsType<KeyDownEvent>());
-
-		// 按不同键发送不同请求
-		auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
-		if (key_evt->code == KeyCode::G)
+		// 显示四个按钮用来发送HTTP请求
+		if (ImGui::Button("GET"))
 		{
 			SendGetRequest();
 		}
-		else if (key_evt->code == KeyCode::P)
+		ImGui::SameLine();
+
+		if (ImGui::Button("POST"))
 		{
 			SendPostRequest();
 		}
-		else if (key_evt->code == KeyCode::U)
+		ImGui::SameLine();
+
+		if (ImGui::Button("PUT"))
 		{
 			SendPutRequest();
 		}
-		else if (key_evt->code == KeyCode::D)
+		ImGui::SameLine();
+
+		if (ImGui::Button("DELETE"))
 		{
 			SendDeleteRequest();
 		}
+
+		// 显示请求的结果
+		ImGui::Text("Output:");
+
+		char* buf = (char*)text_.c_str();
+		ImGui::InputTextMultiline("Output", buf, text_.size(), ImVec2(-1.0f, ImGui::GetTextLineHeight() * 25), ImGuiInputTextFlags_ReadOnly);
+
+		// 清空结果内容
+		if (ImGui::Button("Clear output"))
+		{
+			text_.clear();
+		}
+
+		// imgui窗口结束
+		ImGui::End();
 	}
 
 	void SendGetRequest()
 	{
 		// 发送 GET 请求
-		KGE_LOG("Start to send GET request...");
+		text_.append("Start to send GET request...\n");
 
 		// 创建HTTP请求
 		HttpRequestPtr request = new HttpRequest(
@@ -89,7 +97,7 @@ public:
 	void SendPostRequest()
 	{
 		// 发送 POST 请求
-		KGE_LOG("Start to send POST request...");
+		text_.append("Start to send POST request...\n");
 
 		// 创建 JSON 格式的 POST 数据
 		Json request_data = {
@@ -114,7 +122,7 @@ public:
 	void SendPutRequest()
 	{
 		// 发送 PUT 请求
-		KGE_LOG("Start to send PUT request...");
+		text_.append("Start to send PUT request...\n");
 
 		// 创建 JSON 格式的 PUT 数据
 		Json request_data = Json::array({ 1, 2, 3 });
@@ -132,7 +140,7 @@ public:
 	void SendDeleteRequest()
 	{
 		// 发送 DELETE 请求
-		KGE_LOG("Start to send DELETE request...");
+		text_.append("Start to send DELETE request...\n");
 
 		HttpRequestPtr request = new HttpRequest(
 			"http://httpbin.org/delete",
@@ -157,11 +165,13 @@ public:
 					{"Data", response_data},
 				};
 
-				KGE_LOG("Response:\n", result.dump(4));
+				text_.append("Response:\n")
+					.append(result.dump(4))
+					.append("\n");
 			}
 			catch (std::exception&)
 			{
-				KGE_ERROR("Parse JSON failed!");
+				text_.append("Parse JSON failed!\n");
 			}
 		}
 		else
@@ -179,7 +189,8 @@ public:
 				{"Error", response->GetError()},
 		};
 
-		String result_str = result.dump(4);
-		KGE_ERROR("Response: %s\n", result_str.c_str());
+		text_.append("Response:\n")
+			.append(result.dump(4))
+			.append("\n");
 	}
 };
