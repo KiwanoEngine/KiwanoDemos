@@ -150,9 +150,7 @@ KeyText::KeyText(PhysicWorldPtr world, const Point& pos, char ch)
 	// 设置文本内容、字号和颜色
 	this->SetText(String(1, ch));
 	this->SetFillColor(Color::White);
-	this->SetFontFamily("Arial");
-	this->SetFontSize(35);
-	this->SetFontWeight(FontWeight::ExtraBold);
+	this->SetFont(new Font("Arial", 35, FontWeight::ExtraBold));
 
 	// 设置坐标和锚点
 	this->SetAnchor(0.5f, 0.5f);

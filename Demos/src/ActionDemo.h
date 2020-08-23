@@ -145,7 +145,6 @@ public:
 		TextActorPtr label = new TextActor(text);
 		label->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
 		label->SetAnchor(0.5f, 0);
-		label->SetFontSize(16.0f);
 		label->SetFillColor(Color::White);
 		this->AddChild(label);
 	}

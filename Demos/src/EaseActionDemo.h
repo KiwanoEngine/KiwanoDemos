@@ -62,7 +62,6 @@ public:
 			// 添加提示文字
 			TextActorPtr label = new TextActor(ease_names[i]);
 			label->SetFillColor(Color::White);
-			label->SetFontSize(16.0f);
 			label->SetPosition(man->GetPositionX() - 150.0f, man->GetPositionY());
 			label->SetAnchor(0, 0.5f);
 

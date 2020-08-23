@@ -64,7 +64,7 @@ public:
 		// 创建文字角色
 		TextActorPtr text = new TextActor("Click Me");
 		text->SetFillColor(Color::White);
-		text->SetFontWeight(FontWeight::Bold);
+		text->SetFont(new Font("", 18, FontWeight::Bold));
 		text->SetAnchor(0.5f, 0.5f);
 		text->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 + 50);
 		this->AddChild(text);

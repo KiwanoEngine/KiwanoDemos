@@ -67,7 +67,7 @@ public:
 	{
 		// 设置字体宽度
 		TextStyle style;
-		style.font_weight = FontWeight::Bold;
+		style.font = new Font("", 18, FontWeight::Bold);
 
 		TextActorPtr text = new TextActor("A text with bold style", style);
 		text->SetFillColor(Color::White);
@@ -90,7 +90,7 @@ public:
 	{
 		TextStyle style;
 		// 加粗字体和加宽轮廓
-		style.font_weight = FontWeight::Bold;
+		style.font = new Font("", 18, FontWeight::Bold);
 		style.outline_stroke = new StrokeStyle(3.0f);
 
 		TextActorPtr text = new TextActor("A text with custom brush", style);
@@ -125,7 +125,7 @@ public:
 	{
 		// 设置字体族
 		TextStyle style;
-		style.font_family = "Times New Roman";
+		style.font = new Font("Times New Roman", 18);
 
 		TextActorPtr text = new TextActor("A text with system font", style);
 		text->SetFillColor(Color::White);
@@ -135,9 +135,10 @@ public:
 	TextActorPtr CreateTextWithCustomFont()
 	{
 		// 加载字体文件
+		Font::Preload("res/fonts/Gothica-Book.ttf");
+
 		TextStyle style;
-		style.font = new Font("res/fonts/Gothica-Book.ttf");
-		style.font_family = "Gothica";
+		style.font = new Font("Gothica", 18);
 
 		TextActorPtr text = new TextActor("A text with custom font", style);
 		text->SetFillColor(Color::White);
