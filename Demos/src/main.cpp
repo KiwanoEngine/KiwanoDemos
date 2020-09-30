@@ -43,7 +43,7 @@ public:
 		settings.window.title = "Kiwano Demos";
 		settings.window.width = WINDOW_WIDTH;
 		settings.window.height = WINDOW_HEIGHT;
-		settings.window.icon = IDI_ICON1;
+		settings.window.icon = Icon(IDI_ICON1);
 		this->SetSettings(settings);
 
 		// สนำร Audio ฤฃฟ้

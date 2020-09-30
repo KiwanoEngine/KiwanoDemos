@@ -43,19 +43,22 @@ public:
 		this->AddChild(sprite);
 
 		// 创建点击按钮后的回调函数
-		auto click = [=](Button*, Actor* target)
+		auto cb = [=](Button* btn, Button::Event evt)
 		{
-			static bool is_opened = false;
+			if (evt == Button::Event::Click)
+			{
+				static bool is_opened = false;
 
-			// 强制转换为精灵按钮
-			Sprite* sprite = (Sprite*)target;
-			// 重新设置按钮的打开和关闭状态
-			is_opened = !is_opened;
-			sprite->SetCropRect(is_opened ? opened : closed);
+				// 强制转换为精灵按钮
+				Sprite* sprite = (Sprite*)btn->GetBoundActor();
+				// 重新设置按钮的打开和关闭状态
+				is_opened = !is_opened;
+				sprite->SetCropRect(is_opened ? opened : closed);
+			}
 		};
 
 		// 创建按钮
-		ButtonPtr button = new Button(click);
+		ButtonPtr button = new Button(cb);
 		sprite->AddComponent(button);
 	}
 
@@ -69,40 +72,31 @@ public:
 		text->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 + 50);
 		this->AddChild(text);
 
-		// 创建点击按钮后的回调函数
-		auto click = [=](Button*, Actor* target)
+		// 创建按钮的回调函数
+		auto cb = [=](Button* btn, Button::Event evt)
 		{
 			// 强制转换为文本按钮
-			TextActor* text = (TextActor*)target;
-			text->SetText("Clicked!");
-		};
+			TextActor* text = (TextActor*)btn->GetBoundActor();
 
-		// 创建鼠标按下按钮后的回调函数
-		auto pressed = [=](Button*, Actor* target)
-		{
-			// 强制转换为文本按钮
-			TextActor* text = (TextActor*)target;
-			text->SetText("Pressed");
-		};
-
-		// 创建鼠标移入按钮后的回调函数
-		auto mouseover = [=](Button*, Actor* target)
-		{
-			// 强制转换为文本按钮
-			TextActor* text = (TextActor*)target;
-			text->SetText("Mouseover");
-		};
-
-		// 创建鼠标移出按钮后的回调函数
-		auto mouseout = [=](Button*, Actor* target)
-		{
-			// 强制转换为文本按钮
-			TextActor* text = (TextActor*)target;
-			text->SetText("Mouseout");
+			switch (evt)
+			{
+			case Button::Event::Click:
+				text->SetText("Clicked!");
+				break;
+			case Button::Event::Pressed:
+				text->SetText("Pressed");
+				break;
+			case Button::Event::MouseOver:
+				text->SetText("Mouseover");
+				break;
+			case Button::Event::MouseOut:
+				text->SetText("Mouseout");
+				break;
+			}
 		};
 
 		// 创建按钮
-		ButtonPtr button = new Button(click, pressed, mouseover, mouseout);
+		ButtonPtr button = new Button(cb);
 		text->AddComponent(button);
 	}
 };
