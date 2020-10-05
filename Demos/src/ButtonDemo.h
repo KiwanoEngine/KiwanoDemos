@@ -43,22 +43,20 @@ public:
 		this->AddChild(sprite);
 
 		// 创建点击按钮后的回调函数
-		auto cb = [=](Button* btn, Button::Event evt)
+		auto cb = [=](Button* btn)
 		{
-			if (evt == Button::Event::Click)
-			{
-				static bool is_opened = false;
+			static bool is_opened = false;
 
-				// 强制转换为精灵按钮
-				Sprite* sprite = (Sprite*)btn->GetBoundActor();
-				// 重新设置按钮的打开和关闭状态
-				is_opened = !is_opened;
-				sprite->SetCropRect(is_opened ? opened : closed);
-			}
+			// 强制转换为精灵按钮
+			Sprite* sprite = (Sprite*)btn->GetBoundActor();
+			// 重新设置按钮的打开和关闭状态
+			is_opened = !is_opened;
+			sprite->SetCropRect(is_opened ? opened : closed);
 		};
 
 		// 创建按钮
-		ButtonPtr button = new Button(cb);
+		ButtonPtr button = new Button;
+		button->SetCallbackOnClicked(cb);
 		sprite->AddComponent(button);
 	}
 
@@ -80,17 +78,20 @@ public:
 
 			switch (evt)
 			{
-			case Button::Event::Click:
-				text->SetText("Clicked!");
+			case Button::Event::MouseEntered:
+				text->SetText("MouseEntered");
+				break;
+			case Button::Event::MouseExited:
+				text->SetText("MouseExited");
 				break;
 			case Button::Event::Pressed:
 				text->SetText("Pressed");
 				break;
-			case Button::Event::MouseOver:
-				text->SetText("Mouseover");
+			case Button::Event::Released:
+				text->SetText("Released");
 				break;
-			case Button::Event::MouseOut:
-				text->SetText("Mouseout");
+			case Button::Event::Clicked:
+				text->SetText("Clicked!");
 				break;
 			}
 		};
