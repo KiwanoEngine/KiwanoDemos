@@ -1,13 +1,13 @@
 // Copyright (C) 2019 Nomango
 
 #include "TextDemo.h"
-#include "ActionDemo.h"
-#include "EaseActionDemo.h"
+#include "AnimationDemo.h"
+#include "EaseAnimationDemo.h"
 #include "ButtonDemo.h"
 #include "InputDemo.h"
 #include "ShapeDemo.h"
 #include "AudioDemo.h"
-#include "AnimationDemo.h"
+#include "FrameAnimationDemo.h"
 #include "NetworkDemo.h"
 #include "resource.h"
 
@@ -20,14 +20,14 @@ struct Demo
 #define DECLARE_DEMO(DEMO_NAME) { DEMO_NAME::DemoName(), DEMO_NAME::Create }
 
 Demo s_Demos[] = {
-	DECLARE_DEMO(ActionDemo),
-	DECLARE_DEMO(EaseActionDemo),
+	DECLARE_DEMO(AnimationDemo),
+	DECLARE_DEMO(EaseAnimationDemo),
 	DECLARE_DEMO(TextDemo),
 	DECLARE_DEMO(ButtonDemo),
 	DECLARE_DEMO(InputDemo),
 	DECLARE_DEMO(ShapeDemo),
 	DECLARE_DEMO(AudioDemo),
-	DECLARE_DEMO(AnimationDemo),
+	DECLARE_DEMO(FrameAnimationDemo),
 	DECLARE_DEMO(NetworkDemo),
 };
 
@@ -70,7 +70,7 @@ public:
 
 		// 创建舞台
 		StagePtr scene = demo.Create();
-		Director::GetInstance().EnterStage(scene);
+		Director::GetInstance().EnterStage(scene, NewRandomTransition());
 
 		// 创建GUI控制面板
 		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &DemoRunner::ControlPanel));
@@ -94,6 +94,31 @@ public:
 		}
 
 		ImGui::End();
+	}
+
+	TransitionPtr NewRandomTransition()
+	{
+		// 生成随机的舞台过渡动画
+		TransitionPtr transition;
+		switch (math::Random(0, 4))
+		{
+		case 0:
+			transition = new FadeTransition(500_msec);
+			break;
+		case 1:
+			transition = new FadeTransition(500_msec, true);
+			break;
+		case 2:
+			transition = new MoveTransition(500_msec, MoveTransition::Type::Left);
+			break;
+		case 3:
+			transition = new RotationTransition(500_msec);
+			break;
+		case 4:
+			transition = new BoxTransition(500_msec);
+			break;
+		}
+		return transition;
 	}
 };
 

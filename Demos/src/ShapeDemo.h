@@ -123,8 +123,8 @@ public:
 		shape->SetStrokeStyle(new StrokeStyle(1.3f));
 
 		// Ìí¼Ó¶¯»­
-		shape->AddAction(ActionMoveTo(4_sec, Point(position.x, -50)).RemoveTargetWhenDone());
-		shape->AddAction(ActionRotateBy(1_sec, math::Random(40.0f, 120.0f)).Loops(-1));
+		shape->StartAnimation(animation::MoveTo(4_sec, Point(position.x, -50)).RemoveTargetWhenDone());
+		shape->StartAnimation(animation::RotateBy(1_sec, math::Random(40.0f, 120.0f)).Loops(-1));
 
 		shape->SetRotation(math::Random(0.0f, 360.0f));
 		shape->SetPosition(position);

@@ -29,10 +29,11 @@ public:
 	void AddSpriteButton()
 	{
 		// 加载按钮图片
-		FramePtr frame = new Frame("res/images/buttons.png");
+		SpriteFrame frame("res/images/buttons.png");
+		Size frame_size = frame.GetSize();
 		// 按钮关闭和打开时的裁剪矩形
-		Rect closed = Rect(Point(0, frame->GetHeight() / 2), Point(frame->GetWidth(), frame->GetHeight()));
-		Rect opened = Rect(Point(), Point(frame->GetWidth(), frame->GetHeight() / 2));
+		Rect closed = Rect(Point(0, frame_size.y / 2), Point(frame_size.x, frame_size.y));
+		Rect opened = Rect(Point(), Point(frame_size.x, frame_size.y / 2));
 
 		// 创建精灵
 		SpritePtr sprite = new Sprite(frame);

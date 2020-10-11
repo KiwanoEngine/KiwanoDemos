@@ -25,7 +25,7 @@ public:
 		StagePtr stage = new Stage;
 
 		// 创建精灵
-		SpritePtr sprite = new Sprite("logo.png");
+		SpritePtr sprite = new Sprite("../logo/logo_text.png");
 
 		// 修改精灵位置, 使精灵在屏幕上居中
 		sprite->SetPosition(640 / 2, 480 / 2);
@@ -33,8 +33,8 @@ public:
 		// 修改精灵锚点, 使图片中心对齐屏幕中心
 		sprite->SetAnchor(0.5, 0.5);
 
-		// 修改缩放率, 图片缩小到 0.5 倍
-		sprite->SetScale(0.5f, 0.5f);
+		// 修改缩放率, 图片缩小到 0.3 倍
+		sprite->SetScale(0.3f, 0.3f);
 
 		// 添加到舞台中
 		stage->AddChild(sprite);

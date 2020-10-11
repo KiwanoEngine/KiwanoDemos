@@ -3,172 +3,6 @@
 #pragma once
 #include "common.h"
 
-// 方向
-enum class Direction
-{
-	Up,
-	Down,
-	Left,
-	Right
-};
-
-// 老虎
-KGE_DECLARE_SMART_PTR(Tiger);
-class Tiger
-	: public Sprite
-{
-	FrameSequencePtr run_frames;	// 跑步序列帧
-	FrameSequencePtr stand_frames;	// 站立序列帧
-	bool facing_left;				// 面朝左或面朝右
-	bool running;					// 是否正在跑步
-	Direction running_direction;	// 跑步方向
-
-public:
-	static TigerPtr Create()
-	{
-		TigerPtr tiger = new Tiger;
-		return tiger;
-	}
-
-	Tiger()
-	{
-		// 加载帧动画
-		run_frames = new FrameSequence({
-			new Frame("res/images/tiger/run/run01.png"),
-			new Frame("res/images/tiger/run/run02.png"),
-			new Frame("res/images/tiger/run/run03.png"),
-			new Frame("res/images/tiger/run/run04.png"),
-			new Frame("res/images/tiger/run/run05.png"),
-			new Frame("res/images/tiger/run/run06.png"),
-		});
-
-		stand_frames = new FrameSequence(new Frame("res/images/tiger/stand.png"), 3, 2);
-
-		// 执行动画
-		StartStandAnimation();
-
-		// 添加按键监听
-		AddListener<KeyDownEvent>(Closure(this, &Tiger::OnKeyDown));
-		AddListener<KeyUpEvent>(Closure(this, &Tiger::OnKeyUp));
-
-		// 默认方向为 Left
-		facing_left = true;
-		running = false;
-
-		// 设置锚点
-		SetAnchor(0.5f, 0.5f);
-	}
-
-	void OnKeyDown(Event* evt)
-	{
-		KGE_ASSERT(evt->IsType<KeyDownEvent>());
-
-		auto key_evt = dynamic_cast<KeyDownEvent*>(evt);
-		if (key_evt->code == KeyCode::Left)
-			Run(Direction::Left);
-		else if (key_evt->code == KeyCode::Right)
-			Run(Direction::Right);
-		else if (key_evt->code == KeyCode::Up)
-			Run(Direction::Up);
-		else if (key_evt->code == KeyCode::Down)
-			Run(Direction::Down);
-	}
-
-	void OnKeyUp(Event* evt)
-	{
-		KGE_ASSERT(evt->IsType<KeyUpEvent>());
-
-		auto key_evt = dynamic_cast<KeyUpEvent*>(evt);
-		switch (key_evt->code)
-		{
-		case KeyCode::Left:
-		case KeyCode::Right:
-		case KeyCode::Up:
-		case KeyCode::Down:
-			StopRun();
-			break;
-		}
-	}
-
-	void Run(Direction d)
-	{
-		if (!running)
-		{
-			running = true;
-
-			// 执行跑步动画
-			StartRunAnimation();
-		}
-
-		running_direction = d;
-		if (running_direction == Direction::Left)
-		{
-			facing_left = true;
-		}
-		else if (running_direction == Direction::Right)
-		{
-			facing_left = false;
-		}
-
-		// 缩放可以调整图片显示方向
-		// 缩放至 -1 图片会反转
-		SetScale(facing_left ? 1.0f : -1.0f, 1.0f);
-	}
-
-	void StopRun()
-	{
-		if (running)
-		{
-			running = false;
-
-			// 执行站立动画
-			StartStandAnimation();
-		}
-	}
-
-	void OnUpdate(Duration dt)
-	{
-		if (running)
-		{
-			// 计算移动距离
-			// OnUpdate 并不是一个稳定间隔执行的函数, 如果想实现稳定
-			// 每秒移动 150 像素, 应根据 dt 参数计算移动距离
-			const float moving_per_sec = 150;
-			const float distance = moving_per_sec * dt.Seconds();
-
-			switch (running_direction)
-			{
-			case Direction::Up:
-				MoveBy(0, -distance);
-				break;
-			case Direction::Down:
-				MoveBy(0, distance);
-				break;
-			case Direction::Left:
-				MoveBy(-distance, 0);
-				break;
-			case Direction::Right:
-				MoveBy(distance, 0);
-				break;
-			}
-		}
-	}
-
-	// 执行跑步动画
-	void StartRunAnimation()
-	{
-		StopAllActions();
-		AddAction(Animation(0.5_sec, run_frames).Loops(-1));
-	}
-
-	// 执行站立动画
-	void StartStandAnimation()
-	{
-		StopAllActions();
-		AddAction(Animation(1_sec, stand_frames).Loops(-1));
-	}
-};
-
 class AnimationDemo
 	: public Stage
 {
@@ -185,27 +19,133 @@ public:
 
 	AnimationDemo()
 	{
-		// 创建背景
-		SpritePtr bg = new Sprite("res/images/spring_forest.jpg");
-		bg->SetSize(GetSize());
+		const int max_rows = 2;
+		const int max_cols = 3;
+		float width = this->GetWidth();
+		float height = this->GetHeight();
+		float x = width / max_cols;
+		float y = height / max_rows;
 
-		// 创建老虎
-		TigerPtr tiger = new Tiger();
-		// 在屏幕上居中显示
-		tiger->SetAnchor(0.5f, 0.5f);
-		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+		Vector<Function<void(const Point&)>> functions;
+		functions = {
+			Closure(this, &AnimationDemo::ShowRotate),
+			Closure(this, &AnimationDemo::ShowMove),
+			Closure(this, &AnimationDemo::ShowFadeInAndFadeOut),
+			Closure(this, &AnimationDemo::ShowWalk),
+			Closure(this, &AnimationDemo::ShowGroup),
+			Closure(this, &AnimationDemo::ShowCustom),
+		};
 
-		// 创建说明文字
-		TextActorPtr intro = new TextActor("按上下左右键移动");
-		// 设置文字位置
-		intro->SetAnchor(0.5f, 0.5f);
-		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);
-		intro->SetFillColor(Color::White);
-		intro->SetAlignment(TextAlign::Center);
+		for (size_t i = 0; i < functions.size(); ++i)
+		{
+			Point position = Point((i % max_cols + 0.5f) * x, (i / max_cols + 0.5f) * y);
+			functions[i](position);
+		}
+	}
 
-		// 添加到舞台
-		this->AddChild(bg);
-		this->AddChild(tiger);
-		this->AddChild(intro);
+	void ShowRotate(const Point& position)
+	{
+		// 创建旋转动画
+		auto rotate_by = animation::RotateBy(1_sec, 60.0f);
+		// 设置无限循环
+		rotate_by.Loops(-1);
+
+		// 创建一个小人执行该动画
+		CreateManToRunAction("Rotating", rotate_by, position);
+	}
+
+	void ShowMove(const Point& position)
+	{
+		// 创建位移动画
+		// 0.5秒向x方向移动20像素
+		auto move_by = animation::MoveBy(0.5_sec, Vec2(20, 0));
+		// 设置动画延迟
+		move_by.Delay(0.5_sec);
+
+		// 创建反向动画
+		auto move_by_reverse = move_by.Reverse();
+
+		// 创建组合动画
+		auto group = animation::Group({ move_by, move_by_reverse });
+		// 设置无限循环
+		group.Loops(-1);
+
+		CreateManToRunAction("Move & Reverse", group, position);
+	}
+
+	void ShowFadeInAndFadeOut(const Point& position)
+	{
+		// 创建淡出动画
+		auto fade_out = animation::FadeOut(1.0_sec);
+
+		// 创建淡入动画
+		auto fade_in = animation::FadeIn(1.0_sec);
+
+		// 创建组合动画
+		auto group = animation::Group({ fade_out, fade_in });
+		// 设置无限循环
+		group.Loops(-1);
+
+		CreateManToRunAction("FadeIn & FadeOut", group, position);
+	}
+
+	void ShowWalk(const Point& position)
+	{
+		// 创建路径形状
+		ShapePtr circle = Shape::CreateCircle(Point(10.0f, 0), 10.0f);
+
+		// 创建路径移动动画
+		auto walk = animation::Path(2.0_sec, circle);
+		// 设置无限循环
+		walk.Loops(-1);
+
+		CreateManToRunAction("Path Walk", walk, position);
+	}
+
+	void ShowGroup(const Point& position)
+	{
+		// 使用Tween辅助工具创建组合动画
+		auto group = animation::Group(
+			{
+				animation::Group({ animation::ScaleTo(0.3_sec, Vec2(0.5f, 0.5f)), animation::ScaleTo(0.7_sec, Vec2(1.0f, 1.0f)) }),
+				animation::Group({ animation::FadeTo(0.5_sec, 0.3f), animation::FadeIn(0.5_sec) })
+			},
+			true /* 同步执行 */
+		).Loops(-1);
+
+		CreateManToRunAction("Group", group, position);
+	}
+
+	void ShowCustom(const Point& position)
+	{
+		auto custom = animation::Custom(1_sec, [](Actor* target, float percent) {
+			Sprite* sprite = (Sprite*)target;
+			// 获取图片原宽度和高度
+			float src_width = sprite->GetTexture()->GetWidth();
+			float src_height = sprite->GetTexture()->GetHeight();
+			// 根据动画进度计算新的裁剪矩形
+			Rect crop_rect = Rect(0, percent * src_height / 2, src_width, (0.5f + (1.0f - percent) * 0.5f) * src_height);
+			sprite->SetCropRect(crop_rect);
+			// 重设精灵大小为裁剪矩形大小
+			sprite->SetSize(crop_rect.GetSize());
+		}).Loops(-1);
+
+		CreateManToRunAction("Custom", custom, position);
+	}
+
+	void CreateManToRunAction(const String& text, AnimationPtr animation, const Point& position)
+	{
+		SpritePtr man = new Sprite("res/images/man.png");
+		man->StartAnimation(animation);
+		man->SetPosition(position);
+		man->SetAnchor(0.5f, 0.5f);
+		this->AddChild(man);
+
+		// 添加提示文字
+		TextActorPtr label = new TextActor(text);
+		label->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
+		label->SetAnchor(0.5f, 0);
+		label->SetFillColor(Color::White);
+		this->AddChild(label);
 	}
 };

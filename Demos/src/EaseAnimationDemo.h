@@ -3,24 +3,24 @@
 #pragma once
 #include "common.h"
 
-class EaseActionDemo
+class EaseAnimationDemo
 	: public Stage
 {
 public:
 	static StagePtr Create()
 	{
-		return new EaseActionDemo;
+		return new EaseAnimationDemo;
 	}
 
 	static String DemoName()
 	{
-		return "Ease Action Demo";
+		return "Ease Animation Demo";
 	}
 
-	EaseActionDemo()
+	EaseAnimationDemo()
 	{
-		// 从资源缓存中获取人物图片
-		FramePtr man_image = new Frame("res/images/man.png");
+		// 加载人物图片
+		SpriteFrame man_image("res/images/man.png");
 
 		// 创建缓动方程列表
 		EaseFunc ease_functions[] = {
@@ -44,20 +44,21 @@ public:
 		for (size_t i = 0; i < std::size(ease_functions); ++i)
 		{
 			// 动画：4 秒内向右移动 350 像素，并设置缓动方程
-			Action move = ActionMoveBy(4_sec, Point{ 300, 0 }).Ease(ease_functions[i]);
+			auto move = animation::MoveBy(4_sec, Point{ 300, 0 }).Ease(ease_functions[i]);
 			// 动画：延迟 1 秒
-			Action delay = ActionDelay(1_sec);
+			auto delay = animation::Delay(1_sec);
 			// 动画：组合前两个动画，并循环执行
-			Action group = ActionGroup({ move, delay }).Loops(-1);
+			auto group = animation::Group({ move, delay }).Loops(-1);
 			// 动画结束后自动恢复人物位置
-			group.LoopDoneCallback([](Actor* target) { target->MoveBy(-300, 0); });
+			auto handler = AnimationEventHandler::HandleLoopDone([](Animation*, Actor* target) { target->MoveBy(-300, 0); });
+			group.Handler(handler);
 
 			// 初始化人物
 			SpritePtr man = new Sprite(man_image);
 			man->SetPosition(200, height);
 			man->SetAnchor(0.5f, 0.5f);
 			// 执行动画
-			man->AddAction(group);
+			man->StartAnimation(group);
 
 			// 添加提示文字
 			TextActorPtr label = new TextActor(ease_names[i]);

@@ -17,7 +17,7 @@ class ImGuiStage
 public:
 	ImGuiStage()
 	{
-		logo = new Sprite("logo.png");
+		logo = new Sprite("../logo/logo_transparent.png");
 		logo->SetSize(160, 160);
 		logo->SetAnchor(0.5f, 0.5f);
 		logo->SetPosition(GetWidth() / 2, GetHeight() / 2);

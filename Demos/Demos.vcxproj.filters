@@ -34,19 +34,10 @@
     <ClInclude Include="src\common.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\ActionDemo.h">
-      <Filter>src\demos</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AnimationDemo.h">
-      <Filter>src\demos</Filter>
-    </ClInclude>
     <ClInclude Include="src\AudioDemo.h">
       <Filter>src\demos</Filter>
     </ClInclude>
     <ClInclude Include="src\ButtonDemo.h">
-      <Filter>src\demos</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EaseActionDemo.h">
       <Filter>src\demos</Filter>
     </ClInclude>
     <ClInclude Include="src\InputDemo.h">
@@ -59,6 +50,15 @@
       <Filter>src\demos</Filter>
     </ClInclude>
     <ClInclude Include="src\TextDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrameAnimationDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationDemo.h">
+      <Filter>src\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EaseAnimationDemo.h">
       <Filter>src\demos</Filter>
     </ClInclude>
   </ItemGroup>

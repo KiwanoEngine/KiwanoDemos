@@ -28,8 +28,8 @@ public:
 		static const float speed_angular_per_sec = 60;
 
 		// 实际速度 = 速度 x 时间
-		float speed_linear = speed_linear_per_sec * dt.Seconds();
-		float speed_angular = speed_angular_per_sec * dt.Seconds();
+		float speed_linear = speed_linear_per_sec * dt.GetSeconds();
+		float speed_angular = speed_angular_per_sec * dt.GetSeconds();
 
 		// 获取输入设备
 		auto& input = Input::GetInstance();
