@@ -49,8 +49,9 @@ PhysicBodyDemo::PhysicBodyDemo()
 	world_ = new PhysicWorld();
 	AddComponent(world_);
 
-	// 设置可响应状态, 使舞台可以接收到鼠标点击消息
-	SetResponsible(true);
+	// 添加鼠标传感器，使舞台可以接收到鼠标点击消息
+	ComponentPtr comp = new MouseSensor;
+	AddComponent(comp);
 
 	// 添加鼠标点击监听
 	AddListener<MouseClickEvent>(Closure(this, &PhysicBodyDemo::OnClick));
