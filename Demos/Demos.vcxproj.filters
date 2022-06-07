@@ -23,11 +23,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\logo\icon.ico">
-      <Filter>resources</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\resource.h">
       <Filter>resources</Filter>
     </ClInclude>
