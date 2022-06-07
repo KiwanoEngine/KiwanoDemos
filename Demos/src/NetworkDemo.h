@@ -106,7 +106,7 @@ public:
 			{ "integer", 12 },
 			{ "float", 3.125 },
 			{ "array", { 1, 2, 3, 4, 4.5 } },
-			{ "object", { "key", "value" } },
+			{ "object", {{ "key", "value" }, { "key2", "value2" }} },
 		};
 
 		HttpRequestPtr request = new HttpRequest(
