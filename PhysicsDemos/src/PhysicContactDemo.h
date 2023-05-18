@@ -162,7 +162,7 @@ KeyText::KeyText(PhysicWorldPtr world, const Point& pos, char ch)
 	this->AddComponent(body);
 
 	// 给身体一个随机受力
-	float ratio = body->GetMass() * 10.0f;
+	float ratio = body->GetMass() * 50.0f;
 	float neg = (math::Random(0, 1) == 0 ? -1.0f : 1.0f);
 	float h = neg * math::Random(min_h_force, max_h_force);
 	float v = -math::Random(min_v_force, max_v_force);
