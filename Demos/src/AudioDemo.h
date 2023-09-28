@@ -6,9 +6,10 @@
 class AudioDemo
 	: public Stage
 {
-	SoundPtr bgmusic;		// 音乐对象
-	TextActorPtr volume_text;	// 音量文字
+	SoundPlayerPtr sound_player;	// 音乐播放器
+	TextActorPtr volume_text;		// 音量文字
 	TextActorPtr state_text;		// 播放状态文字
+	bool is_playing = true;
 
 public:
 	static StagePtr Create()
@@ -24,10 +25,11 @@ public:
 	AudioDemo()
 	{
 		// 加载音乐
-		bgmusic = new Sound("res/sounds/splash.mp3");
+		sound_player = new SoundPlayer;
+		sound_player->Preload("res/sounds/splash.mp3");
 
 		// 播放音乐（参数用来设置播放循环次数，-1 表示循环播放）
-		bgmusic->Play(-1);
+		sound_player->Play("res/sounds/splash.mp3", -1);
 
 		// 创建说明文字
 		TextActorPtr intro = new TextActor("按上下键调整音量\n按空格键暂停或继续");
@@ -56,16 +58,15 @@ public:
 
 	void OnUpdate(Duration dt) override
 	{
-		if (bgmusic == nullptr)
+		if (sound_player == nullptr)
 			return;
 
 		// 获取音量和播放状态
-		float volume = bgmusic->GetVolume();
-		bool playing = bgmusic->IsPlaying();
+		float volume = sound_player->GetVolume();
 
 		// 修改文本
 		volume_text->SetText("当前音量：" + std::to_string(volume));
-		state_text->SetText(playing ? "当前状态：正在播放" : "当前状态：停止播放");
+		state_text->SetText(is_playing ? "当前状态：正在播放" : "当前状态：停止播放");
 
 		// 获取输入设备
 		auto& input = Input::GetInstance();
@@ -73,17 +74,17 @@ public:
 		// 按空格键暂停或继续
 		if (input.WasPressed(KeyCode::Space))
 		{
-			bgmusic->IsPlaying() ? bgmusic->Pause() : bgmusic->Resume();
+			is_playing ? sound_player->PauseAll() : sound_player->ResumeAll();
 		}
 
 		// 按上下键调整音量
 		if (input.WasPressed(KeyCode::Up))
 		{
-			bgmusic->SetVolume(volume + 0.1f);
+			sound_player->SetVolume(volume + 0.1f);
 		}
 		else if (input.WasPressed(KeyCode::Down))
 		{
-			bgmusic->SetVolume(volume - 0.1f);
+			sound_player->SetVolume(volume - 0.1f);
 		}
 	}
 };
