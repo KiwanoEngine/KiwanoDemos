@@ -54,12 +54,10 @@ public:
 	TextActorPtr CreateTextWithOutline()
 	{
 		// 设置文字描边颜色和宽度
-		TextStyle style;
-		style.outline_brush = new Brush(Color::BlueViolet);
-		style.outline_stroke = new StrokeStyle(3.0f);
-
-		TextActorPtr text = new TextActor("A text with outline", style);
+		TextActorPtr text = new TextActor("A text with outline");
 		text->SetFillColor(Color::White);
+		text->SetOutlineColor(Color::BlueViolet);
+		text->SetOutlineStrokeStyle(new StrokeStyle(3.0f));
 		return text;
 	}
 
@@ -91,9 +89,9 @@ public:
 		TextStyle style;
 		// 加粗字体和加宽轮廓
 		style.font = new Font("", 18, FontWeight::Bold);
-		style.outline_stroke = new StrokeStyle(3.0f);
 
 		TextActorPtr text = new TextActor("A text with custom brush", style);
+		text->SetOutlineStrokeStyle(new StrokeStyle(3.0f));
 
 		// 创建线性渐变样式
 		LinearGradientStyle fill_style = LinearGradientStyle(

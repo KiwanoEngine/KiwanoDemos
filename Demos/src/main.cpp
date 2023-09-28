@@ -8,7 +8,6 @@
 #include "ShapeDemo.h"
 #include "AudioDemo.h"
 #include "FrameAnimationDemo.h"
-#include "NetworkDemo.h"
 #include "resource.h"
 
 struct Demo
@@ -28,7 +27,6 @@ Demo s_Demos[] = {
 	DECLARE_DEMO(ShapeDemo),
 	DECLARE_DEMO(AudioDemo),
 	DECLARE_DEMO(FrameAnimationDemo),
-	DECLARE_DEMO(NetworkDemo),
 };
 
 KGE_DECLARE_SMART_PTR(DemoRunner);
@@ -48,9 +46,6 @@ public:
 
 		// 使用 Audio 模块
 		Application::GetInstance().Use(AudioModule::GetInstance());
-
-		// 使用 HttpClient 模块
-		Application::GetInstance().Use(HttpModule::GetInstance());
 
 		// 使用 ImGui 模块
 		Application::GetInstance().Use(ImGuiModule::GetInstance());

@@ -3,12 +3,10 @@
 #pragma once
 #include <kiwano/kiwano.h>
 #include <kiwano-audio/kiwano-audio.h>
-#include <kiwano-network/kiwano-network.h>
 #include <kiwano-imgui/kiwano-imgui.h>
 
 using namespace kiwano;
 using namespace kiwano::audio;
-using namespace kiwano::network;
 using namespace kiwano::imgui;
 
 const int WINDOW_WIDTH = 640;

@@ -38,9 +38,6 @@
     <ClInclude Include="src\InputDemo.h">
       <Filter>src\demos</Filter>
     </ClInclude>
-    <ClInclude Include="src\NetworkDemo.h">
-      <Filter>src\demos</Filter>
-    </ClInclude>
     <ClInclude Include="src\ShapeDemo.h">
       <Filter>src\demos</Filter>
     </ClInclude>
