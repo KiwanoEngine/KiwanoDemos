@@ -26,6 +26,8 @@ public:
 	{
 		// 加载音乐
 		sound_player = new SoundPlayer;
+
+		// 预加载音频，可以防止播放时卡顿
 		sound_player->Preload("res/sounds/splash.mp3");
 
 		// 播放音乐（参数用来设置播放循环次数，-1 表示循环播放）
@@ -75,6 +77,7 @@ public:
 		if (input.WasPressed(KeyCode::Space))
 		{
 			is_playing ? sound_player->PauseAll() : sound_player->ResumeAll();
+			is_playing = !is_playing;
 		}
 
 		// 按上下键调整音量
