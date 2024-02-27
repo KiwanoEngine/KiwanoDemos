@@ -125,7 +125,7 @@ Board::Board(RefPtr<physics::World> world, const Size& size, const Point& pos)
 
 	b2PolygonShape shape;
 	b2Vec2 b2size = physics::LocalToWorld(this->GetSize());
-	shape.SetAsBox(b2size.x / 2, b2size.y / 2, b2Vec2_zero, math::Degree2Radian(0.f));
+	shape.SetAsBox(b2size.x / 2, b2size.y / 2);
 
 	b2FixtureDef fd;
 	fd.friction = 0.2f;
