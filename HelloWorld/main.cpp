@@ -7,10 +7,10 @@ using namespace kiwano;
 void Setup()
 {
 	// 创建舞台
-	StagePtr stage = new Stage;
+	RefPtr<Stage> stage = new Stage;
 
 	// 创建精灵
-	SpritePtr sprite = new Sprite("../logo/logo_text.png");
+	RefPtr<Sprite> sprite = new Sprite("../logo/logo_text.png");
 
 	// 修改精灵位置, 使精灵在屏幕上居中
 	sprite->SetPosition(640 / 2, 480 / 2);

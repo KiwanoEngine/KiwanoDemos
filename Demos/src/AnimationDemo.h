@@ -7,7 +7,7 @@ class AnimationDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new AnimationDemo;
 	}
@@ -92,7 +92,7 @@ public:
 	void ShowWalk(const Point& position)
 	{
 		// 创建路径形状
-		ShapePtr circle = Shape::CreateCircle(Point(10.0f, 0), 10.0f);
+		RefPtr<Shape> circle = Shape::CreateCircle(Point(10.0f, 0), 10.0f);
 
 		// 创建路径移动动画
 		auto walk = animation::Path(2.0_sec, circle);
@@ -133,16 +133,16 @@ public:
 		CreateManToRunAction("Custom", custom, position);
 	}
 
-	void CreateManToRunAction(const String& text, AnimationPtr animation, const Point& position)
+	void CreateManToRunAction(const String& text, RefPtr<Animation> animation, const Point& position)
 	{
-		SpritePtr man = new Sprite("res/images/man.png");
+		RefPtr<Sprite> man = new Sprite("res/images/man.png");
 		man->StartAnimation(animation);
 		man->SetPosition(position);
 		man->SetAnchor(0.5f, 0.5f);
 		this->AddChild(man);
 
 		// 添加提示文字
-		TextActorPtr label = new TextActor(text);
+		RefPtr<TextActor> label = new TextActor(text);
 		label->SetPosition(position.x, position.y + man->GetHeight() / 2 + 10.0f);
 		label->SetAnchor(0.5f, 0);
 		label->SetFillColor(Color::White);

@@ -7,7 +7,7 @@ class TextDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new TextDemo;
 	}
@@ -19,7 +19,7 @@ public:
 
 	TextDemo()
 	{
-		Vector<TextActorPtr> texts;
+		Vector<RefPtr<TextActor>> texts;
 
 		texts.push_back(CreateSimpleText());
 		texts.push_back(CreateTextWithOutline());
@@ -42,55 +42,55 @@ public:
 		}
 	}
 
-	TextActorPtr CreateSimpleText()
+	RefPtr<TextActor> CreateSimpleText()
 	{
-		TextActorPtr text = new TextActor("A simple text");
+		RefPtr<TextActor> text = new TextActor("A simple text");
 
 		// 设置文字填充颜色
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
-	TextActorPtr CreateTextWithOutline()
+	RefPtr<TextActor> CreateTextWithOutline()
 	{
 		// 设置文字描边颜色和宽度
-		TextActorPtr text = new TextActor("A text with outline");
+		RefPtr<TextActor> text = new TextActor("A text with outline");
 		text->SetFillColor(Color::White);
 		text->SetOutlineColor(Color::BlueViolet);
 		text->SetOutlineStrokeStyle(new StrokeStyle(3.0f));
 		return text;
 	}
 
-	TextActorPtr CreateTextWithBoldStyle()
+	RefPtr<TextActor> CreateTextWithBoldStyle()
 	{
 		// 设置字体宽度
 		TextStyle style;
 		style.font = new Font("", 18, FontWeight::Bold);
 
-		TextActorPtr text = new TextActor("A text with bold style", style);
+		RefPtr<TextActor> text = new TextActor("A text with bold style", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
-	TextActorPtr CreateTextWithUnderlineAndStrikethrough()
+	RefPtr<TextActor> CreateTextWithUnderlineAndStrikethrough()
 	{
 		// 设置下划线和删除线
 		TextStyle style;
 		style.show_underline = true;
 		style.show_strikethrough = true;
 
-		TextActorPtr text = new TextActor("A text with underline and strikethough", style);
+		RefPtr<TextActor> text = new TextActor("A text with underline and strikethough", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
-	TextActorPtr CreateTextWithCustomBrush()
+	RefPtr<TextActor> CreateTextWithCustomBrush()
 	{
 		TextStyle style;
 		// 加粗字体和加宽轮廓
 		style.font = new Font("", 18, FontWeight::Bold);
 
-		TextActorPtr text = new TextActor("A text with custom brush", style);
+		RefPtr<TextActor> text = new TextActor("A text with custom brush", style);
 		text->SetOutlineStrokeStyle(new StrokeStyle(3.0f));
 
 		// 创建线性渐变样式
@@ -101,7 +101,7 @@ public:
 		);
 
 		// 创建线性渐变画刷
-		BrushPtr fill_brush = new Brush(fill_style);
+		RefPtr<Brush> fill_brush = new Brush(fill_style);
 		text->SetFillBrush(fill_brush);
 
 		// 创建径向渐变样式
@@ -113,24 +113,24 @@ public:
 		);
 
 		// 创建径向渐变画刷
-		BrushPtr outline_brush = new Brush(outline_style);
+		RefPtr<Brush> outline_brush = new Brush(outline_style);
 		text->SetOutlineBrush(outline_brush);
 
 		return text;
 	}
 
-	TextActorPtr CreateTextWithSystemFont()
+	RefPtr<TextActor> CreateTextWithSystemFont()
 	{
 		// 设置字体族
 		TextStyle style;
 		style.font = new Font("Times New Roman", 18);
 
-		TextActorPtr text = new TextActor("A text with system font", style);
+		RefPtr<TextActor> text = new TextActor("A text with system font", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
-	TextActorPtr CreateTextWithCustomFont()
+	RefPtr<TextActor> CreateTextWithCustomFont()
 	{
 		// 加载字体文件
 		Font::Preload("res/fonts/Gothica-Book.ttf");
@@ -138,19 +138,19 @@ public:
 		TextStyle style;
 		style.font = new Font("Gothica", 18);
 
-		TextActorPtr text = new TextActor("A text with custom font", style);
+		RefPtr<TextActor> text = new TextActor("A text with custom font", style);
 		text->SetFillColor(Color::White);
 		return text;
 	}
 
-	TextActorPtr CreateMultipleLinesText()
+	RefPtr<TextActor> CreateMultipleLinesText()
 	{
 		TextStyle style;
 		// 设置多行文本居中
 		style.alignment = TextAlign::Center;
 
 		String content = "MULTIPLE LINES TEXT\nMULTIPLE LINES TEXT LONGER\nMULTIPLE LINES TEXT";
-		TextActorPtr text = new TextActor(content, style);
+		RefPtr<TextActor> text = new TextActor(content, style);
 		text->SetFillColor(Color::White);
 		return text;
 	}

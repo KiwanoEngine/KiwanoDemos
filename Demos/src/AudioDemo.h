@@ -2,17 +2,18 @@
 
 #pragma once
 #include "common.h"
+#include <kiwano-audio/kiwano-audio.h>
 
 class AudioDemo
 	: public Stage
 {
-	SoundPlayerPtr sound_player;	// 音乐播放器
-	TextActorPtr volume_text;		// 音量文字
-	TextActorPtr state_text;		// 播放状态文字
+	RefPtr<audio::SoundPlayer> sound_player;	// 音乐播放器
+	RefPtr<TextActor> volume_text;				// 音量文字
+	RefPtr<TextActor> state_text;				// 播放状态文字
 	bool is_playing = true;
 
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new AudioDemo;
 	}
@@ -25,7 +26,7 @@ public:
 	AudioDemo()
 	{
 		// 加载音乐
-		sound_player = new SoundPlayer;
+		sound_player = new audio::SoundPlayer;
 
 		// 预加载音频，可以防止播放时卡顿
 		sound_player->Preload("res/sounds/splash.mp3");
@@ -34,7 +35,7 @@ public:
 		sound_player->Play("res/sounds/splash.mp3", -1);
 
 		// 创建说明文字
-		TextActorPtr intro = new TextActor("按上下键调整音量\n按空格键暂停或继续");
+		RefPtr<TextActor> intro = new TextActor("按上下键调整音量\n按空格键暂停或继续");
 		intro->SetFillColor(Color::White);
 		intro->SetAlignment(TextAlign::Center);
 		intro->SetAnchor(0.5f, 0.5f);

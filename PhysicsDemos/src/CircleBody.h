@@ -3,12 +3,13 @@
 #pragma once
 #include "common.h"
 
-KGE_DECLARE_SMART_PTR(Circle);
 class Circle
 	: public ShapeActor
 {
 public:
-	Circle(PhysicWorldPtr world, const Point& pos, float radius)
+	RefPtr<physics::Body> body;
+
+	Circle(RefPtr<physics::World> world, const Point& pos, float radius)
 	{
 		// 使用形状生成器绘制圆形
 		ShapeMaker maker;
@@ -32,10 +33,18 @@ public:
 		this->SetSize(Size(radius * 2, radius * 2));
 
 		// 创建物理身体
-		PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Dynamic);
-		// 添加物理形状
-		body->AddCircleShape(radius, 1.f);
-		// 将物体添加到物理世界
+		b2BodyDef def;
+		def.type = b2_dynamicBody;
+		this->body = world->AddBody(&def);
 		this->AddComponent(body);
+
+		b2CircleShape shape;
+		shape.m_radius = physics::LocalToWorld(radius);
+
+		b2FixtureDef fd;
+		fd.density = 1.0f;
+		fd.friction = 0.2f;
+		fd.shape = &shape;
+		body->GetB2Body()->CreateFixture(&fd);
 	}
 };

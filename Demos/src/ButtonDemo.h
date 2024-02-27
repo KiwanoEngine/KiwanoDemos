@@ -7,7 +7,7 @@ class ButtonDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new ButtonDemo;
 	}
@@ -36,7 +36,7 @@ public:
 		Rect opened = Rect(Point(), Point(frame_size.x, frame_size.y / 2));
 
 		// 创建精灵
-		SpritePtr sprite = new Sprite(frame);
+		RefPtr<Sprite> sprite = new Sprite(frame);
 		sprite->SetSize(100, 50);
 		sprite->SetAnchor(0.5f, 0.5f);
 		sprite->SetPosition(this->GetWidth() / 2, this->GetHeight() / 2 - 50);
@@ -56,7 +56,7 @@ public:
 		};
 
 		// 创建按钮
-		ButtonPtr button = new Button;
+		RefPtr<Button> button = new Button;
 		button->SetCallbackOnClicked(cb);
 		sprite->AddComponent(button);
 	}
@@ -64,7 +64,7 @@ public:
 	void AddTextButton()
 	{
 		// 创建文字角色
-		TextActorPtr text = new TextActor("Click Me");
+		RefPtr<TextActor> text = new TextActor("Click Me");
 		text->SetFillColor(Color::White);
 		text->SetFont(new Font("", 18, FontWeight::Bold));
 		text->SetAnchor(0.5f, 0.5f);
@@ -98,7 +98,7 @@ public:
 		};
 
 		// 创建按钮
-		ButtonPtr button = new Button(cb);
+		RefPtr<Button> button = new Button(cb);
 		text->AddComponent(button);
 	}
 };

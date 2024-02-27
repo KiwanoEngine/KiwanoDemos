@@ -13,20 +13,19 @@ enum class Direction
 };
 
 // 老虎
-KGE_DECLARE_SMART_PTR(Tiger);
 class Tiger
 	: public Sprite
 {
-	FrameSequencePtr run_frames;	// 跑步序列帧
-	FrameSequencePtr stand_frames;	// 站立序列帧
+	RefPtr<FrameSequence> run_frames;	// 跑步序列帧
+	RefPtr<FrameSequence> stand_frames;	// 站立序列帧
 	bool facing_left;				// 面朝左或面朝右
 	bool running;					// 是否正在跑步
 	Direction running_direction;	// 跑步方向
 
 public:
-	static TigerPtr Create()
+	static RefPtr<Tiger> Create()
 	{
-		TigerPtr tiger = new Tiger;
+		RefPtr<Tiger> tiger = new Tiger;
 		return tiger;
 	}
 
@@ -174,7 +173,7 @@ class FrameAnimationDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new FrameAnimationDemo;
 	}
@@ -187,17 +186,17 @@ public:
 	FrameAnimationDemo()
 	{
 		// 创建背景
-		SpritePtr bg = new Sprite("res/images/spring_forest.jpg");
+		RefPtr<Sprite> bg = new Sprite("res/images/spring_forest.jpg");
 		bg->SetSize(GetSize());
 
 		// 创建老虎
-		TigerPtr tiger = new Tiger();
+		RefPtr<Tiger> tiger = new Tiger();
 		// 在屏幕上居中显示
 		tiger->SetAnchor(0.5f, 0.5f);
 		tiger->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextActorPtr intro = new TextActor("按上下左右键移动");
+		RefPtr<TextActor> intro = new TextActor("按上下左右键移动");
 		// 设置文字位置
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80);

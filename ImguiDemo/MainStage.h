@@ -6,13 +6,11 @@
 #include <kiwano-imgui/kiwano-imgui.h>
 
 using namespace kiwano;
-using namespace kiwano::imgui;
 
-KGE_DECLARE_SMART_PTR(ImGuiStage);
 class ImGuiStage
 	: public Stage
 {
-	SpritePtr logo;
+	RefPtr<Sprite> logo;
 
 public:
 	ImGuiStage()
@@ -24,7 +22,7 @@ public:
 		AddChild(logo);
 
 		// ´´½¨ ImGui Í¼²ã
-		ImGuiLayerPtr layer = new ImGuiLayer("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
+		RefPtr<imgui::Layer> layer = new imgui::Layer("ControlPanel", Closure(this, &ImGuiStage::ControlPanel));
 		AddChild(layer);
 	}
 

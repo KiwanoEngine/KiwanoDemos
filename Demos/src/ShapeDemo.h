@@ -9,7 +9,7 @@ class ShapeDemo
 	int current_type = 0;
 
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new ShapeDemo;
 	}
@@ -22,7 +22,7 @@ public:
 	ShapeDemo()
 	{
 		// 自动生成形状的定时任务
-		TaskPtr task = new Task(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
+		RefPtr<Task> task = new Task(Closure(this, &ShapeDemo::GenerateShapes), 120_msec);
 		AddTask(task);
 	}
 
@@ -61,21 +61,21 @@ public:
 	}
 
 	// 创建矩形
-	ShapeActorPtr CreateRectangle()
+	RefPtr<ShapeActor> CreateRectangle()
 	{
-		RectActorPtr rect = new RectActor(Size(40, 40));
+		RefPtr<RectActor> rect = new RectActor(Size(40, 40));
 		return rect;
 	}
 
 	// 创建椭圆形
-	ShapeActorPtr CreateEllipse()
+	RefPtr<ShapeActor> CreateEllipse()
 	{
-		EllipseActorPtr ellipse = new EllipseActor(Vec2(30, 20));
+		RefPtr<EllipseActor> ellipse = new EllipseActor(Vec2(30, 20));
 		return ellipse;
 	}
 
 	// 创建多边形
-	ShapeActorPtr CreatePolygon()
+	RefPtr<ShapeActor> CreatePolygon()
 	{
 		// 计算六边形的六个顶点
 		Vector<Point> vertices;
@@ -88,32 +88,32 @@ public:
 			vertices.push_back(vertex);
 		}
 
-		PolygonActorPtr polygon = new PolygonActor(vertices);
+		RefPtr<PolygonActor> polygon = new PolygonActor(vertices);
 		return polygon;
 	}
 
 	// 创建三角形
-	ShapeActorPtr CreateTriangle()
+	RefPtr<ShapeActor> CreateTriangle()
 	{
 		// 等边三角形边长
 		float side = 45.f;
 
 		// 使用形状生成器创建三角形三条边
-		ShapeMakerPtr maker = new ShapeMaker();
+		RefPtr<ShapeMaker> maker = new ShapeMaker();
 		maker->BeginPath(Point(0, 0));
 		maker->AddLine(Point(side, 0));
 		maker->AddLine(Point(side / 2, side * math::Cos(30.0f)));
 		maker->EndPath(true);
 
 		// 获取生成的形状
-		ShapePtr shape = maker->GetShape();
+		RefPtr<Shape> shape = maker->GetShape();
 		// 创建形状角色
-		ShapeActorPtr triangle = new ShapeActor(shape);
+		RefPtr<ShapeActor> triangle = new ShapeActor(shape);
 		return triangle;
 	}
 
 	// 将形状添加到场景中
-	void AddShape(ShapeActorPtr shape, const Point& position)
+	void AddShape(RefPtr<ShapeActor> shape, const Point& position)
 	{
 		// 设置形状填充颜色
 		shape->SetFillColor(Color(Color::Blue, 0.5f));

@@ -18,12 +18,12 @@ public:
 		SetSettings(settings);
 
 		// 添加 ImGui 模块
-		Application::GetInstance().Use(ImGuiModule::GetInstance());
+		Application::GetInstance().Use(imgui::Module::GetInstance());
 	}
 
 	void OnReady() override
 	{
-		ImGuiStagePtr scene = new ImGuiStage;
+		RefPtr<ImGuiStage> scene = new ImGuiStage;
 		Director::GetInstance().EnterStage(scene);
 	}
 };
@@ -33,7 +33,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 	try
 	{
 		// 创建运行器
-		RunnerPtr runner = new MyRunner();
+		RefPtr<Runner> runner = new MyRunner();
 
 		// 运行
 		Application::GetInstance().Run(runner);

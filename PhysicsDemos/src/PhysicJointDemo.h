@@ -3,15 +3,13 @@
 #pragma once
 #include "CircleBody.h"
 
-KGE_DECLARE_SMART_PTR(PhysicJointDemo);
-KGE_DECLARE_SMART_PTR(Car);
-KGE_DECLARE_SMART_PTR(Ground);
+class Car;
 
 class PhysicJointDemo
 	: public Stage
 {
 public:
-	static inline StagePtr Create() { return new PhysicJointDemo; }
+	static inline RefPtr<Stage> Create() { return new PhysicJointDemo; }
 
 	static inline String Name() { return "Physic Joint Demo"; }
 
@@ -22,9 +20,8 @@ public:
 	void OnUpdate(Duration dt) override;
 
 private:
-	PhysicWorldPtr world_;
-	ActorPtr map_;
-	CarPtr car_;
+	RefPtr<Actor> map_;
+	RefPtr<Car> car_;
 };
 
 // 地面
@@ -32,7 +29,7 @@ class Ground
 	: public ShapeActor
 {
 public:
-	Ground(PhysicWorldPtr world, Point const& pos);
+	Ground(RefPtr<physics::World> world, Point const& pos);
 
 	// 生成地面路径点
 	Vector<Point> GeneratePathPoints();
@@ -42,11 +39,11 @@ public:
 class Car
 	: public Actor
 {
-	ShapeActorPtr chassis_;
-	WheelJointPtr wheel_;
+	RefPtr<ShapeActor> chassis_;
+	b2WheelJoint* wheel_;
 
 public:
-	Car(PhysicWorldPtr world, Point const& pos);
+	Car(RefPtr<physics::World> world, Point const& pos);
 
 	// 给小车后轮提供动力
 	void SetSpeed(float speed);
@@ -59,19 +56,19 @@ public:
 PhysicJointDemo::PhysicJointDemo()
 {
 	// 创建物理世界
-	world_ = new PhysicWorld();
-	AddComponent(world_);
+	auto world = new physics::World(b2Vec2(0, 10.f));
+	AddComponent(world);
 
 	// 创建地图
 	map_ = new Actor();
 	AddChild(map_);
 
 	// 创建地面
-	ActorPtr ground = new Ground(world_, Point(0, GetHeight() - 200));
+	RefPtr<Actor> ground = new Ground(world, Point(0, GetHeight() - 200));
 	map_->AddChild(ground);
 
 	// 创建小车
-	car_ = new Car(world_, Point(190, 240));
+	car_ = new Car(world, Point(190, 240));
 	map_->AddChild(car_);
 }
 
@@ -105,7 +102,7 @@ void PhysicJointDemo::OnUpdate(Duration dt)
 	}
 }
 
-Ground::Ground(PhysicWorldPtr world, Point const& pos)
+Ground::Ground(RefPtr<physics::World> world, Point const& pos)
 {
 	// 设置形状颜色和位置
 	this->SetStrokeColor(Color::White);
@@ -125,10 +122,21 @@ Ground::Ground(PhysicWorldPtr world, Point const& pos)
 	this->SetShape(maker.GetShape());
 
 	// 根据路径点生成物理边
-	PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Static);
+	b2BodyDef def;
+	def.type = b2_staticBody;
+	auto body = world->AddBody(&def);
 	for (size_t i = 1; i < path_points.size(); ++i)
 	{
-		body->AddEdgeShape(path_points[i - 1], path_points[i], 0.0f, 0.6f);
+		b2Vec2 start = physics::LocalToWorld(path_points[i - 1]);
+		b2Vec2 end = physics::LocalToWorld(path_points[i]);
+		b2EdgeShape shape;
+		shape.Set(start, end);
+
+		b2FixtureDef fd;
+		fd.density = 0.0f;
+		fd.friction = 0.6f;
+		fd.shape = &shape;
+		body->GetB2Body()->CreateFixture(&fd);
 	}
 	this->AddComponent(body);
 }
@@ -162,7 +170,8 @@ Vector<Point> Ground::GeneratePathPoints()
 	return path_points;
 }
 
-Car::Car(PhysicWorldPtr world, Point const& pos)
+Car::Car(RefPtr<physics::World> world, Point const& pos)
+	: wheel_(nullptr)
 {
 	// 小车躯干形状顶点
 	Vector<Point> vertices = { Point(-150, 50), Point(150, 50), Point(150, 0), Point(0, -90), Point(-115, -90), Point(-150, -20), };
@@ -174,58 +183,67 @@ Car::Car(PhysicWorldPtr world, Point const& pos)
 	maker.EndPath(true);
 
 	// 创建小车躯干
-	ShapeActorPtr chassis = new ShapeActor(maker.GetShape());
+	RefPtr<ShapeActor> chassis = new ShapeActor(maker.GetShape());
 	chassis->SetPosition(pos + Point(0, -100));
 	chassis->SetStrokeColor(Color::White);
 	this->AddChild(chassis);
+	this->chassis_ = chassis;
 
 	// 创建小车躯干的物理身体
-	PhysicBodyPtr chassis_body = new PhysicBody(world, PhysicBody::Type::Dynamic);
-	chassis_body->AddPolygonShape(vertices, 1.0f);
+	b2BodyDef def;
+	def.type = b2_dynamicBody;
+	auto chassis_body = world->AddBody(&def);
 	chassis->AddComponent(chassis_body);
+	{
+		const auto b2vertices = physics::LocalToWorld(vertices);
+		b2PolygonShape shape;
+		shape.Set(b2vertices.data(), int32(b2vertices.size()));
+
+		b2FixtureDef fd;
+		fd.density = 1.0f;
+		fd.friction = 0.2f;
+		fd.shape = &shape;
+		chassis_body->GetB2Body()->CreateFixture(&fd);
+	}
 
 	// 创建左右轮子
-	CirclePtr lwheel = new Circle(world, pos + Point(-100, -35), 40.0f);
-	CirclePtr rwheel = new Circle(world, pos + Point(100, -40), 40.0f);
+	RefPtr<Circle> lwheel = new Circle(world, pos + Point(-100, -35), 40.0f);
+	RefPtr<Circle> rwheel = new Circle(world, pos + Point(100, -40), 40.0f);
 	this->AddChild(lwheel);
 	this->AddChild(rwheel);
 
-	auto lwheel_body = lwheel->GetPhysicBody();
-	auto rwheel_body = rwheel->GetPhysicBody();
-
 	// 设置摩擦力
-	lwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
-	rwheel_body->GetFixtureList().begin()->SetFriction(0.9f);
+	lwheel->body->GetB2Body()->GetFixtureList()->SetFriction(0.9f);
+	rwheel->body->GetB2Body()->GetFixtureList()->SetFriction(0.9f);
 
 	// 创建左轮子关节
-	WheelJoint::Param param1(chassis_body, lwheel_body, lwheel_body->GetPosition(), Vec2(0, 1));
-	param1.frequency_hz = 4.0f;			// 频率和阻尼率赋予关节弹性
-	param1.damping_ratio = 0.7f;
-	param1.enable_motor = true;			// 启用马达
-	param1.motor_speed = 0.0f;			// 初始马达速度为零
-	param1.max_motor_torque = 2000;		// 最大马达转矩
-
-	WheelJointPtr left_joint = new WheelJoint(param1);
-	world->AddJoint(left_joint);
+	{
+		b2WheelJointDef wheel_def;
+		wheel_def.Initialize(chassis_body->GetB2Body(), lwheel->body->GetB2Body(), lwheel->body->GetB2Body()->GetPosition(), b2Vec2(0, 1));
+		wheel_def.frequencyHz = 4.0f;		// 频率和阻尼率赋予关节弹性
+		wheel_def.dampingRatio = 0.7f;
+		wheel_def.enableMotor = true;		// 启用马达
+		wheel_def.motorSpeed = 0.f;			// 初始马达速度为零
+		wheel_def.maxMotorTorque = 20.f;	// 最大马达转矩
+		this->wheel_ = (b2WheelJoint*)world->AddJoint(&wheel_def);
+	}
 
 	// 创建右轮子关节
-	WheelJoint::Param param2(chassis_body, rwheel_body, rwheel_body->GetPosition(), Vec2(0, 1));
-	param2.frequency_hz = 4.0f;
-	param2.damping_ratio = 0.7f;
-	param2.enable_motor = false;
-	param2.motor_speed = 0.0f;
-	param2.max_motor_torque = 1000;
-
-	WheelJointPtr right_joint = new WheelJoint(param2);
-	world->AddJoint(right_joint);
-
-	this->chassis_ = chassis;
-	this->wheel_ = left_joint;
+	{
+		b2WheelJointDef wheel_def;
+		wheel_def.Initialize(chassis_body->GetB2Body(), rwheel->body->GetB2Body(), rwheel->body->GetB2Body()->GetPosition(), b2Vec2(0, 1));
+		wheel_def.frequencyHz = 4.0f;
+		wheel_def.dampingRatio = 0.7f;
+		wheel_def.enableMotor = false;
+		wheel_def.motorSpeed = 0.f;
+		wheel_def.maxMotorTorque = 10.f;
+		world->AddJoint(&wheel_def);
+	}
 }
 
 void Car::SetSpeed(float speed)
 {
-	wheel_->SetMotorSpeed(speed);
+	wheel_->SetMotorSpeed(math::Degree2Radian(speed));
 }
 
 Point Car::GetPosition() const

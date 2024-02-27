@@ -3,12 +3,13 @@
 #pragma once
 #include "common.h"
 
-KGE_DECLARE_SMART_PTR(Square);
 class Square
 	: public ShapeActor
 {
 public:
-	Square(PhysicWorldPtr world, const Point& pos, const Size& size)
+	RefPtr<physics::Body> body;
+
+	Square(RefPtr<physics::World> world, const Point& pos, const Size& size)
 	{
 		// 设置形状及颜色
 		this->SetShape(Shape::CreateRect(Rect(0, 0, size.x, size.y)));
@@ -20,10 +21,19 @@ public:
 		this->SetSize(size);
 
 		// 创建物理身体
-		PhysicBodyPtr body = new PhysicBody(world, PhysicBody::Type::Dynamic);
-		// 添加物理形状
-		body->AddRectShape(this->GetSize(), 1.f);
-		// 将物体添加到物理世界
+		b2BodyDef def;
+		def.type = b2_dynamicBody;
+		this->body = world->AddBody(&def);
 		this->AddComponent(body);
+
+		b2PolygonShape shape;
+		b2Vec2 b2size = physics::LocalToWorld(this->GetSize());
+		shape.SetAsBox(b2size.x / 2, b2size.y / 2, b2Vec2_zero, math::Degree2Radian(0.f));
+
+		b2FixtureDef fd;
+		fd.density = 1.0f;
+		fd.friction = 0.2f;
+		fd.shape = &shape;
+		body->GetB2Body()->CreateFixture(&fd);
 	}
 };

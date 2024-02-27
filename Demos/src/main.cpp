@@ -13,7 +13,7 @@
 struct Demo
 {
 	String title;
-	Function<StagePtr()> Create;
+	Function<RefPtr<Stage>()> Create;
 };
 
 #define DECLARE_DEMO(DEMO_NAME) { DEMO_NAME::DemoName(), DEMO_NAME::Create }
@@ -29,7 +29,6 @@ Demo s_Demos[] = {
 	DECLARE_DEMO(FrameAnimationDemo),
 };
 
-KGE_DECLARE_SMART_PTR(DemoRunner);
 class DemoRunner
 	: public Runner
 {
@@ -45,10 +44,10 @@ public:
 		this->SetSettings(settings);
 
 		// 使用 Audio 模块
-		Application::GetInstance().Use(AudioModule::GetInstance());
+		Application::GetInstance().Use(audio::Module::GetInstance());
 
 		// 使用 ImGui 模块
-		Application::GetInstance().Use(ImGuiModule::GetInstance());
+		Application::GetInstance().Use(imgui::Module::GetInstance());
 	}
 
 	void OnReady() override
@@ -64,11 +63,11 @@ public:
 		Application::GetInstance().GetWindow()->SetTitle("Kiwano Demo - " + title);
 
 		// 创建舞台
-		StagePtr scene = demo.Create();
+		RefPtr<Stage> scene = demo.Create();
 		Director::GetInstance().EnterStage(scene, NewRandomTransition());
 
 		// 创建GUI控制面板
-		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &DemoRunner::ControlPanel));
+		RefPtr<imgui::Layer> control_panel = new imgui::Layer("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}
 
@@ -91,10 +90,10 @@ public:
 		ImGui::End();
 	}
 
-	TransitionPtr NewRandomTransition()
+	RefPtr<Transition> NewRandomTransition()
 	{
 		// 生成随机的舞台过渡动画
-		TransitionPtr transition;
+		RefPtr<Transition> transition;
 		switch (math::Random(0, 4))
 		{
 		case 0:
@@ -126,7 +125,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 
 	try
 	{
-		DemoRunnerPtr runner = new DemoRunner;
+		RefPtr<DemoRunner> runner = new DemoRunner;
 		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception& e)

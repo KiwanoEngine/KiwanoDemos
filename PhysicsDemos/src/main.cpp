@@ -8,7 +8,7 @@ struct Demo
 {
 	String title;
 	String label;
-	Function<StagePtr()> Create;
+	Function<RefPtr<Stage>()> Create;
 };
 
 #define DECLARE_DEMO(DEMO_NAME) { DEMO_NAME::Name(), DEMO_NAME::Label(), DEMO_NAME::Create }
@@ -19,7 +19,6 @@ Demo s_Demos[] = {
 	DECLARE_DEMO(PhysicContactDemo),
 };
 
-KGE_DECLARE_SMART_PTR(DemoRunner);
 class DemoRunner
 	: public Runner
 {
@@ -34,7 +33,7 @@ public:
 		this->SetSettings(settings);
 
 		// 使用 ImGui 模块
-		Application::GetInstance().Use(ImGuiModule::GetInstance());
+		Application::GetInstance().Use(imgui::Module::GetInstance());
 	}
 
 	void OnReady() override
@@ -50,18 +49,18 @@ public:
 		Application::GetInstance().GetWindow()->SetTitle("Kiwano Physic Demos - " + title);
 
 		// 创建舞台
-		StagePtr scene = demo.Create();
+		RefPtr<Stage> scene = demo.Create();
 		Director::GetInstance().EnterStage(scene);
 
 		// 添加文本说明
-		TextActorPtr intro = new TextActor(demo.label);
+		RefPtr<TextActor> intro = new TextActor(demo.label);
 		intro->SetFillColor(Color::White);
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(scene->GetWidth() / 2, 50);
 		scene->AddChild(intro);
 
 		// 创建GUI控制面板
-		ImGuiLayerPtr control_panel = new ImGuiLayer("Control", Closure(this, &DemoRunner::ControlPanel));
+		RefPtr<imgui::Layer> control_panel = new imgui::Layer("Control", Closure(this, &DemoRunner::ControlPanel));
 		scene->AddChild(control_panel);
 	}
 
@@ -94,7 +93,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 
 	try
 	{
-		DemoRunnerPtr runner = new DemoRunner;
+		RefPtr<DemoRunner> runner = new DemoRunner;
 		Application::GetInstance().Run(runner);
 	}
 	catch (std::exception & e)

@@ -4,7 +4,6 @@
 #include "common.h"
 
 // 角色
-KGE_DECLARE_SMART_PTR(Hero);
 class Hero
 	: public GifSprite
 {
@@ -78,7 +77,7 @@ class InputDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new InputDemo;
 	}
@@ -91,13 +90,13 @@ public:
 	InputDemo()
 	{
 		// 创建角色
-		HeroPtr hero = new Hero();
+		RefPtr<Hero> hero = new Hero();
 		// 在屏幕上居中显示
 		hero->SetAnchor(0.5f, 0.5f);
 		hero->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 		// 创建说明文字
-		TextActorPtr intro = new TextActor("按上下左右键移动\n按鼠标左键旋转\n点击鼠标右键隐藏");
+		RefPtr<TextActor> intro = new TextActor("按上下左右键移动\n按鼠标左键旋转\n点击鼠标右键隐藏");
 		// 设置文字位置
 		intro->SetAnchor(0.5f, 0.5f);
 		intro->SetPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50);

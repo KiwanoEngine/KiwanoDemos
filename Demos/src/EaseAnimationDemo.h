@@ -7,7 +7,7 @@ class EaseAnimationDemo
 	: public Stage
 {
 public:
-	static StagePtr Create()
+	static RefPtr<Stage> Create()
 	{
 		return new EaseAnimationDemo;
 	}
@@ -54,14 +54,14 @@ public:
 			group.Handler(handler);
 
 			// 初始化人物
-			SpritePtr man = new Sprite(man_image);
+			RefPtr<Sprite> man = new Sprite(man_image);
 			man->SetPosition(200, height);
 			man->SetAnchor(0.5f, 0.5f);
 			// 执行动画
 			man->StartAnimation(group);
 
 			// 添加提示文字
-			TextActorPtr label = new TextActor(ease_names[i]);
+			RefPtr<TextActor> label = new TextActor(ease_names[i]);
 			label->SetFillColor(Color::White);
 			label->SetPosition(man->GetPositionX() - 150.0f, man->GetPositionY());
 			label->SetAnchor(0, 0.5f);
